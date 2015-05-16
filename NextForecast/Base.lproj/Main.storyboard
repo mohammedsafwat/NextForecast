@@ -7,7 +7,7 @@
         <!--Today-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" customClass="TodayForecastViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Today" id="9pv-A4-QxB" customClass="TodayViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
@@ -38,16 +38,16 @@
                             <constraint firstAttribute="centerY" secondItem="KQZ-1w-vlD" secondAttribute="centerY" id="exm-UA-ej4"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Today" image="first" id="acW-dT-cKf"/>
+                    <navigationItem key="navigationItem" id="Ke5-px-FCi"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="-320"/>
+            <point key="canvasLocation" x="1562" y="-320"/>
         </scene>
-        <!--Second-->
+        <!--Forecast-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Forecast" id="8rJ-Kc-sve" customClass="ForecastViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
@@ -78,11 +78,30 @@
                             <constraint firstAttribute="centerY" secondItem="zEq-FU-wV5" secondAttribute="centerY" id="qzY-Ky-pLD"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                    <navigationItem key="navigationItem" id="ZxR-5F-DdU"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="360"/>
+            <point key="canvasLocation" x="1562" y="360"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="c1B-qz-gw6">
+            <objects>
+                <viewController title="Settings" id="Chh-XP-y0W" customClass="SettingsViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WkX-VZ-Ccd"/>
+                        <viewControllerLayoutGuide type="bottom" id="KgN-OH-Lxj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="28j-sz-oWz">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fVj-8o-dve"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O3B-J5-dSN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1562" y="1114"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -95,17 +114,76 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="Jc9-Ij-Eor" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="Fsg-M9-G7c" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="Tpw-4f-V0U" kind="relationship" relationship="viewControllers" id="anZ-H2-hVJ"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
+        <!--Today-->
+        <scene sceneID="aNk-lP-mOl">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Jc9-Ij-Eor" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Today" image="TodayIconDimmed" id="acW-dT-cKf"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mD4-tj-6A8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="rootViewController" id="3cH-2r-33O"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yrp-Uf-qop" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="-320"/>
+        </scene>
+        <!--Forecast-->
+        <scene sceneID="fLq-S1-FRG">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fsg-M9-G7c" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Forecast" image="ForecastIconDimmed" id="cPa-gy-q4n"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lOj-Mw-PVG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="rootViewController" id="n1v-in-ZOB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Ke-nQ-9YP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="360"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="5Gc-O8-5cA">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Tpw-4f-V0U" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsIconDimmed" id="EAj-ZE-1d6"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Q0-1e-Mfz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Chh-XP-y0W" kind="relationship" relationship="rootViewController" id="pxS-Ja-eQL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R5d-o6-t7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="1114"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
+        <image name="ForecastIconDimmed" width="23" height="22"/>
+        <image name="SettingsIconDimmed" width="23" height="23"/>
+        <image name="TodayIconDimmed" width="24" height="24"/>
     </resources>
 </document>
