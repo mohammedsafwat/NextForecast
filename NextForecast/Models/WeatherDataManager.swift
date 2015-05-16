@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import AFNetworking
 import CoreLocation
+import Alamofire
 
 enum ForecastType {
     case Today
@@ -24,6 +24,12 @@ class WeatherDataManager: NSObject {
     
     func retrieveWeatherDataForLocation(location : CLLocation, forecastType : ForecastType)
     {
+        let weatherDataUrlString = forecastType == .Today ? AppSettings.sharedInstance.todayForecastURL : AppSettings.sharedInstance.sevenDaysForecastURL
+        var formattedWeatherDataUrlString : String! = NSString(format: weatherDataUrlString, location.coordinate.latitude, location.coordinate.longitude)
         
+        Alamofire.request(.GET, formattedWeatherDataUrlString)
+            .responseJSON {(request, response, JSON, error) in
+                println(JSON)
+        }
     }
 }

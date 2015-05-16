@@ -10,16 +10,23 @@ import UIKit
 import CoreLocation
 import MBProgressHUD
 
-class TodayViewController: UIViewController, CLLocationManagerDelegate {
+class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate {
 
     var locationManager : CLLocationManager!
     var authorizationStatus : CLAuthorizationStatus!
     var activityIndicator : MBProgressHUD!
+    var weatherDataManager : WeatherDataManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Today"
+        initValues()
+    }
+    
+    func initValues() {
+        weatherDataManager = WeatherDataManager()
+        weatherDataManager.weatherDataManagerDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -80,6 +87,16 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         displayAlertViewWithMessage("Unable to determine location. You must enable location services for this app in Settings.", otherButtonTitles:"Settings")
         stopActivityIndicator()
+    }
+    
+    func retrieveWeatherForLocation(location : CLLocation) {
+        startActivityIndicatorWithStatusText("Updating weather data..")
+        weatherDataManager.retrieveWeatherDataForLocation(location, forecastType: .Today)
+    }
+    
+    //WeatherDataManager Delegates
+    func propagateParsedWeatherData(weatherData: Dictionary<String, [SingleDayWeatherData]>, error: NSError) {
+        
     }
     
     //Alert Views and HUD Views methods
