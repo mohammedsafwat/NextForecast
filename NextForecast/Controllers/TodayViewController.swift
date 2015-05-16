@@ -16,6 +16,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     var authorizationStatus : CLAuthorizationStatus!
     var activityIndicator : MBProgressHUD!
     var weatherDataManager : WeatherDataManager!
+    var weatherDataRetrievalStarted : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +44,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         if(locationManager == nil) {
             locationManager = CLLocationManager()
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
             locationManager.distanceFilter = kCLHeadingFilterNone
         }
         requestAlwaysAuthorization()
@@ -76,6 +77,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         print("location.latitude = %f",location.coordinate.latitude)
         locationManager.stopUpdatingLocation()
         stopActivityIndicator()
+        retrieveWeatherForLocation(location)
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -95,7 +97,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     //WeatherDataManager Delegates
-    func propagateParsedWeatherData(weatherData: Dictionary<String, [SingleDayWeatherData]>, error: NSError) {
+    func propagateParsedWeatherData(weatherData : [SingleDayWeatherData]!, error : NSError!) {
         
     }
     

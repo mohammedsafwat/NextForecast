@@ -16,7 +16,7 @@ enum ForecastType {
 }
 
 protocol WeatherDataManagerDelegate {
-    func propagateParsedWeatherData(weatherData : Dictionary<String, [SingleDayWeatherData]>, error : NSError)
+    func propagateParsedWeatherData(weatherData : [SingleDayWeatherData]!, error : NSError!)
 }
 
 class WeatherDataManager: NSObject {
@@ -29,7 +29,48 @@ class WeatherDataManager: NSObject {
         
         Alamofire.request(.GET, formattedWeatherDataUrlString)
             .responseJSON {(request, response, JSON, error) in
-                println(JSON)
+                if(error == nil)
+                {
+                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                    {
+                        weatherDataManagerDelegate.propagateParsedWeatherData(self.parseWeatherData(JSON, forecastType: forecastType), error: nil)
+                    }
+                }
+                else
+                {
+                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                    {
+                        weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error)
+                    }
+                }
         }
+    }
+    
+    func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  [SingleDayWeatherData]{
+        var parsedWeatherData = [SingleDayWeatherData]()
+        
+        if(forecastType == .Today)
+        {
+            var singleDayWeatherData = SingleDayWeatherData()
+
+            var JSONDictionary : NSDictionary = JSON as NSDictionary
+            var timeStamp : Double? = JSONDictionary.valueForKey("dt") as? Double
+            if(timeStamp != nil)
+            {
+                let timeStampAsDate = NSDate(timeIntervalSince1970: timeStamp!)
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let dayDateComponent = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitWeekday, fromDate: timeStampAsDate)
+                let dayIndex = dayDateComponent.weekday
+                let dayNameFromTimeStamp = dateFormatter.weekdaySymbols[dayIndex - 1] as String
+                singleDayWeatherData.dayName = dayNameFromTimeStamp
+            }
+            var temperature : Float? = JSONDictionary.valueForKey("main")?.valueForKey("temp") as? Float
+            if(temperature != nil)
+            {
+                singleDayWeatherData.temperature = temperature
+            }
+        }
+        return parsedWeatherData
     }
 }
