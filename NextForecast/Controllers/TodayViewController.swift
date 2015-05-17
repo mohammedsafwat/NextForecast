@@ -22,6 +22,8 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     @IBOutlet weak var locationNameLabel: UILabel!
     @IBOutlet weak var currentLocationIndicatorImageView: UIImageView!
     @IBOutlet weak var todayTemperatureLabel: UILabel!
+    @IBOutlet weak var todayTemperatureUnitLabel: UILabel!
+    @IBOutlet weak var todayWeatherDescriptionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +121,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             weatherIconImageView.image = weatherIconImage
             
             locationNameLabel.text = weatherData.name
+            locationNameLabel.sizeToFit()
             
             if(!weatherData.isCurrentLocation) {
                 currentLocationIndicatorImageView.hidden = true
@@ -129,6 +132,10 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             }
             
             todayTemperatureLabel.text = NSString(format: "%.0f°", weatherData.todayWeatherData.temperature)
+            let temperatureUnit : TemperatureUnit = weatherData.todayWeatherData.temperatureUnit
+            todayTemperatureUnitLabel.text = temperatureUnit == .C ? "C" : "F"
+            todayWeatherDescriptionLabel.text = weatherData.todayWeatherData.weatherDescription
+            todayWeatherDescriptionLabel.sizeToFit()
         }
         else
         {

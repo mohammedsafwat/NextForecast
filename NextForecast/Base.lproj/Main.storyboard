@@ -74,7 +74,7 @@
                                     <rect key="frame" x="199" y="344" width="2" height="20"/>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="22°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiK-Bt-dnu" userLabel="todayTemperature">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="22°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiK-Bt-dnu" userLabel="todayTemperatureLabel">
                                 <rect key="frame" x="240" y="258" width="30" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -83,7 +83,7 @@
                                     <rect key="frame" x="120" y="342" width="55" height="24"/>
                                 </variation>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="C" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F11-bu-oxB">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="C" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F11-bu-oxB" userLabel="todayTemperatureUnitLabel">
                                 <rect key="frame" x="278" y="259" width="13" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -92,7 +92,7 @@
                                     <rect key="frame" x="178" y="343" width="13" height="21"/>
                                 </variation>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sunny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhJ-j0-5RS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sunny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhJ-j0-5RS" userLabel="todayWeatherDescriptionLabel">
                                 <rect key="frame" x="309" y="259" width="170" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -707,6 +707,8 @@
                         <outlet property="currentLocationIndicatorImageView" destination="PZw-1B-LV5" id="OfC-VL-lE1"/>
                         <outlet property="locationNameLabel" destination="4iF-9i-Lu5" id="CR3-Ij-TFZ"/>
                         <outlet property="todayTemperatureLabel" destination="iiK-Bt-dnu" id="E8v-Jy-lcl"/>
+                        <outlet property="todayTemperatureUnitLabel" destination="F11-bu-oxB" id="Pjb-gm-B3P"/>
+                        <outlet property="todayWeatherDescriptionLabel" destination="yhJ-j0-5RS" id="ULa-as-y4N"/>
                         <outlet property="weatherIconImageView" destination="Xye-CT-tnU" id="OOD-NL-lNP"/>
                     </connections>
                 </viewController>
