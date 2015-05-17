@@ -11,10 +11,12 @@ import UIKit
 class SingleDayWeatherData: NSObject {
     var dayName : String!
     var temperature : Float!
+    var temperatureUnit : TemperatureUnit!
     var weatherDescription : String!
     var weatherIconName : String!
     var pressure : Float!
     var humidity : Float!
     var rain : Float!
     var wind : Float!
+    var speedUnit : SpeedUnit!
 }

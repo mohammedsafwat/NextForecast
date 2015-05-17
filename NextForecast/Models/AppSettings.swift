@@ -8,6 +8,15 @@
 
 import UIKit
 
+enum TemperatureUnit {
+    case C
+    case F
+}
+enum SpeedUnit {
+    case milesPerSecond
+    case metersPerSecond
+}
+
 private let _singletonInstance = AppSettings()
 
 class AppSettings: NSObject {

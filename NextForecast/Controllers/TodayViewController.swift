@@ -21,17 +21,17 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.title = "Today"
         initValues()
+        startLocationUpdates()
     }
     
     func initValues() {
+        self.title = "Today"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
-        startLocationUpdates()
     }
     
     override func didReceiveMemoryWarning() {
@@ -98,6 +98,11 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     
     //WeatherDataManager Delegates
     func propagateParsedWeatherData(weatherData : [SingleDayWeatherData]!, error : NSError!) {
+        stopActivityIndicator()
+        if(error == nil)
+        {
+            
+        }
         
     }
     

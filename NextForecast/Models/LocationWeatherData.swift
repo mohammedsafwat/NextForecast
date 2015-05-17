@@ -16,6 +16,8 @@ class LocationWeatherData: NSObject, NSCoding {
     var todayWeatherData : SingleDayWeatherData!
     var sevenDaysForecastWeatherData : Array<SingleDayWeatherData>!
     
+    override init() {}
+    
     required init(coder aDecoder: NSCoder) {
         name = aDecoder.decodeObjectForKey("name") as String
         latitude = aDecoder.decodeObjectForKey("latitude") as Float
