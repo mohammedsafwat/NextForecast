@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Today-->
@@ -32,16 +33,17 @@
                                         <exclude reference="dlt-Nz-5zU"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="160" y="217" width="80" height="80"/>
                                     <mask key="constraints">
-                                        <include reference="QWe-i8-Cn9"/>
+                                        <exclude reference="QWe-i8-Cn9"/>
                                         <exclude reference="UKC-lW-r2o"/>
-                                        <include reference="WaT-ok-kaD"/>
+                                        <exclude reference="WaT-ok-kaD"/>
                                         <exclude reference="dlt-Nz-5zU"/>
                                     </mask>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Prague, Czech Republic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iF-9i-Lu5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Prague, Czech Republic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iF-9i-Lu5" userLabel="LocationNameLabel">
                                 <rect key="frame" x="188" y="230" width="225" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -72,7 +74,7 @@
                                     <rect key="frame" x="199" y="344" width="2" height="20"/>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="22°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiK-Bt-dnu">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="22°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiK-Bt-dnu" userLabel="todayTemperature">
                                 <rect key="frame" x="240" y="258" width="30" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -294,11 +296,13 @@
                                     <rect key="frame" x="236" y="517" width="42" height="21"/>
                                 </variation>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----------------------------------------------------------" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tls-nM-nPl">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----------------------------------------------------------" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tls-nM-nPl" userLabel="ReferenceLine">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="400" id="9Yn-Vl-96e"/>
+                                    <constraint firstAttribute="width" constant="400" id="G43-Jq-7NU"/>
                                     <constraint firstAttribute="height" constant="3" id="SoV-mU-6p1"/>
+                                    <constraint firstAttribute="height" constant="3" id="gR1-CN-RaR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -306,13 +310,17 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="9Yn-Vl-96e"/>
+                                        <exclude reference="G43-Jq-7NU"/>
                                         <exclude reference="SoV-mU-6p1"/>
+                                        <exclude reference="gR1-CN-RaR"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
-                                        <include reference="9Yn-Vl-96e"/>
-                                        <include reference="SoV-mU-6p1"/>
+                                        <exclude reference="9Yn-Vl-96e"/>
+                                        <include reference="G43-Jq-7NU"/>
+                                        <exclude reference="SoV-mU-6p1"/>
+                                        <include reference="gR1-CN-RaR"/>
                                     </mask>
                                 </variation>
                             </label>
@@ -388,6 +396,8 @@
                             </constraint>
                             <constraint firstItem="SpB-lZ-gan" firstAttribute="leading" secondItem="b7X-Ao-b7X" secondAttribute="trailing" constant="92" id="QNc-Zj-1Xx"/>
                             <constraint firstItem="Tls-nM-nPl" firstAttribute="top" secondItem="4iF-9i-Lu5" secondAttribute="bottom" constant="64" id="Rs2-0q-oSe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Tls-nM-nPl" secondAttribute="trailing" constant="-16" id="TSv-ix-PyM"/>
+                            <constraint firstItem="Tls-nM-nPl" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="-16" id="Twe-Ja-j1E"/>
                             <constraint firstItem="wxK-Zi-Pg5" firstAttribute="top" secondItem="SpB-lZ-gan" secondAttribute="bottom" constant="8" id="UXC-mt-EXo"/>
                             <constraint firstItem="jDC-Yz-DrX" firstAttribute="centerX" secondItem="qQn-CN-XGi" secondAttribute="centerX" id="VU4-fP-N6v"/>
                             <constraint firstItem="qQn-CN-XGi" firstAttribute="top" secondItem="jDC-Yz-DrX" secondAttribute="bottom" constant="8" id="WZc-6c-3Tj"/>
@@ -428,6 +438,8 @@
                             <constraint firstItem="IhA-hw-S77" firstAttribute="top" secondItem="Xye-CT-tnU" secondAttribute="bottom" constant="115" id="tcm-lW-zqX">
                                 <variation key="heightClass=regular-widthClass=compact" constant="95"/>
                             </constraint>
+                            <constraint firstItem="Tls-nM-nPl" firstAttribute="top" secondItem="IhA-hw-S77" secondAttribute="bottom" constant="8" id="tdv-7S-iJa"/>
+                            <constraint firstItem="b7X-Ao-b7X" firstAttribute="top" secondItem="Tls-nM-nPl" secondAttribute="bottom" constant="8" id="tmq-w7-I0X"/>
                             <constraint firstItem="Ohe-fu-TD8" firstAttribute="top" secondItem="jDC-Yz-DrX" secondAttribute="bottom" constant="253" id="uq6-n0-9Cs">
                                 <variation key="heightClass=regular-widthClass=compact" constant="41"/>
                             </constraint>
@@ -485,8 +497,11 @@
                                 <exclude reference="IAY-Id-rpA"/>
                                 <exclude reference="KMZ-Gt-dfl"/>
                                 <exclude reference="Rs2-0q-oSe"/>
+                                <exclude reference="TSv-ix-PyM"/>
+                                <exclude reference="Twe-Ja-j1E"/>
                                 <exclude reference="lgf-KL-Jiw"/>
                                 <exclude reference="sdb-BY-Vko"/>
+                                <exclude reference="tdv-7S-iJa"/>
                                 <exclude reference="0Rk-A1-iJg"/>
                                 <exclude reference="YqD-Bn-cZ9"/>
                                 <exclude reference="aYY-3h-zyX"/>
@@ -507,6 +522,7 @@
                                 <exclude reference="dt5-L5-L3H"/>
                                 <exclude reference="elB-9g-Y1b"/>
                                 <exclude reference="qyG-cB-9zL"/>
+                                <exclude reference="tmq-w7-I0X"/>
                                 <exclude reference="Ekc-Yy-Bek"/>
                                 <exclude reference="PIg-yc-6cX"/>
                                 <exclude reference="env-uf-41Y"/>
@@ -605,8 +621,11 @@
                                 <exclude reference="IAY-Id-rpA"/>
                                 <include reference="KMZ-Gt-dfl"/>
                                 <include reference="Rs2-0q-oSe"/>
+                                <exclude reference="TSv-ix-PyM"/>
+                                <exclude reference="Twe-Ja-j1E"/>
                                 <include reference="lgf-KL-Jiw"/>
                                 <exclude reference="sdb-BY-Vko"/>
+                                <exclude reference="tdv-7S-iJa"/>
                                 <exclude reference="0Rk-A1-iJg"/>
                                 <exclude reference="YqD-Bn-cZ9"/>
                                 <include reference="aYY-3h-zyX"/>
@@ -622,11 +641,12 @@
                                 <exclude reference="FLf-hk-4Ae"/>
                                 <exclude reference="J0R-h6-VRR"/>
                                 <exclude reference="MT6-zn-vnA"/>
-                                <include reference="NJ1-ZI-xRO"/>
+                                <exclude reference="NJ1-ZI-xRO"/>
                                 <exclude reference="aFr-SU-nJa"/>
                                 <include reference="dt5-L5-L3H"/>
                                 <include reference="elB-9g-Y1b"/>
                                 <exclude reference="qyG-cB-9zL"/>
+                                <include reference="tmq-w7-I0X"/>
                                 <include reference="Ekc-Yy-Bek"/>
                                 <exclude reference="PIg-yc-6cX"/>
                                 <exclude reference="env-uf-41Y"/>
@@ -684,6 +704,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ke5-px-FCi"/>
                     <connections>
+                        <outlet property="currentLocationIndicatorImageView" destination="PZw-1B-LV5" id="OfC-VL-lE1"/>
+                        <outlet property="locationNameLabel" destination="4iF-9i-Lu5" id="CR3-Ij-TFZ"/>
+                        <outlet property="todayTemperatureLabel" destination="iiK-Bt-dnu" id="E8v-Jy-lcl"/>
                         <outlet property="weatherIconImageView" destination="Xye-CT-tnU" id="OOD-NL-lNP"/>
                     </connections>
                 </viewController>

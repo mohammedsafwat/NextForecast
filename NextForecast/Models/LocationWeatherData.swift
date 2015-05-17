@@ -14,7 +14,7 @@ class LocationWeatherData: NSObject, NSCoding {
     var longitude : Float!
     var isCurrentLocation : Bool!
     var todayWeatherData : SingleDayWeatherData!
-    var sevenDaysForecastWeatherData : Array<SingleDayWeatherData>!
+    var sevenDaysForecastWeatherData : [SingleDayWeatherData]!
     
     override init() {}
     

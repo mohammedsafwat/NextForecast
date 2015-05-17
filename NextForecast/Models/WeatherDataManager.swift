@@ -16,7 +16,7 @@ enum ForecastType {
 }
 
 protocol WeatherDataManagerDelegate {
-    func propagateParsedWeatherData(weatherData : [LocationWeatherData]!, error : NSError!)
+    func propagateParsedWeatherData(weatherData : LocationWeatherData!, error : NSError!)
 }
 
 class WeatherDataManager: NSObject {
@@ -34,8 +34,8 @@ class WeatherDataManager: NSObject {
                 {
                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                     {
-                        var locationWeatherDataArray : [LocationWeatherData]! = self.parseWeatherData(JSON, forecastType: forecastType)
-                        weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherDataArray, error: nil)
+                        var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: forecastType)
+                        weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherData, error: nil)
                     }
                 }
                 else
@@ -99,9 +99,11 @@ class WeatherDataManager: NSObject {
         return windDirection
     }
     
-    func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  [LocationWeatherData]{
-        var parsedWeatherData = [LocationWeatherData]()
+    func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  LocationWeatherData{
+        var locationWeatherData : LocationWeatherData = LocationWeatherData()
+        
         var JSONData : NSDictionary! = JSON as NSDictionary
+        
         if(forecastType == .Today)
         {
             var todayWeatherData = SingleDayWeatherData()
@@ -117,7 +119,7 @@ class WeatherDataManager: NSObject {
             var temperature : Float? = JSONData.valueForKey("main")?.valueForKey("temp") as? Float
             if(temperature != nil)
             {
-                todayWeatherData.temperature = temperature! - kelvinConstant
+                todayWeatherData.temperature = roundf(temperature! - kelvinConstant)
                 todayWeatherData.temperatureUnit = .C
             }
             var weatherDescription : String? = weatherDataDictionary!.valueForKey("description") as? String
@@ -157,7 +159,6 @@ class WeatherDataManager: NSObject {
             var longitude : Float? = JSONData.valueForKey("coord")?.valueForKey("lon") as? Float
             var latitude :Float? = JSONData.valueForKey("coord")?.valueForKey("lat") as? Float
             
-            var locationWeatherData : LocationWeatherData = LocationWeatherData()
             if(locationCityName != nil && locationCountryName != nil)
             {
                 locationWeatherData.name = locationCityName! + ", " + locationCountryName!
@@ -170,8 +171,7 @@ class WeatherDataManager: NSObject {
             locationWeatherData.longitude = longitude!
             locationWeatherData.isCurrentLocation = true
             locationWeatherData.todayWeatherData = todayWeatherData
-            parsedWeatherData.append(locationWeatherData)
         }
-        return parsedWeatherData
+        return locationWeatherData
     }
 }

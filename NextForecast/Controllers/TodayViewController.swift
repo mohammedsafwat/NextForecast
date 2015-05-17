@@ -16,9 +16,12 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     var authorizationStatus : CLAuthorizationStatus!
     var activityIndicator : MBProgressHUD!
     var weatherDataManager : WeatherDataManager!
-    var weatherDataRetrievalStarted : Bool!
+    var locationUpdated : Bool!
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
+    @IBOutlet weak var locationNameLabel: UILabel!
+    @IBOutlet weak var currentLocationIndicatorImageView: UIImageView!
+    @IBOutlet weak var todayTemperatureLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +35,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         self.title = "Today"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
+        locationUpdated = false
     }
     
     func setupAutoresizingMasks() {
@@ -78,13 +82,17 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     
     //Location Manager Delegates
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        var location : CLLocation!
-        location = locations.last as CLLocation
-        print("location.longitude = %f",location.coordinate.longitude)
-        print("location.latitude = %f",location.coordinate.latitude)
-        locationManager.stopUpdatingLocation()
-        stopActivityIndicator()
-        retrieveWeatherForLocation(location)
+        if(!locationUpdated)
+        {
+            var location : CLLocation!
+            location = locations.last as CLLocation
+            print("location.longitude = %f",location.coordinate.longitude)
+            print("location.latitude = %f",location.coordinate.latitude)
+            locationManager.stopUpdatingLocation()
+            stopActivityIndicator()
+            locationUpdated = true
+            retrieveWeatherForLocation(location)
+        }
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -104,13 +112,29 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     //WeatherDataManager Delegates
-    func propagateParsedWeatherData(weatherData : [LocationWeatherData]!, error : NSError!) {
-        stopActivityIndicator()
+    func propagateParsedWeatherData(weatherData : LocationWeatherData!, error : NSError!) {
         if(error == nil)
+        {
+            var weatherIconImage : UIImage! = UIImage(named: weatherData.todayWeatherData.weatherIconName)
+            weatherIconImageView.image = weatherIconImage
+            
+            locationNameLabel.text = weatherData.name
+            
+            if(!weatherData.isCurrentLocation) {
+                currentLocationIndicatorImageView.hidden = true
+            }
+            else
+            {
+                currentLocationIndicatorImageView.hidden = false
+            }
+            
+            todayTemperatureLabel.text = NSString(format: "%.0f°", weatherData.todayWeatherData.temperature)
+        }
+        else
         {
             
         }
-        
+        stopActivityIndicator()
     }
     
     //Alert Views and HUD Views methods
