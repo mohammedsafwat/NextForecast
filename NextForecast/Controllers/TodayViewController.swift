@@ -18,10 +18,13 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     var weatherDataManager : WeatherDataManager!
     var weatherDataRetrievalStarted : Bool!
     
+    @IBOutlet weak var weatherIconImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         initValues()
+        setupAutoresizingMasks()
         startLocationUpdates()
     }
     
@@ -29,6 +32,10 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         self.title = "Today"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
+    }
+    
+    func setupAutoresizingMasks() {
+        self.weatherIconImageView.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleTopMargin
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -97,7 +104,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     //WeatherDataManager Delegates
-    func propagateParsedWeatherData(weatherData : [SingleDayWeatherData]!, error : NSError!) {
+    func propagateParsedWeatherData(weatherData : [LocationWeatherData]!, error : NSError!) {
         stopActivityIndicator()
         if(error == nil)
         {

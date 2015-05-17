@@ -34,14 +34,15 @@ class WeatherDataManager: NSObject {
                 {
                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                     {
-                        weatherDataManagerDelegate.propagateParsedWeatherData(self.parseWeatherData(JSON, forecastType: forecastType), error: nil)
+                        var locationWeatherDataArray : [LocationWeatherData]! = self.parseWeatherData(JSON, forecastType: forecastType)
+                        weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherDataArray, error: nil)
                     }
                 }
                 else
                 {
                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                     {
-                        weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error)
+                        weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error!)
                     }
                 }
         }
@@ -77,21 +78,43 @@ class WeatherDataManager: NSObject {
         return "WeatherIcon_" + weatherIconName
     }
     
+    func getWindDirection(var windDegree : Float!) -> WindDirection {
+        var windDirection : WindDirection!
+        if(windDegree >= 0 && windDegree <= 90)
+        {
+            windDirection = .NE
+        }
+        else if(windDegree > 90 && windDegree <= 180)
+        {
+            windDirection = .NW
+        }
+        else if(windDegree > 90 && windDegree <= 270)
+        {
+            windDirection = .SW
+        }
+        else if(windDegree > 270 && windDegree <= 360)
+        {
+            windDirection = .SW
+        }
+        return windDirection
+    }
+    
     func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  [LocationWeatherData]{
         var parsedWeatherData = [LocationWeatherData]()
-        
+        var JSONData : NSDictionary! = JSON as NSDictionary
         if(forecastType == .Today)
         {
             var todayWeatherData = SingleDayWeatherData()
-            var JSONDictionary : NSDictionary = JSON as NSDictionary
-            var weatherDataDictionary : NSDictionary? = JSONDictionary.valueForKey("weather") as? NSDictionary
+
+            var weatherDataArray : NSArray? = JSONData.valueForKey("weather") as NSArray?
+            var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
             
-            var timeStamp : Double? = JSONDictionary.valueForKey("dt") as? Double
+            var timeStamp : Double? = JSONData.valueForKey("dt") as? Double
             if(timeStamp != nil)
             {
                 todayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
             }
-            var temperature : Float? = JSONDictionary.valueForKey("main")?.valueForKey("temp") as? Float
+            var temperature : Float? = JSONData.valueForKey("main")?.valueForKey("temp") as? Float
             if(temperature != nil)
             {
                 todayWeatherData.temperature = temperature! - kelvinConstant
@@ -118,16 +141,21 @@ class WeatherDataManager: NSObject {
             {
                 todayWeatherData.humidity = humidity
             }
-            var wind : Float? = weatherDataDictionary!.valueForKey("wind") as? Float
-            if(wind != nil)
+            var windSpeed : Float? = weatherDataDictionary!.valueForKey("wind")?.valueForKey("speed") as? Float
+            if(windSpeed != nil)
             {
-                todayWeatherData.wind = wind
+                todayWeatherData.wind = windSpeed
                 todayWeatherData.speedUnit = .milesPerSecond
             }
-            var locationCityName : String? = JSONDictionary.valueForKey("name") as? String
-            var locationCountryName : String? = JSONDictionary.valueForKey("sys")?.valueForKey("country") as? String
-            var longitude : Float? = JSONDictionary.valueForKey("coord")?.valueForKey("lon") as? Float
-            var latitude :Float? = JSONDictionary.valueForKey("coord")?.valueForKey("lat") as? Float
+            var windDirectionDegrees : Float? = weatherDataDictionary!.valueForKey("wind")?.valueForKey("deg") as? Float
+            if(windDirectionDegrees != nil)
+            {
+                todayWeatherData.windDirection = getWindDirection(windDirectionDegrees)
+            }
+            var locationCityName : String? = JSONData.valueForKey("name") as? String
+            var locationCountryName : String? = JSONData.valueForKey("sys")?.valueForKey("country") as? String
+            var longitude : Float? = JSONData.valueForKey("coord")?.valueForKey("lon") as? Float
+            var latitude :Float? = JSONData.valueForKey("coord")?.valueForKey("lat") as? Float
             
             var locationWeatherData : LocationWeatherData = LocationWeatherData()
             if(locationCityName != nil && locationCountryName != nil)
