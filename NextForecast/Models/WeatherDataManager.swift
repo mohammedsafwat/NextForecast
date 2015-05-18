@@ -69,8 +69,11 @@ class WeatherDataManager: NSObject {
         else if(weatherConditionId >= 600 && weatherConditionId <= 622) {
             weatherIconName = "Snow"
         }
-        else if((weatherConditionId >= 701 && weatherConditionId <= 781) || (weatherConditionId >= 801 && weatherConditionId <= 804) || (weatherConditionId >= 900 && weatherConditionId <= 962)) {
+        else if((weatherConditionId >= 701 && weatherConditionId <= 781) || (weatherConditionId >= 900 && weatherConditionId <= 962)) {
             weatherIconName = "Wind"
+        }
+        else if((weatherConditionId >= 801 && weatherConditionId <= 804)) {
+            weatherIconName = "Clouds"
         }
         else {
             weatherIconName = "Clear"
@@ -122,10 +125,9 @@ class WeatherDataManager: NSObject {
                 todayWeatherData.temperature = roundf(temperature! - kelvinConstant)
                 todayWeatherData.temperatureUnit = .C
             }
-            var weatherDescription : String? = weatherDataDictionary!.valueForKey("description") as? String
+            var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
             if(weatherDescription != nil)
             {
-                weatherDescription = weatherDescription?.capitalizedString
                 todayWeatherData.weatherDescription = weatherDescription
             }
             var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
