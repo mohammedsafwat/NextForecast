@@ -14,8 +14,10 @@ enum TemperatureUnit {
 }
 enum SpeedUnit {
     case milesPerSecond
-    case metersPerSecond
+    case milesPerHour
+    case kmPerHour
 }
+
 enum WindDirection {
     case NE
     case NW

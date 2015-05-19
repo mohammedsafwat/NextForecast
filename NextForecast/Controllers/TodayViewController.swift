@@ -23,7 +23,13 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     @IBOutlet weak var currentLocationIndicatorImageView: UIImageView!
     @IBOutlet weak var todayTemperatureLabel: UILabel!
     @IBOutlet weak var todayWeatherDescriptionLabel: UILabel!
-    
+    @IBOutlet weak var todayTemperatureAndDescriptionLabel: UILabel!
+    @IBOutlet weak var todayRainValueLabel: UILabel!
+    @IBOutlet weak var todayHumidityValueLabel: UILabel!
+    @IBOutlet weak var todayPressureValueLabel: UILabel!
+    @IBOutlet weak var todayWindSpeedValueLabel: UILabel!
+    @IBOutlet weak var todayWindDirectionValueLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -116,10 +122,12 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     func propagateParsedWeatherData(weatherData : LocationWeatherData!, error : NSError!) {
         if(error == nil)
         {
+            //Set weather icon according to current weather data
             var weatherIconImage : UIImage! = UIImage(named: weatherData.todayWeatherData.weatherIconName)
             weatherIconImageView.image = weatherIconImage
             locationNameLabel.text = weatherData.name
-            
+            //Check if we are getting weather data for the current location
+            //Then display the GPS indicator besides the location title
             if(!weatherData.isCurrentLocation) {
                 currentLocationIndicatorImageView.hidden = true
             }
@@ -128,12 +136,43 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
                 currentLocationIndicatorImageView.hidden = false
             }
             
+            //Set current temperature value and label
             let temperatureUnit : TemperatureUnit = weatherData.todayWeatherData.temperatureUnit
-            //todayTemperatureUnitLabel.text = temperatureUnit == .C ? "C" : "F"
-            todayTemperatureLabel.text = NSString(format: "%.0f°%@", weatherData.todayWeatherData.temperature, temperatureUnit == .C ? "C" : "F")
+            let temperatureFormattedString = NSString(format: "%.0f°%@", weatherData.todayWeatherData.temperature, temperatureUnit == .C ? "C" : "F")
             
-            todayWeatherDescriptionLabel.text = weatherData.todayWeatherData.weatherDescription
+            //Set current weather description
+            let weatherDescriptionString = weatherData.todayWeatherData.weatherDescription
             
+            todayTemperatureAndDescriptionLabel.text = NSString(format: "%@ | %@", temperatureFormattedString, weatherDescriptionString)
+            
+            //Set other weather data values
+            //Rain
+            todayRainValueLabel.text = NSString(format: "%0.1f mm", weatherData.todayWeatherData.rain)
+            
+            //Humidity
+            todayHumidityValueLabel.text = NSString(format: "%0.0f%@", weatherData.todayWeatherData.humidity, "%")
+            
+            //Pressure
+            todayPressureValueLabel.text = NSString(format: "%0.0f hPa", weatherData.todayWeatherData.pressure)
+            
+            //Wind Speed
+            todayWindSpeedValueLabel.text = NSString(format: "%0.0f km/h", weatherData.todayWeatherData.wind)
+            
+            //Wind Direction
+            var windDirectionString : String!
+            var windDirection : WindDirection
+            windDirection = weatherData.todayWeatherData.windDirection
+            switch(windDirection){
+            case .NE:
+                windDirectionString = "NE"
+            case .NW:
+                windDirectionString = "NW"
+            case .SE:
+                windDirectionString = "SE"
+            case .SW:
+                windDirectionString = "SW"
+            }
+            todayWindDirectionValueLabel.text = windDirectionString
         }
         else
         {
