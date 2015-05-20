@@ -21,8 +21,6 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var locationNameLabel: UILabel!
     @IBOutlet weak var currentLocationIndicatorImageView: UIImageView!
-    @IBOutlet weak var todayTemperatureLabel: UILabel!
-    @IBOutlet weak var todayWeatherDescriptionLabel: UILabel!
     @IBOutlet weak var todayTemperatureAndDescriptionLabel: UILabel!
     @IBOutlet weak var todayRainValueLabel: UILabel!
     @IBOutlet weak var todayHumidityValueLabel: UILabel!

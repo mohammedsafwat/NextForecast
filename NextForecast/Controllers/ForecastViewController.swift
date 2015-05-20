@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ForecastViewController: UIViewController {
-
+class ForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var forecastTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
