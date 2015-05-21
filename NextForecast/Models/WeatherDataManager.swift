@@ -25,92 +25,52 @@ class WeatherDataManager: NSObject {
     let mpsToMphConversionConstant : Float = 3600
     let mphToKmphConversionConstant : Float = 1.60934
     let metersPerSecondToKmPerHourConversionConstant : Float = 3.6
-    
-    func retrieveWeatherDataForLocation(location : CLLocation, forecastType : ForecastType)
+    var locationWeatherData : LocationWeatherData = LocationWeatherData()
+
+    func retrieveWeatherDataForLocation(location : CLLocation)
     {
-        let weatherDataUrlString = forecastType == .Today ? AppSettings.sharedInstance.todayForecastURL : AppSettings.sharedInstance.sevenDaysForecastURL
-        var formattedWeatherDataUrlString : String! = NSString(format: weatherDataUrlString, location.coordinate.latitude, location.coordinate.longitude)
+        let todayWeatherDataUrlString = NSString(format: AppSettings.sharedInstance.todayForecastURL, location.coordinate.latitude, location.coordinate.longitude)
         
-        Alamofire.request(.GET, formattedWeatherDataUrlString)
-            .responseJSON {(request, response, JSON, error) in
-                if(error == nil)
-                {
-                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
-                    {
-                        var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: forecastType)
-                        weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherData, error: nil)
-                    }
-                }
-                else
-                {
-                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
-                    {
-                        weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error!)
-                    }
-                }
-        }
-    }
-    
-    func getDayNameFromTimeStamp(var timeStamp : NSTimeInterval!) -> String {
-        let timeStampAsDate = NSDate(timeIntervalSince1970: timeStamp)
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dayDateComponent = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitWeekday, fromDate: timeStampAsDate)
-        let dayIndex = dayDateComponent.weekday
-        let dayNameFromTimeStamp = dateFormatter.weekdaySymbols[dayIndex - 1] as String
-        return dayNameFromTimeStamp
-    }
-    
-    func getWeatherIconName(var weatherConditionId : Int!) -> String {
-        var weatherIconName : String!
-        if(weatherConditionId >= 200 && weatherConditionId <= 232) {
-            weatherIconName = "Thunder"
-        }
-        else if((weatherConditionId >= 300 && weatherConditionId <= 321) || (weatherConditionId >= 500 && weatherConditionId <= 531)) {
-            weatherIconName = "Rain"
-        }
-        else if(weatherConditionId >= 600 && weatherConditionId <= 622) {
-            weatherIconName = "Snow"
-        }
-        else if((weatherConditionId >= 701 && weatherConditionId <= 781) || (weatherConditionId >= 900 && weatherConditionId <= 962)) {
-            weatherIconName = "Wind"
-        }
-        else if((weatherConditionId >= 801 && weatherConditionId <= 804)) {
-            weatherIconName = "Clouds"
-        }
-        else {
-            weatherIconName = "Clear"
-        }
-        return "WeatherIcon_" + weatherIconName
-    }
-    
-    func getWindDirection(var windDegree : Float!) -> WindDirection {
-        var windDirection : WindDirection!
-        if(windDegree < 0)
-        {
-            windDegree = windDegree + 360
-        }
-        if(windDegree >= 0 && windDegree <= 90)
-        {
-            windDirection = .NE
-        }
-        else if(windDegree > 90 && windDegree <= 180)
-        {
-            windDirection = .NW
-        }
-        else if(windDegree > 90 && windDegree <= 270)
-        {
-            windDirection = .SW
-        }
-        else if(windDegree > 270 && windDegree <= 360)
-        {
-            windDirection = .SW
-        }
-        return windDirection
+        let forecastWeatherDataUrlString = NSString(format: AppSettings.sharedInstance.sevenDaysForecastURL, location.coordinate.latitude, location.coordinate.longitude)
+        
+        Alamofire.request(.GET, todayWeatherDataUrlString)
+            .responseJSON{ (request, response, JSON, error) in
+                            if(error == nil)
+                            {
+                                //Parse today weather data and save inside the locationWeatherData object
+                                var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: .Today)
+                    
+                                Alamofire.request(.GET, forecastWeatherDataUrlString)
+                                    .responseJSON{ (request, response, JSON, error) in
+                                                    if(error == nil)
+                                                    {
+                                                        //Parse forecast weather data and save insice the locationWeatherData object
+                                                        var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: .SevenDays)
+                                                        if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                                                        {
+                                                            weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherData, error: nil)
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                                                        {
+                                                            weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error!)
+                                                        }
+                                                    }
+                                                 }
+                            }
+                            else
+                            {
+                                if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                                {
+                                    weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error!)
+                                }
+                            }
+                        }
     }
     
     func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  LocationWeatherData{
-        var locationWeatherData : LocationWeatherData = LocationWeatherData()
         
         var JSONData : NSDictionary! = JSON as NSDictionary
         
@@ -222,6 +182,116 @@ class WeatherDataManager: NSObject {
             locationWeatherData.isCurrentLocation = true
             locationWeatherData.todayWeatherData = todayWeatherData
         }
+        else if(forecastType == .SevenDays)
+        {
+            var JSONSevenDaysForecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
+            var sevenDaysForecastWeatehrData : NSMutableArray! = NSMutableArray()
+            
+            if(JSONSevenDaysForecastWeatherData != nil)
+            {
+                for(var i : int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
+                {
+                    var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
+                    var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData[0] as NSDictionary
+                    
+                    //TimeStamp
+                    var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
+                    if(timeStamp != nil)
+                    {
+                        singleDayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
+                    }
+                    
+                    //Temperature
+                    var temperature : Float? = JSONSingleDayData.valueForKey("temp")?.valueForKey("day") as? Float
+                    if(temperature != nil)
+                    {
+                        singleDayWeatherData.temperature = roundf(temperature! - kelvinConstant)
+                        singleDayWeatherData.temperatureUnit = .C
+                    }
+                    
+                    //Weather Description
+                    var weatherDataArray : NSArray? = JSONSingleDayData.valueForKey("weather") as NSArray?
+                    var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
+                    
+                    var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
+                    if(weatherDescription != nil)
+                    {
+                        singleDayWeatherData.weatherDescription = weatherDescription
+                    }
+                    
+                    var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
+                    if(weatherConditionId != nil)
+                    {
+                        singleDayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
+                    }
+                    
+                    sevenDaysForecastWeatehrData.addObject(singleDayWeatherData)
+                }
+            }
+            else
+            {
+                //Add default data if no JSONSevenDaysForecastWeatherData was found
+            }
+            locationWeatherData.sevenDaysForecastWeatherData = sevenDaysForecastWeatehrData
+        }
         return locationWeatherData
+    }
+    
+    func getDayNameFromTimeStamp(var timeStamp : NSTimeInterval!) -> String {
+        let timeStampAsDate = NSDate(timeIntervalSince1970: timeStamp)
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dayDateComponent = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitWeekday, fromDate: timeStampAsDate)
+        let dayIndex = dayDateComponent.weekday
+        let dayNameFromTimeStamp = dateFormatter.weekdaySymbols[dayIndex - 1] as String
+        return dayNameFromTimeStamp
+    }
+    
+    func getWeatherIconName(var weatherConditionId : Int!) -> String {
+        var weatherIconName : String!
+        if(weatherConditionId >= 200 && weatherConditionId <= 232) {
+            weatherIconName = "Thunder"
+        }
+        else if((weatherConditionId >= 300 && weatherConditionId <= 321) || (weatherConditionId >= 500 && weatherConditionId <= 531)) {
+            weatherIconName = "Rain"
+        }
+        else if(weatherConditionId >= 600 && weatherConditionId <= 622) {
+            weatherIconName = "Snow"
+        }
+        else if((weatherConditionId >= 701 && weatherConditionId <= 781) || (weatherConditionId >= 900 && weatherConditionId <= 962)) {
+            weatherIconName = "Wind"
+        }
+        else if((weatherConditionId >= 801 && weatherConditionId <= 804)) {
+            weatherIconName = "Clouds"
+        }
+        else {
+            weatherIconName = "Clear"
+        }
+        return "WeatherIcon_" + weatherIconName
+    }
+    
+    func getWindDirection(var windDegree : Float!) -> WindDirection {
+        var windDirection : WindDirection!
+        if(windDegree < 0)
+        {
+            windDegree = windDegree + 360
+        }
+        if(windDegree >= 0 && windDegree <= 90)
+        {
+            windDirection = .NE
+        }
+        else if(windDegree > 90 && windDegree <= 180)
+        {
+            windDirection = .NW
+        }
+        else if(windDegree > 90 && windDegree <= 270)
+        {
+            windDirection = .SW
+        }
+        else if(windDegree > 270 && windDegree <= 360)
+        {
+            windDirection = .SW
+        }
+        return windDirection
     }
 }
