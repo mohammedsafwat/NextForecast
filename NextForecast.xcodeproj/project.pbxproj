@@ -11,7 +11,7 @@
 		3A3FCE9E1B071944007A037B /* LocationWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */; };
 		3A3FCEA01B071E32007A037B /* SingleDayWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */; };
 		3A3FCEA21B072245007A037B /* WeatherDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCEA11B072245007A037B /* WeatherDataManager.swift */; };
-		3A3FCEA61B073051007A037B /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCEA51B073051007A037B /* AppSettings.swift */; };
+		3A3FCEA61B073051007A037B /* AppSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCEA51B073051007A037B /* AppSharedData.swift */; };
 		3A6947DC1B061BAB006EF6BD /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6947DB1B061BAB006EF6BD /* TodayViewController.swift */; };
 		3A6947DE1B061BB4006EF6BD /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6947DD1B061BB4006EF6BD /* ForecastViewController.swift */; };
 		3A6947E01B061BBE006EF6BD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6947DF1B061BBE006EF6BD /* SettingsViewController.swift */; };
@@ -20,6 +20,16 @@
 		3A93295E1B04E17B0021B1F0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A93295D1B04E17B0021B1F0 /* Images.xcassets */; };
 		3A9329611B04E17B0021B1F0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A93295F1B04E17B0021B1F0 /* LaunchScreen.xib */; };
 		3A93296D1B04E17B0021B1F0 /* NextForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93296C1B04E17B0021B1F0 /* NextForecastTests.swift */; };
+		3A9EF6B11B0F259500F0703F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9EF6B01B0F259500F0703F /* libsqlite3.dylib */; };
+		3A9EF6B31B0F273300F0703F /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */; };
+		3A9EF6B61B0F9DE600F0703F /* nextforecast.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */; };
+		3A9EF6B91B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */; };
+		3A9EF6BA1B0FA79C00F0703F /* FMDatabaseVariadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */; };
+		3A9EF6C71B0FABDD00F0703F /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6BD1B0FABDD00F0703F /* FMDatabase.m */; };
+		3A9EF6C81B0FABDD00F0703F /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6BF1B0FABDD00F0703F /* FMDatabaseAdditions.m */; };
+		3A9EF6C91B0FABDD00F0703F /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C11B0FABDD00F0703F /* FMDatabasePool.m */; };
+		3A9EF6CA1B0FABDD00F0703F /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C31B0FABDD00F0703F /* FMDatabaseQueue.m */; };
+		3A9EF6CB1B0FABDD00F0703F /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C61B0FABDD00F0703F /* FMResultSet.m */; };
 		5675BEA1A12CAB2E040EEF14 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC728B9275BF9FD4F07AB3E1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -39,7 +49,7 @@
 		3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleDayWeatherData.swift; sourceTree = "<group>"; };
 		3A3FCEA11B072245007A037B /* WeatherDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherDataManager.swift; sourceTree = "<group>"; };
 		3A3FCEA41B0726A6007A037B /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
-		3A3FCEA51B073051007A037B /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		3A3FCEA51B073051007A037B /* AppSharedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSharedData.swift; sourceTree = "<group>"; };
 		3A6947DB1B061BAB006EF6BD /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		3A6947DD1B061BB4006EF6BD /* ForecastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
 		3A6947DF1B061BBE006EF6BD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +62,22 @@
 		3A9329661B04E17B0021B1F0 /* NextForecastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NextForecastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A93296B1B04E17B0021B1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A93296C1B04E17B0021B1F0 /* NextForecastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextForecastTests.swift; sourceTree = "<group>"; };
+		3A9EF6B01B0F259500F0703F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = nextforecast.sql; sourceTree = "<group>"; };
+		3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMDatabaseAdditionsVariadic.swift; sourceTree = "<group>"; };
+		3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMDatabaseVariadic.swift; sourceTree = "<group>"; };
+		3A9EF6BC1B0FABDD00F0703F /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		3A9EF6BD1B0FABDD00F0703F /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		3A9EF6BE1B0FABDD00F0703F /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		3A9EF6BF1B0FABDD00F0703F /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		3A9EF6C01B0FABDD00F0703F /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		3A9EF6C11B0FABDD00F0703F /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		3A9EF6C21B0FABDD00F0703F /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		3A9EF6C31B0FABDD00F0703F /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		3A9EF6C41B0FABDD00F0703F /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		3A9EF6C51B0FABDD00F0703F /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		3A9EF6C61B0FABDD00F0703F /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		D2B9D53E8724641B4E970828 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F1BEA7FB8AB4C82D91E560B8 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FC728B9275BF9FD4F07AB3E1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9EF6B11B0F259500F0703F /* libsqlite3.dylib in Frameworks */,
 				3A3FCE9B1B070C21007A037B /* CoreLocation.framework in Frameworks */,
 				5675BEA1A12CAB2E040EEF14 /* Pods.framework in Frameworks */,
 			);
@@ -83,7 +110,8 @@
 				3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */,
 				3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */,
 				3A3FCEA11B072245007A037B /* WeatherDataManager.swift */,
-				3A3FCEA51B073051007A037B /* AppSettings.swift */,
+				3A3FCEA51B073051007A037B /* AppSharedData.swift */,
+				3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -129,6 +157,7 @@
 		3A9329511B04E17B0021B1F0 /* NextForecast */ = {
 			isa = PBXGroup;
 			children = (
+				3A9EF6B41B0F93A500F0703F /* SQLiteDatabase */,
 				3A3FCEA31B072693007A037B /* BridgingHeader */,
 				3A3FCE9C1B07191F007A037B /* Models */,
 				3A6947DA1B061B95006EF6BD /* Controllers */,
@@ -166,9 +195,39 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		3A9EF6B41B0F93A500F0703F /* SQLiteDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				3A9EF6BB1B0FABDD00F0703F /* fmdb */,
+				3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */,
+				3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */,
+				3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */,
+			);
+			path = SQLiteDatabase;
+			sourceTree = "<group>";
+		};
+		3A9EF6BB1B0FABDD00F0703F /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				3A9EF6BC1B0FABDD00F0703F /* FMDatabase.h */,
+				3A9EF6BD1B0FABDD00F0703F /* FMDatabase.m */,
+				3A9EF6BE1B0FABDD00F0703F /* FMDatabaseAdditions.h */,
+				3A9EF6BF1B0FABDD00F0703F /* FMDatabaseAdditions.m */,
+				3A9EF6C01B0FABDD00F0703F /* FMDatabasePool.h */,
+				3A9EF6C11B0FABDD00F0703F /* FMDatabasePool.m */,
+				3A9EF6C21B0FABDD00F0703F /* FMDatabaseQueue.h */,
+				3A9EF6C31B0FABDD00F0703F /* FMDatabaseQueue.m */,
+				3A9EF6C41B0FABDD00F0703F /* FMDB.h */,
+				3A9EF6C51B0FABDD00F0703F /* FMResultSet.h */,
+				3A9EF6C61B0FABDD00F0703F /* FMResultSet.m */,
+			);
+			path = fmdb;
+			sourceTree = "<group>";
+		};
 		4824645254AB4B01403830ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A9EF6B01B0F259500F0703F /* libsqlite3.dylib */,
 				3A3FCE9A1B070C21007A037B /* CoreLocation.framework */,
 				FC728B9275BF9FD4F07AB3E1 /* Pods.framework */,
 			);
@@ -267,6 +326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9EF6B61B0F9DE600F0703F /* nextforecast.sql in Resources */,
 				3A93295C1B04E17B0021B1F0 /* Main.storyboard in Resources */,
 				3A9329611B04E17B0021B1F0 /* LaunchScreen.xib in Resources */,
 				3A93295E1B04E17B0021B1F0 /* Images.xcassets in Resources */,
@@ -336,13 +396,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A6947DC1B061BAB006EF6BD /* TodayViewController.swift in Sources */,
+				3A9EF6BA1B0FA79C00F0703F /* FMDatabaseVariadic.swift in Sources */,
 				3A3FCEA21B072245007A037B /* WeatherDataManager.swift in Sources */,
+				3A9EF6C71B0FABDD00F0703F /* FMDatabase.m in Sources */,
 				3A3FCEA01B071E32007A037B /* SingleDayWeatherData.swift in Sources */,
+				3A9EF6CA1B0FABDD00F0703F /* FMDatabaseQueue.m in Sources */,
+				3A9EF6CB1B0FABDD00F0703F /* FMResultSet.m in Sources */,
 				3A9329551B04E17B0021B1F0 /* AppDelegate.swift in Sources */,
 				3A3FCE9E1B071944007A037B /* LocationWeatherData.swift in Sources */,
 				3A6947DE1B061BB4006EF6BD /* ForecastViewController.swift in Sources */,
-				3A3FCEA61B073051007A037B /* AppSettings.swift in Sources */,
+				3A9EF6C81B0FABDD00F0703F /* FMDatabaseAdditions.m in Sources */,
+				3A3FCEA61B073051007A037B /* AppSharedData.swift in Sources */,
 				3A6947E01B061BBE006EF6BD /* SettingsViewController.swift in Sources */,
+				3A9EF6C91B0FABDD00F0703F /* FMDatabasePool.m in Sources */,
+				3A9EF6B91B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift in Sources */,
+				3A9EF6B31B0F273300F0703F /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +534,7 @@
 			baseConfigurationReference = F1BEA7FB8AB4C82D91E560B8 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				INFOPLIST_FILE = NextForecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -478,6 +547,7 @@
 			baseConfigurationReference = D2B9D53E8724641B4E970828 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				INFOPLIST_FILE = NextForecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

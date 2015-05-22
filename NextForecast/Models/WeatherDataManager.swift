@@ -29,9 +29,9 @@ class WeatherDataManager: NSObject {
 
     func retrieveWeatherDataForLocation(location : CLLocation)
     {
-        let todayWeatherDataUrlString = NSString(format: AppSettings.sharedInstance.todayForecastURL, location.coordinate.latitude, location.coordinate.longitude)
+        var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayForecastURL, location.coordinate.latitude, location.coordinate.longitude)
         
-        let forecastWeatherDataUrlString = NSString(format: AppSettings.sharedInstance.sevenDaysForecastURL, location.coordinate.latitude, location.coordinate.longitude)
+        let forecastWeatherDataUrlString :String! = NSString(format: AppSharedData.sharedInstance.sevenDaysForecastURL, location.coordinate.latitude, location.coordinate.longitude)
         
         Alamofire.request(.GET, todayWeatherDataUrlString)
             .responseJSON{ (request, response, JSON, error) in
@@ -185,14 +185,14 @@ class WeatherDataManager: NSObject {
         else if(forecastType == .SevenDays)
         {
             var JSONSevenDaysForecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
-            var sevenDaysForecastWeatehrData : NSMutableArray! = NSMutableArray()
+            var sevenDaysForecastWeatehrData : [SingleDayWeatherData] = []
             
             if(JSONSevenDaysForecastWeatherData != nil)
             {
-                for(var i : int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
+                for(var i : Int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
                 {
                     var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
-                    var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData[0] as NSDictionary
+                    var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![0] as NSDictionary
                     
                     //TimeStamp
                     var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
@@ -225,12 +225,12 @@ class WeatherDataManager: NSObject {
                         singleDayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
                     }
                     
-                    sevenDaysForecastWeatehrData.addObject(singleDayWeatherData)
+                    sevenDaysForecastWeatehrData.append(singleDayWeatherData)
                 }
             }
             else
             {
-                //Add default data if no JSONSevenDaysForecastWeatherData was found
+                //TODO: Add default data if no JSONSevenDaysForecastWeatherData was found
             }
             locationWeatherData.sevenDaysForecastWeatherData = sevenDaysForecastWeatehrData
         }

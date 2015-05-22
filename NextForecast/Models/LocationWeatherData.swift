@@ -10,6 +10,7 @@ import UIKit
 
 class LocationWeatherData: NSObject, NSCoding {
     var name : String!
+    var locationID : String!
     var latitude : Float!
     var longitude : Float!
     var isCurrentLocation : Bool!

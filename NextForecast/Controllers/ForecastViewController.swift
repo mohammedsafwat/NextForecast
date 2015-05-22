@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ForecastViewController: UIViewController {
     
     @IBOutlet weak var forecastTableView: UITableView!
     

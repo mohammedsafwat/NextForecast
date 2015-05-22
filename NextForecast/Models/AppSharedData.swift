@@ -8,13 +8,16 @@
 
 import UIKit
 
-private let _singletonInstance = AppSettings()
+private let _singletonInstance = AppSharedData()
 
-class AppSettings: NSObject {
+class AppSharedData: NSObject {
     var todayForecastURL : String! = "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&mode=json"
     var sevenDaysForecastURL : String! = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%f&lon=%f&cnt=7&mode=json"
+    let DATABASE_RESOURCE_NAME = "nextforecast"
+    let DATABASE_RESOURCE_TYPE = "sql"
+    let DATABASE_FILE_NAME = "nextforecast.sql"
     
-    class var sharedInstance : AppSettings {
+    class var sharedInstance : AppSharedData {
         return _singletonInstance
     }
 }

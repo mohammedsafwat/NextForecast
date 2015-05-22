@@ -17,6 +17,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     var activityIndicator : MBProgressHUD!
     var weatherDataManager : WeatherDataManager!
     var locationUpdated : Bool!
+    var errorMessageDidAppear : Bool!
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var locationNameLabel: UILabel!
@@ -34,6 +35,10 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         initValues()
         setupAutoresizingMasks()
         startLocationUpdates()
+        
+        DatabaseManager.sharedInstance.initializeDB()
+        DatabaseManager.sharedInstance.openDB()
+        
     }
     
     func initValues() {
@@ -113,7 +118,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     
     func retrieveWeatherForLocation(location : CLLocation) {
         startActivityIndicatorWithStatusText("Updating weather data..")
-        weatherDataManager.retrieveWeatherDataForLocation(location, forecastType: .Today)
+        weatherDataManager.retrieveWeatherDataForLocation(location)
     }
     
     //WeatherDataManager Delegates
@@ -174,7 +179,11 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         }
         else
         {
-            println(error.localizedDescription)
+            if(!errorMessageDidAppear)
+            {
+                displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: "Try Again")
+            }
+            //TODO: Set default data values here for either today or forecast
         }
         stopActivityIndicator()
     }
@@ -187,13 +196,24 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
         
-        let openAction = UIAlertAction(title: otherButtonTitles, style: .Default) {
-            (action) in
-            if let url = NSURL(string : UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
+        if(otherButtonTitles == "Settings")
+        {
+            let openSettingsAction = UIAlertAction(title: otherButtonTitles, style: .Default) {
+                (action) in
+                if let url = NSURL(string : UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
             }
+            alertController.addAction(openSettingsAction)
         }
-        alertController.addAction(openAction)
+        else if(otherButtonTitles == "Try Again")
+        {
+            let tryAgainAction = UIAlertAction(title: otherButtonTitles, style: .Default) {
+                (action) in
+                self.startLocationUpdates()
+            }
+            alertController.addAction(tryAgainAction)
+        }
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
