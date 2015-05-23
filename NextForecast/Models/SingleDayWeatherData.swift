@@ -8,33 +8,67 @@
 
 import UIKit
 
-enum TemperatureUnit {
+enum TemperatureUnit : Int{
     case C
     case F
 }
-enum SpeedUnit {
+enum SpeedUnit : Int{
     case milesPerSecond
     case milesPerHour
     case kmPerHour
 }
 
-enum WindDirection {
+enum WindDirection : Int{
     case NE
     case NW
     case SE
     case SW
 }
 
-class SingleDayWeatherData: NSObject {
-    var dayName : String!
-    var temperature : Float!
-    var temperatureUnit : TemperatureUnit!
-    var weatherDescription : String!
-    var weatherIconName : String!
-    var pressure : Float!
-    var humidity : Float!
-    var rain : Float!
-    var wind : Float!
-    var windDirection : WindDirection!
-    var speedUnit : SpeedUnit!
+class SingleDayWeatherData: NSObject, NSCoding{
+    var dayName : String! = ""
+    var temperature : Float! = 0.0
+    var temperatureUnit : TemperatureUnit! = .C
+    var weatherDescription : String! = ""
+    var weatherIconName : String! = ""
+    var pressure : Float! = 0.0
+    var humidity : Float! = 0.0
+    var rain : Float! = 0.0
+    var wind : Float! = 0.0
+    var windDirection : WindDirection! = .NE
+    var speedUnit : SpeedUnit! = .kmPerHour
+    
+    override init() {}
+    
+    required init(coder aDecoder: NSCoder) {
+        dayName = aDecoder.decodeObjectForKey("dayName") as String
+        temperature = aDecoder.decodeObjectForKey("temperature") as Float
+        temperatureUnit = TemperatureUnit(rawValue: aDecoder.decodeIntegerForKey("temperatureUnit"))
+        weatherDescription = aDecoder.decodeObjectForKey("weatherDescription") as String
+        weatherIconName = aDecoder.decodeObjectForKey("weatherIconName") as String
+        pressure = aDecoder.decodeObjectForKey("pressure") as Float
+        humidity = aDecoder.decodeObjectForKey("humidity") as Float
+        rain = aDecoder.decodeObjectForKey("rain") as Float
+        wind = aDecoder.decodeObjectForKey("wind") as Float
+        windDirection = WindDirection(rawValue: aDecoder.decodeIntegerForKey("windDirection"))
+        speedUnit = SpeedUnit(rawValue: aDecoder.decodeIntegerForKey("speedUnit"))
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(dayName, forKey: "dayName")
+        aCoder.encodeObject(temperature, forKey: "temperature")
+        aCoder.encodeObject(temperatureUnit.rawValue, forKey: "temperatureUnit")
+        aCoder.encodeObject(weatherDescription, forKey: "weatherDescription")
+        aCoder.encodeObject(weatherIconName, forKey: "weatherIconName")
+        aCoder.encodeObject(pressure, forKey: "pressure")
+        aCoder.encodeObject(humidity, forKey: "humidity")
+        aCoder.encodeObject(rain, forKey: "rain")
+        aCoder.encodeObject(wind, forKey: "wind")
+        aCoder.encodeObject(windDirection.rawValue, forKey: "windDirection")
+        aCoder.encodeObject(speedUnit.rawValue, forKey: "speedUnit")
+    }
+    
+    func data() -> NSData {
+        return NSKeyedArchiver.archivedDataWithRootObject(self)
+    }
 }

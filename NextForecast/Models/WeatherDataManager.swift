@@ -38,17 +38,32 @@ class WeatherDataManager: NSObject {
                             if(error == nil)
                             {
                                 //Parse today weather data and save inside the locationWeatherData object
-                                var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: .Today)
+                                self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .Today)
                     
                                 Alamofire.request(.GET, forecastWeatherDataUrlString)
                                     .responseJSON{ (request, response, JSON, error) in
                                                     if(error == nil)
                                                     {
                                                         //Parse forecast weather data and save insice the locationWeatherData object
-                                                        var locationWeatherData : LocationWeatherData! = self.parseWeatherData(JSON, forecastType: .SevenDays)
+                                                        self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .SevenDays)
+                                                        
+                                                        //Get locationID from Google Places API
+                                                        let googlePlacesWebserivceFormattedUrlString : String? = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
+                                                        if(googlePlacesWebserivceFormattedUrlString != nil)
+                                                        {
+                                                            Alamofire.request(.GET, "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Central,%20HK&key=AIzaSyAJonxZ7ZiOy4Eh_cAMBwjaCLXQvbRFu4o").responseJSON { (request, response, JSON, error) in
+                                                                
+                                                                if(error == nil)
+                                                                {
+                                                                    self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
+                                                                }
+                                                            }
+                                                        }
+                                                        
                                                         if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                         {
-                                                            weatherDataManagerDelegate.propagateParsedWeatherData(locationWeatherData, error: nil)
+                                                            DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
+                                                            weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
                                                         }
                                                     }
                                                     else
@@ -72,169 +87,188 @@ class WeatherDataManager: NSObject {
     
     func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  LocationWeatherData{
         
-        var JSONData : NSDictionary! = JSON as NSDictionary
-        
-        if(forecastType == .Today)
+        if(JSON != nil)
         {
-            var todayWeatherData = SingleDayWeatherData()
+            var JSONData : NSDictionary! = JSON as NSDictionary
             
-            //TimeStamp
-            var timeStamp : Double? = JSONData.valueForKey("dt") as? Double
-            if(timeStamp != nil)
+            if(forecastType == .Today)
             {
-                todayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
-            }
-            
-            //Temperature
-            var temperature : Float? = JSONData.valueForKey("main")?.valueForKey("temp") as? Float
-            if(temperature != nil)
-            {
-                todayWeatherData.temperature = roundf(temperature! - kelvinConstant)
-                todayWeatherData.temperatureUnit = .C
-            }
-            //Pressure
-            var pressure : Float? = JSONData.valueForKey("main")?.valueForKey("pressure") as? Float
-            if(pressure != nil)
-            {
-                todayWeatherData.pressure = roundf(pressure!)
-            }
-            else
-            {
-                todayWeatherData.pressure = 0.0
-            }
-            //Humidity
-            var humidity : Float? = JSONData.valueForKey("main")?.valueForKey("humidity") as? Float
-            if(humidity != nil)
-            {
-                todayWeatherData.humidity = humidity
-            }
-            else
-            {
-                todayWeatherData.humidity = 0.0
-            }
-            //Wind
-            var windSpeed : Float? = JSONData.valueForKey("wind")?.valueForKey("speed") as? Float
-
-            if(windSpeed != nil)
-            {
-                //Convert from meters per second to kilometers per hour
-                let windSpeedInKmph = windSpeed! * metersPerSecondToKmPerHourConversionConstant
-                todayWeatherData.wind = roundf(windSpeedInKmph)
-            }
-            else
-            {
-                todayWeatherData.wind = 0.0
-            }
-            todayWeatherData.speedUnit = .kmPerHour
-
-            var windDirectionDegrees : Float? = JSONData.valueForKey("wind")?.valueForKey("deg") as? Float
-            if(windDirectionDegrees != nil)
-            {
-                todayWeatherData.windDirection = getWindDirection(roundf(windDirectionDegrees!))
-            }
-            else
-            {
-                todayWeatherData.windDirection = getWindDirection(0.0)
-            }
-            //Rain
-            var rainVolume : Float? = JSONData.valueForKey("rain")?.valueForKey("3h") as? Float
-            if(rainVolume != nil)
-            {
-                todayWeatherData.rain = roundf(rainVolume!)
-            }
-            else
-            {
-                todayWeatherData.rain = 0.0
-            }
-            
-            //Current Weather Data
-            var weatherDataArray : NSArray? = JSONData.valueForKey("weather") as NSArray?
-            var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
-            
-            var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
-            if(weatherDescription != nil)
-            {
-                todayWeatherData.weatherDescription = weatherDescription
-            }
-            
-            var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
-            if(weatherConditionId != nil)
-            {
-                todayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
-            }
-            
-            //Location Name
-            var locationCityName : String? = JSONData.valueForKey("name") as? String
-            var locationCountryName : String? = JSONData.valueForKey("sys")?.valueForKey("country") as? String
-            var longitude : Float? = JSONData.valueForKey("coord")?.valueForKey("lon") as? Float
-            var latitude :Float? = JSONData.valueForKey("coord")?.valueForKey("lat") as? Float
-            
-            if(locationCityName != nil && locationCountryName != nil)
-            {
-                locationWeatherData.name = locationCityName! + ", " + locationCountryName!
-            }
-            else
-            {
-                locationWeatherData.name = NSString(format: "%f, %f", longitude!, latitude!)
-            }
-            locationWeatherData.latitude = latitude!
-            locationWeatherData.longitude = longitude!
-            locationWeatherData.isCurrentLocation = true
-            locationWeatherData.todayWeatherData = todayWeatherData
-        }
-        else if(forecastType == .SevenDays)
-        {
-            var JSONSevenDaysForecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
-            var sevenDaysForecastWeatehrData : [SingleDayWeatherData] = []
-            
-            if(JSONSevenDaysForecastWeatherData != nil)
-            {
-                for(var i : Int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
+                var todayWeatherData = SingleDayWeatherData()
+                
+                //TimeStamp
+                var timeStamp : Double? = JSONData.valueForKey("dt") as? Double
+                if(timeStamp != nil)
                 {
-                    var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
-                    var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![0] as NSDictionary
-                    
-                    //TimeStamp
-                    var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
-                    if(timeStamp != nil)
-                    {
-                        singleDayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
-                    }
-                    
-                    //Temperature
-                    var temperature : Float? = JSONSingleDayData.valueForKey("temp")?.valueForKey("day") as? Float
-                    if(temperature != nil)
-                    {
-                        singleDayWeatherData.temperature = roundf(temperature! - kelvinConstant)
-                        singleDayWeatherData.temperatureUnit = .C
-                    }
-                    
-                    //Weather Description
-                    var weatherDataArray : NSArray? = JSONSingleDayData.valueForKey("weather") as NSArray?
-                    var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
-                    
-                    var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
-                    if(weatherDescription != nil)
-                    {
-                        singleDayWeatherData.weatherDescription = weatherDescription
-                    }
-                    
-                    var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
-                    if(weatherConditionId != nil)
-                    {
-                        singleDayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
-                    }
-                    
-                    sevenDaysForecastWeatehrData.append(singleDayWeatherData)
+                    todayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
                 }
+                
+                //Temperature
+                var temperature : Float? = JSONData.valueForKey("main")?.valueForKey("temp") as? Float
+                if(temperature != nil)
+                {
+                    todayWeatherData.temperature = roundf(temperature! - kelvinConstant)
+                    todayWeatherData.temperatureUnit = .C
+                }
+                //Pressure
+                var pressure : Float? = JSONData.valueForKey("main")?.valueForKey("pressure") as? Float
+                if(pressure != nil)
+                {
+                    todayWeatherData.pressure = roundf(pressure!)
+                }
+                else
+                {
+                    todayWeatherData.pressure = 0.0
+                }
+                //Humidity
+                var humidity : Float? = JSONData.valueForKey("main")?.valueForKey("humidity") as? Float
+                if(humidity != nil)
+                {
+                    todayWeatherData.humidity = humidity
+                }
+                else
+                {
+                    todayWeatherData.humidity = 0.0
+                }
+                //Wind
+                var windSpeed : Float? = JSONData.valueForKey("wind")?.valueForKey("speed") as? Float
+                
+                if(windSpeed != nil)
+                {
+                    //Convert from meters per second to kilometers per hour
+                    let windSpeedInKmph = windSpeed! * metersPerSecondToKmPerHourConversionConstant
+                    todayWeatherData.wind = roundf(windSpeedInKmph)
+                }
+                else
+                {
+                    todayWeatherData.wind = 0.0
+                }
+                todayWeatherData.speedUnit = .kmPerHour
+                
+                var windDirectionDegrees : Float? = JSONData.valueForKey("wind")?.valueForKey("deg") as? Float
+                if(windDirectionDegrees != nil)
+                {
+                    todayWeatherData.windDirection = getWindDirection(roundf(windDirectionDegrees!))
+                }
+                else
+                {
+                    todayWeatherData.windDirection = getWindDirection(0.0)
+                }
+                //Rain
+                var rainVolume : Float? = JSONData.valueForKey("rain")?.valueForKey("3h") as? Float
+                if(rainVolume != nil)
+                {
+                    todayWeatherData.rain = roundf(rainVolume!)
+                }
+                else
+                {
+                    todayWeatherData.rain = 0.0
+                }
+                
+                //Current Weather Data
+                var weatherDataArray : NSArray? = JSONData.valueForKey("weather") as NSArray?
+                var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
+                
+                var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
+                if(weatherDescription != nil)
+                {
+                    todayWeatherData.weatherDescription = weatherDescription
+                }
+                
+                var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
+                if(weatherConditionId != nil)
+                {
+                    todayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
+                }
+                
+                //Location Name
+                var locationCityName : String? = JSONData.valueForKey("name") as? String
+                var locationCountryName : String? = JSONData.valueForKey("sys")?.valueForKey("country") as? String
+                var longitude : Float? = JSONData.valueForKey("coord")?.valueForKey("lon") as? Float
+                var latitude :Float? = JSONData.valueForKey("coord")?.valueForKey("lat") as? Float
+                
+                if(locationCityName != nil && locationCountryName != nil)
+                {
+                    locationWeatherData.name = locationCityName! + ", " + locationCountryName!
+                }
+                else
+                {
+                    locationWeatherData.name = NSString(format: "%f, %f", longitude!, latitude!)
+                }
+                locationWeatherData.latitude = latitude!
+                locationWeatherData.longitude = longitude!
+                locationWeatherData.isCurrentLocation = true
+                locationWeatherData.todayWeatherData = todayWeatherData
             }
-            else
+            else if(forecastType == .SevenDays)
             {
-                //TODO: Add default data if no JSONSevenDaysForecastWeatherData was found
+                var JSONSevenDaysForecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
+                var sevenDaysForecastWeatehrData : [SingleDayWeatherData] = []
+                
+                if(JSONSevenDaysForecastWeatherData != nil)
+                {
+                    for(var i : Int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
+                    {
+                        var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
+                        var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![0] as NSDictionary
+                        
+                        //TimeStamp
+                        var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
+                        if(timeStamp != nil)
+                        {
+                            singleDayWeatherData.dayName = getDayNameFromTimeStamp(timeStamp)
+                        }
+                        
+                        //Temperature
+                        var temperature : Float? = JSONSingleDayData.valueForKey("temp")?.valueForKey("day") as? Float
+                        if(temperature != nil)
+                        {
+                            singleDayWeatherData.temperature = roundf(temperature! - kelvinConstant)
+                            singleDayWeatherData.temperatureUnit = .C
+                        }
+                        
+                        //Weather Description
+                        var weatherDataArray : NSArray? = JSONSingleDayData.valueForKey("weather") as NSArray?
+                        var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
+                        
+                        var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
+                        if(weatherDescription != nil)
+                        {
+                            singleDayWeatherData.weatherDescription = weatherDescription
+                        }
+                        
+                        var weatherConditionId : Int? = weatherDataDictionary!.valueForKey("id") as? Int
+                        if(weatherConditionId != nil)
+                        {
+                            singleDayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
+                        }
+                        
+                        sevenDaysForecastWeatehrData.append(singleDayWeatherData)
+                    }
+                }
+                else
+                {
+                    //TODO: Add default data if no JSONSevenDaysForecastWeatherData was found
+                }
+                locationWeatherData.sevenDaysForecastWeatherData = sevenDaysForecastWeatehrData
             }
-            locationWeatherData.sevenDaysForecastWeatherData = sevenDaysForecastWeatehrData
+        }
+        else
+        {
+            //TODO: make new LocationWeatherData object with default data
         }
         return locationWeatherData
+    }
+    
+    func getLocationIDFromGooglePlacesLocationData(JSON : AnyObject?) -> String! {
+        var locationID : String! = ""
+        
+        var JSONData : NSDictionary! = JSON as NSDictionary
+        var locationPredictionsArray : NSArray? = JSONData.valueForKey("predictions") as NSArray?
+        if(locationPredictionsArray != nil) {
+            var locationPredictionDataDictionary : NSDictionary? = locationPredictionsArray?.objectAtIndex(0) as? NSDictionary
+            locationID = locationPredictionDataDictionary?.valueForKey("place_id") as? String
+        }
+        return locationID
     }
     
     func getDayNameFromTimeStamp(var timeStamp : NSTimeInterval!) -> String {

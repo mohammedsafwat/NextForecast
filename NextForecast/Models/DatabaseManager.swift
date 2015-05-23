@@ -14,18 +14,24 @@ private let _singletonInstance = DatabaseManager()
 class DatabaseManager: NSObject {
     
     var dbFilePath : String! = ""
+    var db : FMDatabase!
+    
+    override init() {
+        super.init()
+        initializeDB()
+    }
     
     func initializeDB() -> Bool {
         //Get path of sqlite database
         if let myFileUrl : NSURL = NSBundle.mainBundle().URLForResource(AppSharedData.sharedInstance.DATABASE_RESOURCE_NAME, withExtension: AppSharedData.sharedInstance.DATABASE_RESOURCE_TYPE){
             dbFilePath = myFileUrl.absoluteString
-            return true
+            return false
         }
         return false
     }
     
-    func openDB() -> Bool {
-        let db = FMDatabase(path:dbFilePath)
+    func openDatabase() -> Bool {
+        db = FMDatabase(path:dbFilePath)
         if(db.open())
         {
             return true
@@ -33,20 +39,65 @@ class DatabaseManager: NSObject {
         return false
     }
     
-    func getSavedLocations(db : FMDatabase) -> [LocationWeatherData] {
+    func closeDatabase() {
+        db.close()
+    }
+    
+    func getSavedLocations() -> [LocationWeatherData] {
         var savedLocations : [LocationWeatherData] = []
-        
+        openDatabase()
         let mainQuery = "SELECT locationData FROM Locations"
         let rsMain: FMResultSet? = db.executeQuery(mainQuery, withArgumentsInArray: [])
         
         while (rsMain!.next() == true) {
-            let locationData = rsMain?.dataForColumn("locationData")
+            var locationData : NSData! = rsMain?.dataForColumn("locationData")
             var locationWeatherData : LocationWeatherData = LocationWeatherData()
-            locationWeatherData = NSKeyedUnarchiver.unarchiveObjectWithData(locationData!) as LocationWeatherData
+            //NSKeyedUnarchiver.unarchiveObjectWithData(locationData)
             savedLocations.append(locationWeatherData)
         }
-        
+        closeDatabase()
         return savedLocations
+    }
+    
+    func saveLocation(locationID : String, locationData : NSData) -> Bool {
+        //Check if the location already exists in Locations table
+        openDatabase()
+        let fetchQuery = NSString(format: "SELECT locationID FROM Locations WHERE locationID='%@'", locationID)
+        let queryResults: FMResultSet? = db.executeQuery(fetchQuery, withArgumentsInArray: [])
+        if((queryResults!.next()) == false)
+        {
+            //let addQuery = NSString(format: "INSERT INTO Locations (locationID, locationData) VALUES ('%@', '%@')", locationID, locationData)
+            //let addSuccessful = db.executeUpdate(addQuery, withArgumentsInArray: nil)
+            db.beginTransaction()
+            let addSuccessful = db.executeUpdate("INSERT INTO Locations (locationID, locationData) VALUES (?,?)", locationID, locationData)
+            if(addSuccessful)
+            {
+                db.commit()
+                closeDatabase()
+                return true
+            }
+        }
+        else
+        {
+            //Update the location data only
+            while (queryResults!.next() == true) {
+                
+            }
+        }
+        return false
+    }
+    
+    func clearDatabase() -> Bool {
+        openDatabase()
+        let deleteQuery = "DELETE FROM Locations"
+        
+        let deleteSuccessful = db.executeUpdate(deleteQuery, withArgumentsInArray: [])
+        if(deleteSuccessful)
+        {
+            closeDatabase()
+            return true
+        }
+        return false
     }
     
     class var sharedInstance : DatabaseManager {

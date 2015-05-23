@@ -33,12 +33,6 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         initValues()
-        setupAutoresizingMasks()
-        startLocationUpdates()
-        
-        DatabaseManager.sharedInstance.initializeDB()
-        DatabaseManager.sharedInstance.openDB()
-        
     }
     
     func initValues() {
@@ -46,13 +40,14 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
         locationUpdated = false
+        errorMessageDidAppear = false
     }
-    
-    func setupAutoresizingMasks() {
-        self.weatherIconImageView.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleTopMargin
-    }
+
     
     override func viewDidAppear(animated: Bool) {
+        AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+        locationUpdated = false
+        startLocationUpdates()
     }
     
     override func didReceiveMemoryWarning() {
@@ -182,6 +177,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             if(!errorMessageDidAppear)
             {
                 displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: "Try Again")
+                errorMessageDidAppear = true
             }
             //TODO: Set default data values here for either today or forecast
         }
