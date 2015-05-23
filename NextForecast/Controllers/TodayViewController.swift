@@ -49,8 +49,8 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
 
     
     override func viewDidAppear(animated: Bool) {
+        //Update the current saved locations arrau in AppSharedData
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
-        println(DatabaseManager.sharedInstance.getSavedLocations().count)
     }
     
     override func didReceiveMemoryWarning() {

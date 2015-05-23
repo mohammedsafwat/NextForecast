@@ -19,7 +19,7 @@ class AppSharedData: NSObject {
     let DATABASE_FILE_NAME = "nextforecast.sql"
     
     var savedLocations : [LocationWeatherData]! = []
-    
+    var currentSelectedLocationID : String! = ""
     class var sharedInstance : AppSharedData {
         return _singletonInstance
     }

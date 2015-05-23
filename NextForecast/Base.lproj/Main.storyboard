@@ -672,7 +672,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="64" width="400" height="687"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="751"/>
                                 </variation>
                             </tableView>
                         </subviews>

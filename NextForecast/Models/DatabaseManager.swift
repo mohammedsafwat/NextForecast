@@ -85,8 +85,6 @@ class DatabaseManager: NSObject {
         let queryResults: FMResultSet? = db.executeQuery(fetchQuery, withArgumentsInArray: [])
         if((queryResults!.next()) == false)
         {
-            //let addQuery = NSString(format: "INSERT INTO Locations (locationID, locationData) VALUES ('%@', '%@')", locationID, locationData)
-            //let addSuccessful = db.executeUpdate(addQuery, withArgumentsInArray: nil)
             db.beginTransaction()
             let addSuccessful = db.executeUpdate("INSERT INTO Locations (locationID, locationData) VALUES (?,?)", locationID, locationData)
             if(addSuccessful)
@@ -99,8 +97,11 @@ class DatabaseManager: NSObject {
         else
         {
             //Update the location data only
-            while (queryResults!.next() == true) {
-                
+            let updateSuccessful = db.executeUpdate("UPDATE Locations SET locationData=? WHERE locationID=?", locationData, locationID)
+            if(updateSuccessful)
+            {
+                closeDatabase()
+                return true
             }
         }
         return false

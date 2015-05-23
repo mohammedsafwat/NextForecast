@@ -63,6 +63,7 @@ class WeatherDataManager: NSObject {
                                                         if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                         {
                                                             DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
+                                                            AppSharedData.sharedInstance.currentSelectedLocationID = self.locationWeatherData.locationID
                                                             weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
                                                         }
                                                     }
