@@ -12,6 +12,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet weak var forecastTableView: UITableView!
     let forecastTableViewCellHeight : CGFloat! = 44
+    var sevenDaysForecastWeatherData : [SingleDayWeatherData]! = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +24,34 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         forecastTableView.registerNib(forecastTableViewCellNib, forCellReuseIdentifier: "ForecastTableViewCell")
         forecastTableView.dataSource = self
         forecastTableView.delegate = self
+        sevenDaysForecastWeatherData = getLocationWeatherDataForCurrentSelectedLocation().sevenDaysForecastWeatherData
+        for(var i = 0; i < sevenDaysForecastWeatherData.count; i++)
+        {
+            println(sevenDaysForecastWeatherData[i].dayName)
+        }
+        updateCurrentSavedLocations()
     }
     
     override func viewDidAppear(animated: Bool) {
         //Update the current saved locations arrau in AppSharedData
+        updateCurrentSavedLocations()
+        self.title = getLocationWeatherDataForCurrentSelectedLocation().name
+    }
+    
+    func updateCurrentSavedLocations() {
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+    }
+    
+    func getLocationWeatherDataForCurrentSelectedLocation() -> LocationWeatherData {
         var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentSelectedLocationID
+        var currentSelectedLocationWeatherData : LocationWeatherData = LocationWeatherData()
         for locationWeatherData in AppSharedData.sharedInstance.savedLocations {
             if(locationWeatherData.locationID == currentSelectedLocationID)
             {
-                self.title = locationWeatherData.name
+                currentSelectedLocationWeatherData = locationWeatherData
             }
         }
+        return currentSelectedLocationWeatherData
     }
     
     // MARK: - TableViewDelegates
@@ -43,7 +60,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AppSharedData.sharedInstance.savedLocations.count
+        return sevenDaysForecastWeatherData.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -54,8 +71,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
             forecastTableViewCell = ForecastTableViewCell()
         }
         
-        var locationWeatherData : LocationWeatherData = AppSharedData.sharedInstance.savedLocations[indexPath.row]
-        var forecastDayWeatherData : SingleDayWeatherData = locationWeatherData.sevenDaysForecastWeatherData[indexPath.row]
+        var forecastDayWeatherData : SingleDayWeatherData = sevenDaysForecastWeatherData[indexPath.row]
         forecastTableViewCell?.forecastDayNameLabel.text = forecastDayWeatherData.dayName
         forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°",forecastDayWeatherData.temperature)
         forecastTableViewCell?.forecastDayWeatherDescriptionLabel.text = forecastDayWeatherData.weatherDescription

@@ -44,18 +44,17 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         errorMessageDidAppear = false
         DatabaseManager.sharedInstance.initializeDB()
         //DatabaseManager.sharedInstance.clearDatabase()
+        updateCurrentSavedLocations()
         startLocationUpdates()
     }
 
-    
     override func viewDidAppear(animated: Bool) {
-        //Update the current saved locations arrau in AppSharedData
-        AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+        updateCurrentSavedLocations()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func updateCurrentSavedLocations() {
+        //Update the current saved locations array in AppSharedData
+        AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
     }
     
     func startLocationUpdates() {
@@ -222,9 +221,14 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         activityIndicator = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         activityIndicator.labelText = statusText;
     }
-    //Hid HUD View
+    //Hide HUD View
     func stopActivityIndicator() {
         MBProgressHUD.hideHUDForView(self.view, animated: true)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 }
 

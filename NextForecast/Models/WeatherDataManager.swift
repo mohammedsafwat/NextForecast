@@ -210,7 +210,7 @@ class WeatherDataManager: NSObject {
                     for(var i : Int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
                     {
                         var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
-                        var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![0] as NSDictionary
+                        var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![i] as NSDictionary
                         
                         //TimeStamp
                         var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
