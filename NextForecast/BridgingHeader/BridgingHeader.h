@@ -10,4 +10,5 @@
 #define NextForecast_BridgingHeader_h
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <AFNetworking/AFNetworking.h>
+#import "FMDB.h"
 #endif

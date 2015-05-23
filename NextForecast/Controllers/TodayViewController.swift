@@ -33,6 +33,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         initValues()
+
     }
     
     func initValues() {
@@ -41,13 +42,15 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         weatherDataManager.weatherDataManagerDelegate = self
         locationUpdated = false
         errorMessageDidAppear = false
+        DatabaseManager.sharedInstance.initializeDB()
+        //DatabaseManager.sharedInstance.clearDatabase()
+        startLocationUpdates()
     }
 
     
     override func viewDidAppear(animated: Bool) {
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
-        locationUpdated = false
-        startLocationUpdates()
+        println(DatabaseManager.sharedInstance.getSavedLocations().count)
     }
     
     override func didReceiveMemoryWarning() {

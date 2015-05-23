@@ -57,15 +57,15 @@ class SingleDayWeatherData: NSObject, NSCoding{
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(dayName, forKey: "dayName")
         aCoder.encodeObject(temperature, forKey: "temperature")
-        aCoder.encodeObject(temperatureUnit.rawValue, forKey: "temperatureUnit")
+        aCoder.encodeInteger(temperatureUnit.rawValue, forKey: "temperatureUnit")
         aCoder.encodeObject(weatherDescription, forKey: "weatherDescription")
         aCoder.encodeObject(weatherIconName, forKey: "weatherIconName")
         aCoder.encodeObject(pressure, forKey: "pressure")
         aCoder.encodeObject(humidity, forKey: "humidity")
         aCoder.encodeObject(rain, forKey: "rain")
         aCoder.encodeObject(wind, forKey: "wind")
-        aCoder.encodeObject(windDirection.rawValue, forKey: "windDirection")
-        aCoder.encodeObject(speedUnit.rawValue, forKey: "speedUnit")
+        aCoder.encodeInteger(windDirection.rawValue, forKey: "windDirection")
+        aCoder.encodeInteger(speedUnit.rawValue, forKey: "speedUnit")
     }
     
     func data() -> NSData {

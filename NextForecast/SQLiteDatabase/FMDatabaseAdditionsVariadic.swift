@@ -4,7 +4,6 @@
 //
 
 import Foundation
-import FMDB
 
 extension FMDatabase {
     

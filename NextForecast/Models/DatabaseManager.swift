@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FMDB
 
 private let _singletonInstance = DatabaseManager()
 
@@ -16,22 +15,41 @@ class DatabaseManager: NSObject {
     var dbFilePath : String! = ""
     var db : FMDatabase!
     
-    override init() {
-        super.init()
-        initializeDB()
-    }
+    override init() {}
     
     func initializeDB() -> Bool {
         //Get path of sqlite database
-        if let myFileUrl : NSURL = NSBundle.mainBundle().URLForResource(AppSharedData.sharedInstance.DATABASE_RESOURCE_NAME, withExtension: AppSharedData.sharedInstance.DATABASE_RESOURCE_TYPE){
-            dbFilePath = myFileUrl.absoluteString
-            return false
+        let databaseFileUrl : NSURL! = NSBundle.mainBundle().URLForResource(AppSharedData.sharedInstance.DATABASE_RESOURCE_NAME, withExtension: AppSharedData.sharedInstance.DATABASE_RESOURCE_TYPE)
+        let dbfile = "/" + AppSharedData.sharedInstance.DATABASE_FILE_NAME;
+        
+        let documentFolderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        dbFilePath = documentFolderPath.stringByAppendingString(dbfile)
+        let dbFileURL : NSURL! = NSURL(fileURLWithPath: dbFilePath)
+        
+        let filemanager = NSFileManager.defaultManager()
+        if (!filemanager.fileExistsAtPath(dbFilePath))
+        {
+            if (databaseFileUrl.absoluteString == nil)
+            {
+                return false
+            }
+            else
+            {
+                var error: NSError?
+                let copySuccessful = filemanager.copyItemAtURL(databaseFileUrl, toURL: dbFileURL, error: &error)
+                if(!copySuccessful)
+                {
+                    return false
+                }
+            }
         }
-        return false
+
+        return true
     }
     
     func openDatabase() -> Bool {
         db = FMDatabase(path:dbFilePath)
+        
         if(db.open())
         {
             return true
@@ -52,7 +70,7 @@ class DatabaseManager: NSObject {
         while (rsMain!.next() == true) {
             var locationData : NSData! = rsMain?.dataForColumn("locationData")
             var locationWeatherData : LocationWeatherData = LocationWeatherData()
-            //NSKeyedUnarchiver.unarchiveObjectWithData(locationData)
+            locationWeatherData = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as LocationWeatherData
             savedLocations.append(locationWeatherData)
         }
         closeDatabase()
@@ -62,6 +80,7 @@ class DatabaseManager: NSObject {
     func saveLocation(locationID : String, locationData : NSData) -> Bool {
         //Check if the location already exists in Locations table
         openDatabase()
+        
         let fetchQuery = NSString(format: "SELECT locationID FROM Locations WHERE locationID='%@'", locationID)
         let queryResults: FMResultSet? = db.executeQuery(fetchQuery, withArgumentsInArray: [])
         if((queryResults!.next()) == false)

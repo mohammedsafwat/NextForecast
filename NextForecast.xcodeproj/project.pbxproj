@@ -22,7 +22,6 @@
 		3A93296D1B04E17B0021B1F0 /* NextForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93296C1B04E17B0021B1F0 /* NextForecastTests.swift */; };
 		3A9EF6B11B0F259500F0703F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9EF6B01B0F259500F0703F /* libsqlite3.dylib */; };
 		3A9EF6B31B0F273300F0703F /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */; };
-		3A9EF6B61B0F9DE600F0703F /* nextforecast.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */; };
 		3A9EF6B91B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */; };
 		3A9EF6BA1B0FA79C00F0703F /* FMDatabaseVariadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */; };
 		3A9EF6C71B0FABDD00F0703F /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6BD1B0FABDD00F0703F /* FMDatabase.m */; };
@@ -30,6 +29,7 @@
 		3A9EF6C91B0FABDD00F0703F /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C11B0FABDD00F0703F /* FMDatabasePool.m */; };
 		3A9EF6CA1B0FABDD00F0703F /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C31B0FABDD00F0703F /* FMDatabaseQueue.m */; };
 		3A9EF6CB1B0FABDD00F0703F /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6C61B0FABDD00F0703F /* FMResultSet.m */; };
+		3A9EF6CF1B10FA1800F0703F /* nextforecast.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6CD1B10F9B900F0703F /* nextforecast.sql */; };
 		5675BEA1A12CAB2E040EEF14 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC728B9275BF9FD4F07AB3E1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -64,7 +64,6 @@
 		3A93296C1B04E17B0021B1F0 /* NextForecastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextForecastTests.swift; sourceTree = "<group>"; };
 		3A9EF6B01B0F259500F0703F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = nextforecast.sql; sourceTree = "<group>"; };
 		3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMDatabaseAdditionsVariadic.swift; sourceTree = "<group>"; };
 		3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMDatabaseVariadic.swift; sourceTree = "<group>"; };
 		3A9EF6BC1B0FABDD00F0703F /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
@@ -78,6 +77,7 @@
 		3A9EF6C41B0FABDD00F0703F /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
 		3A9EF6C51B0FABDD00F0703F /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		3A9EF6C61B0FABDD00F0703F /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		3A9EF6CD1B10F9B900F0703F /* nextforecast.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = nextforecast.sql; sourceTree = "<group>"; };
 		D2B9D53E8724641B4E970828 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F1BEA7FB8AB4C82D91E560B8 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FC728B9275BF9FD4F07AB3E1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,10 +198,10 @@
 		3A9EF6B41B0F93A500F0703F /* SQLiteDatabase */ = {
 			isa = PBXGroup;
 			children = (
+				3A9EF6CD1B10F9B900F0703F /* nextforecast.sql */,
 				3A9EF6BB1B0FABDD00F0703F /* fmdb */,
 				3A9EF6B71B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift */,
 				3A9EF6B81B0FA79C00F0703F /* FMDatabaseVariadic.swift */,
-				3A9EF6B51B0F93AE00F0703F /* nextforecast.sql */,
 			);
 			path = SQLiteDatabase;
 			sourceTree = "<group>";
@@ -326,7 +326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A9EF6B61B0F9DE600F0703F /* nextforecast.sql in Resources */,
+				3A9EF6CF1B10FA1800F0703F /* nextforecast.sql in Resources */,
 				3A93295C1B04E17B0021B1F0 /* Main.storyboard in Resources */,
 				3A9329611B04E17B0021B1F0 /* LaunchScreen.xib in Resources */,
 				3A93295E1B04E17B0021B1F0 /* Images.xcassets in Resources */,
