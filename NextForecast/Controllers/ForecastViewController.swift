@@ -28,6 +28,13 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(animated: Bool) {
         //Update the current saved locations arrau in AppSharedData
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+        var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentSelectedLocationID
+        for locationWeatherData in AppSharedData.sharedInstance.savedLocations {
+            if(locationWeatherData.locationID == currentSelectedLocationID)
+            {
+                self.title = locationWeatherData.name
+            }
+        }
     }
     
     // MARK: - TableViewDelegates
