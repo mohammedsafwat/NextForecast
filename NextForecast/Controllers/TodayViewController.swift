@@ -8,13 +8,9 @@
 
 import UIKit
 import CoreLocation
-import MBProgressHUD
 
 class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate {
 
-    var locationManager : CLLocationManager!
-    var authorizationStatus : CLAuthorizationStatus!
-    var activityIndicator : MBProgressHUD!
     var weatherDataManager : WeatherDataManager!
     var locationUpdated : Bool!
     var errorMessageDidAppear : Bool!
@@ -31,20 +27,20 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         initValues()
-
     }
     
     func initValues() {
         self.title = "Today"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
+        LocationDataManager.sharedInstance.locationManager.delegate = self
         locationUpdated = false
         errorMessageDidAppear = false
         DatabaseManager.sharedInstance.initializeDB()
         //DatabaseManager.sharedInstance.clearDatabase()
         updateCurrentSavedLocations()
+        
         startLocationUpdates()
     }
 
@@ -58,36 +54,20 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     func startLocationUpdates() {
-        startActivityIndicatorWithStatusText("Updating current location..")
-        if(locationManager == nil) {
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-            locationManager.distanceFilter = kCLHeadingFilterNone
-        }
-        requestAlwaysAuthorization()
-    }
-    
-    func requestAlwaysAuthorization() {
-        authorizationStatus = CLLocationManager.authorizationStatus()
-        // If the status is denied or only granted for when in use, display an alert
-        if(authorizationStatus == .AuthorizedWhenInUse || authorizationStatus == .Restricted || authorizationStatus == .Denied)
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(view, statusText: "Updating current location..")
+        
+        let startLocationUpdatesSuccessful : Bool = LocationDataManager.sharedInstance.startLocationUpdates()
+        
+        if(!startLocationUpdatesSuccessful)
         {
             var title : String!
-            title = (authorizationStatus == .Denied) ? "Location services are off" : "Background location is not enabled"
+            title = LocationDataManager.sharedInstance.authorizationStatus == .Denied ? "Location services are off" : "Background location is not enabled"
             var message : String = "To use background location you must turn on 'Always' in the Location Services Settings"
             displayAlertViewWithMessage(message, otherButtonTitles: "Settings")
         }
-            // The user has not enabled any location services. Request background authorization.
-        else if (authorizationStatus == .NotDetermined) {
-            locationManager.requestAlwaysAuthorization()
-        }
-        else if(authorizationStatus == .AuthorizedAlways) {
-            locationManager.startUpdatingLocation()
-        }
     }
     
-    //Location Manager Delegates
+    // MARK: - Location Manager Delegates
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if(!locationUpdated)
         {
@@ -95,30 +75,32 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             location = locations.last as CLLocation
             print("location.longitude = %f",location.coordinate.longitude)
             print("location.latitude = %f",location.coordinate.latitude)
-            locationManager.stopUpdatingLocation()
-            stopActivityIndicator()
+            LocationDataManager.sharedInstance.locationManager.stopUpdatingLocation()
+            ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
             locationUpdated = true
-            retrieveWeatherForLocation(location)
+            AppSharedData.sharedInstance.currentLocationCoordinates = location
+            retrieveWeatherDataForLocation(location)
         }
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways {
-            locationManager.startUpdatingLocation()
+            LocationDataManager.sharedInstance.locationManager.startUpdatingLocation()
         }
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         displayAlertViewWithMessage("Unable to determine location. You must enable location services for this app in Settings.", otherButtonTitles:"Settings")
-        stopActivityIndicator()
+            ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
     }
     
-    func retrieveWeatherForLocation(location : CLLocation) {
-        startActivityIndicatorWithStatusText("Updating weather data..")
+    // MARK: - Retrieving Weather Data Methods
+    func retrieveWeatherDataForLocation(location : CLLocation) {
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Updating weather data..")
         weatherDataManager.retrieveWeatherDataForLocation(location)
     }
     
-    //WeatherDataManager Delegates
+    // MARK: - WeatherDataManager Delegates
     func propagateParsedWeatherData(weatherData : LocationWeatherData!, error : NSError!) {
         if(error == nil)
         {
@@ -183,7 +165,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             }
             //TODO: Set default data values here for either today or forecast
         }
-        stopActivityIndicator()
+        ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
     }
     
     //Alert Views and HUD Views methods
@@ -214,16 +196,6 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         }
         
         self.presentViewController(alertController, animated: true, completion: nil)
-    }
-    
-    //Create HUD View
-    func startActivityIndicatorWithStatusText(statusText : String!) {
-        activityIndicator = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        activityIndicator.labelText = statusText;
-    }
-    //Hide HUD View
-    func stopActivityIndicator() {
-        MBProgressHUD.hideHUDForView(self.view, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

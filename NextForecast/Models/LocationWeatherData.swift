@@ -15,7 +15,7 @@ class LocationWeatherData: NSObject, NSCoding {
     var longitude : Float! = 0.0
     var isCurrentLocation : Bool! = false
     var todayWeatherData : SingleDayWeatherData! = SingleDayWeatherData()
-    var sevenDaysForecastWeatherData : [SingleDayWeatherData]! = []
+    var forecastWeatherData : [SingleDayWeatherData]! = []
     
     override init() {}
     
@@ -26,7 +26,7 @@ class LocationWeatherData: NSObject, NSCoding {
         longitude = aDecoder.decodeObjectForKey("longitude") as Float
         isCurrentLocation = aDecoder.decodeObjectForKey("isCurrentLocation") as Bool
         todayWeatherData = aDecoder.decodeObjectForKey("todayWeatherData") as SingleDayWeatherData
-        sevenDaysForecastWeatherData = aDecoder.decodeObjectForKey("sevenDaysForecastWeatherData") as [SingleDayWeatherData]
+        forecastWeatherData = aDecoder.decodeObjectForKey("forecastWeatherData") as [SingleDayWeatherData]
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -36,7 +36,7 @@ class LocationWeatherData: NSObject, NSCoding {
         aCoder.encodeObject(longitude, forKey: "longitude")
         aCoder.encodeObject(isCurrentLocation, forKey: "isCurrentLocation")
         aCoder.encodeObject(todayWeatherData, forKey: "todayWeatherData")
-        aCoder.encodeObject(sevenDaysForecastWeatherData, forKey: "sevenDaysForecastWeatherData")
+        aCoder.encodeObject(forecastWeatherData, forKey: "forecastWeatherData")
     }
     
     func data() -> NSData {

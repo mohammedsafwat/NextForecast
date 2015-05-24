@@ -2,38 +2,85 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="ProximaNova-Light.otf">
+            <string>ProximaNova-Light</string>
+        </mutableArray>
+        <mutableArray key="ProximaNova-Regular.otf">
+            <string>ProximaNova-Regular</string>
+        </mutableArray>
+        <mutableArray key="ProximaNova-Semibold.otf">
+            <string>ProximaNova-Semibold</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ForecastTableViewCell" id="rgf-5d-glE" customClass="ForecastTableViewCell" customModule="NextForecast" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ForecastTableViewCell" rowHeight="77" id="rgf-5d-glE" customClass="ForecastTableViewCell" customModule="NextForecast" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="77"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rgf-5d-glE" id="uF1-Tl-Q7h">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Monday" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eu8-v5-sLP" userLabel="forecastDayNameLabel">
-                        <rect key="frame" x="57" y="2" width="100" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monday" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eu8-v5-sLP" userLabel="forecastDayNameLabel">
+                        <rect key="frame" x="75" y="19" width="62" height="17"/>
+                        <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgB-Ef-6Xp" userLabel="forecastDayWeatherDescriptionLabel">
+                        <rect key="frame" x="75" y="44" width="36" height="13"/>
+                        <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WeatherIcon_Clear" translatesAutoresizingMaskIntoConstraints="NO" id="brH-5y-4IK" userLabel="forecastDayWeatherIconImageView">
+                        <rect key="frame" x="8" y="14" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="2wq-OW-p4M"/>
+                            <constraint firstAttribute="width" constant="50" id="4xi-FF-0jo"/>
+                        </constraints>
+                    </imageView>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---------------------------------------------------------" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6s-N7-7Zj">
+                        <rect key="frame" x="8" y="38" width="304" height="3"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="304" id="FjJ-kZ-rEE"/>
+                            <constraint firstAttribute="height" constant="3" id="vr2-76-ghB"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sunny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgB-Ef-6Xp" userLabel="forecastDayWeatherDescriptionLabel">
-                        <rect key="frame" x="57" y="23" width="100" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="WeatherIcon_Clear" translatesAutoresizingMaskIntoConstraints="NO" id="brH-5y-4IK" userLabel="forecastDayWeatherIconImageView">
-                        <rect key="frame" x="4" y="2" width="40" height="40"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="22°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2f-Ww-pUI" userLabel="forecastDayTemperatureLabel">
-                        <rect key="frame" x="270" y="11" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2f-Ww-pUI" userLabel="forecastDayTemperatureLabel">
+                        <rect key="frame" x="232" y="13" width="80" height="55"/>
+                        <fontDescription key="fontDescription" name="ProximaNova-Light" family="Proxima Nova" pointSize="55"/>
+                        <color key="textColor" red="0.18431372549019609" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="C6s-N7-7Zj" secondAttribute="centerY" constant="-1" id="2A9-KJ-t7j"/>
+                    <constraint firstItem="C6s-N7-7Zj" firstAttribute="top" secondItem="eu8-v5-sLP" secondAttribute="bottom" constant="2" id="48o-Ei-EdF"/>
+                    <constraint firstAttribute="centerY" secondItem="brH-5y-4IK" secondAttribute="centerY" constant="-0.5" id="60D-aP-Z2c"/>
+                    <constraint firstItem="brH-5y-4IK" firstAttribute="leading" secondItem="uF1-Tl-Q7h" secondAttribute="leadingMargin" id="Gsy-lT-UhH"/>
+                    <constraint firstItem="a2f-Ww-pUI" firstAttribute="leading" secondItem="eu8-v5-sLP" secondAttribute="trailing" constant="95" id="KPD-Pu-KRq"/>
+                    <constraint firstAttribute="centerY" secondItem="a2f-Ww-pUI" secondAttribute="centerY" constant="-2.5" id="Py7-Ki-5I3"/>
+                    <constraint firstItem="a2f-Ww-pUI" firstAttribute="trailing" secondItem="uF1-Tl-Q7h" secondAttribute="trailingMargin" id="WA6-er-dYH"/>
+                    <constraint firstAttribute="centerX" secondItem="C6s-N7-7Zj" secondAttribute="centerX" id="X4u-hb-bcT"/>
+                    <constraint firstItem="fgB-Ef-6Xp" firstAttribute="top" secondItem="C6s-N7-7Zj" secondAttribute="bottom" constant="3" id="Zep-aV-iMY"/>
+                    <constraint firstItem="a2f-Ww-pUI" firstAttribute="trailing" secondItem="uF1-Tl-Q7h" secondAttribute="trailingMargin" id="lls-Hw-A3o"/>
+                    <constraint firstItem="fgB-Ef-6Xp" firstAttribute="leading" secondItem="eu8-v5-sLP" secondAttribute="leading" id="toG-UG-D4g"/>
+                    <constraint firstItem="eu8-v5-sLP" firstAttribute="leading" secondItem="brH-5y-4IK" secondAttribute="trailing" constant="17" id="vK1-O3-iGE"/>
+                    <constraint firstItem="fgB-Ef-6Xp" firstAttribute="leading" secondItem="brH-5y-4IK" secondAttribute="trailing" constant="17" id="xlb-IT-GLv"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="KPD-Pu-KRq"/>
+                        <exclude reference="lls-Hw-A3o"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="forecastDayNameLabel" destination="eu8-v5-sLP" id="haE-ls-cya"/>
@@ -41,7 +88,7 @@
                 <outlet property="forecastDayWeatherDescriptionLabel" destination="fgB-Ef-6Xp" id="M3w-ft-pDI"/>
                 <outlet property="forecastDayWeatherIconImageView" destination="brH-5y-4IK" id="hYz-5s-fPP"/>
             </connections>
-            <point key="canvasLocation" x="323" y="354"/>
+            <point key="canvasLocation" x="323" y="350.5"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -7,39 +7,68 @@
 //
 
 import UIKit
+import CoreLocation
 
-class ForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class ForecastViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WeatherDataManagerDelegate{
     
     @IBOutlet weak var forecastTableView: UITableView!
-    let forecastTableViewCellHeight : CGFloat! = 44
-    var sevenDaysForecastWeatherData : [SingleDayWeatherData]! = []
-    
+    let forecastTableViewCellHeight : CGFloat! = 77
+    var forecastWeatherData : [SingleDayWeatherData]! = []
+    var weatherDataManager : WeatherDataManager!
+    var errorMessageDidAppear : Bool!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        initValues()
+
+        updateForecastWeatherData()
+        updateCurrentSavedLocations()
+    }
+    
+    func initValues() {
         self.title = "Forecast"
+        
+        weatherDataManager = WeatherDataManager()
+        weatherDataManager.weatherDataManagerDelegate = self
+        errorMessageDidAppear = false
         
         //Load ForecastTableViewCell file
         var forecastTableViewCellNib : UINib = UINib(nibName: "ForecastTableViewCell", bundle: NSBundle.mainBundle())
         forecastTableView.registerNib(forecastTableViewCellNib, forCellReuseIdentifier: "ForecastTableViewCell")
         forecastTableView.dataSource = self
         forecastTableView.delegate = self
-        sevenDaysForecastWeatherData = getLocationWeatherDataForCurrentSelectedLocation().sevenDaysForecastWeatherData
-        for(var i = 0; i < sevenDaysForecastWeatherData.count; i++)
-        {
-            println(sevenDaysForecastWeatherData[i].dayName)
-        }
-        updateCurrentSavedLocations()
+        forecastTableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
     override func viewDidAppear(animated: Bool) {
-        //Update the current saved locations arrau in AppSharedData
+        //Update the current saved locations array in AppSharedData
         updateCurrentSavedLocations()
         self.title = getLocationWeatherDataForCurrentSelectedLocation().name
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        self.title = "Forecast"
+    }
+    
     func updateCurrentSavedLocations() {
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+    }
+    
+    func updateForecastWeatherData() {
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.forecastTableView, statusText: "Updating forecast data..")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            self.forecastWeatherData = self.getLocationWeatherDataForCurrentSelectedLocation().forecastWeatherData
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.forecastTableView)
+                self.forecastTableView.reloadData()
+            })
+        })
+        
+        //Make a request to get forecast weather data if the count of forecastWeatherData == 0
+        if(forecastWeatherData.count == 0)
+        {
+            retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentLocationCoordinates)
+        }
     }
     
     func getLocationWeatherDataForCurrentSelectedLocation() -> LocationWeatherData {
@@ -60,7 +89,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sevenDaysForecastWeatherData.count
+        return forecastWeatherData.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -71,13 +100,64 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
             forecastTableViewCell = ForecastTableViewCell()
         }
         
-        var forecastDayWeatherData : SingleDayWeatherData = sevenDaysForecastWeatherData[indexPath.row]
+        var forecastDayWeatherData : SingleDayWeatherData = forecastWeatherData[indexPath.row]
         forecastTableViewCell?.forecastDayNameLabel.text = forecastDayWeatherData.dayName
         forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°",forecastDayWeatherData.temperature)
         forecastTableViewCell?.forecastDayWeatherDescriptionLabel.text = forecastDayWeatherData.weatherDescription
         var weatherIconImage : UIImage! = UIImage(named: forecastDayWeatherData.weatherIconName)
         forecastTableViewCell?.forecastDayWeatherIconImageView.image = weatherIconImage
         return forecastTableViewCell!
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    // MARK: - Retrieving Weather Data Methods
+    func retrieveWeatherDataForLocation(location : CLLocation) {
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Updating weather data..")
+        weatherDataManager.retrieveWeatherDataForLocation(location)
+    }
+    
+    // MARK: - WeatherDataManager Delegates
+    func propagateParsedWeatherData(locationWeatherData : LocationWeatherData!, error : NSError!) {
+        if(error == nil)
+        {
+            forecastWeatherData = locationWeatherData.forecastWeatherData
+            forecastTableView.reloadData()
+        }
+        else
+        {
+            if(!errorMessageDidAppear)
+            {
+                displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: "Try Again")
+                errorMessageDidAppear = true
+            }
+            //TODO: Set default data values here if an error happened
+        }
+        ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
+    }
+    
+    //Alert Views and HUD Views methods
+    //Create and Alert View with a custom message
+    func displayAlertViewWithMessage(alertViewMessage : String!, otherButtonTitles : String!) {
+        let alertController = UIAlertController(title: "Background Location Access Disabled", message: alertViewMessage, preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if(otherButtonTitles == "Settings")
+        {
+            let openSettingsAction = UIAlertAction(title: otherButtonTitles, style: .Default) {
+                (action) in
+                if let url = NSURL(string : UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            }
+            alertController.addAction(openSettingsAction)
+        }
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

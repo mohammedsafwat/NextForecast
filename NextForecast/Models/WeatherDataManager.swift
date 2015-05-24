@@ -12,7 +12,7 @@ import Alamofire
 
 enum ForecastType {
     case Today
-    case SevenDays
+    case Forecast
 }
 
 protocol WeatherDataManagerDelegate {
@@ -29,9 +29,9 @@ class WeatherDataManager: NSObject {
 
     func retrieveWeatherDataForLocation(location : CLLocation)
     {
-        var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayForecastURL, location.coordinate.latitude, location.coordinate.longitude)
+        var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
         
-        let forecastWeatherDataUrlString :String! = NSString(format: AppSharedData.sharedInstance.sevenDaysForecastURL, location.coordinate.latitude, location.coordinate.longitude)
+        let forecastWeatherDataUrlString :String! = NSString(format: AppSharedData.sharedInstance.forecastWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
         
         Alamofire.request(.GET, todayWeatherDataUrlString)
             .responseJSON{ (request, response, JSON, error) in
@@ -45,7 +45,7 @@ class WeatherDataManager: NSObject {
                                                     if(error == nil)
                                                     {
                                                         //Parse forecast weather data and save insice the locationWeatherData object
-                                                        self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .SevenDays)
+                                                        self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .Forecast)
                                                         
                                                         //Get locationID from Google Places API
                                                         let googlePlacesWebserivceFormattedUrlString : String? = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
@@ -200,17 +200,17 @@ class WeatherDataManager: NSObject {
                 locationWeatherData.isCurrentLocation = true
                 locationWeatherData.todayWeatherData = todayWeatherData
             }
-            else if(forecastType == .SevenDays)
+            else if(forecastType == .Forecast)
             {
-                var JSONSevenDaysForecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
-                var sevenDaysForecastWeatehrData : [SingleDayWeatherData] = []
+                var JSONforecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
+                var forecastWeatehrData : [SingleDayWeatherData] = []
                 
-                if(JSONSevenDaysForecastWeatherData != nil)
+                if(JSONforecastWeatherData != nil)
                 {
-                    for(var i : Int = 0; i < JSONSevenDaysForecastWeatherData?.count; i++)
+                    for(var i : Int = 0; i < JSONforecastWeatherData?.count; i++)
                     {
                         var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
-                        var JSONSingleDayData : NSDictionary = JSONSevenDaysForecastWeatherData![i] as NSDictionary
+                        var JSONSingleDayData : NSDictionary = JSONforecastWeatherData![i] as NSDictionary
                         
                         //TimeStamp
                         var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
@@ -243,14 +243,14 @@ class WeatherDataManager: NSObject {
                             singleDayWeatherData.weatherIconName = getWeatherIconName(weatherConditionId)
                         }
                         
-                        sevenDaysForecastWeatehrData.append(singleDayWeatherData)
+                        forecastWeatehrData.append(singleDayWeatherData)
                     }
                 }
                 else
                 {
-                    //TODO: Add default data if no JSONSevenDaysForecastWeatherData was found
+                    //TODO: Add default data if no JSONforecastWeatherData was found
                 }
-                locationWeatherData.sevenDaysForecastWeatherData = sevenDaysForecastWeatehrData
+                locationWeatherData.forecastWeatherData = forecastWeatehrData
             }
         }
         else
