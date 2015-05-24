@@ -20,9 +20,9 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         initValues()
-
-        updateForecastWeatherData()
+        
         updateCurrentSavedLocations()
+        updateForecastWeatherData()
     }
     
     func initValues() {
@@ -37,6 +37,8 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         forecastTableView.registerNib(forecastTableViewCellNib, forCellReuseIdentifier: "ForecastTableViewCell")
         forecastTableView.dataSource = self
         forecastTableView.delegate = self
+        forecastTableView.frame = CGRect(x: forecastTableView.frame.origin.x, y: forecastTableView.frame.origin.y, width: forecastTableView.frame.size.width, height: forecastTableView.frame.size.height)
+        forecastTableView.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         forecastTableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
@@ -57,24 +59,27 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     func updateForecastWeatherData() {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.forecastTableView, statusText: "Updating forecast data..")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-            self.forecastWeatherData = self.getLocationWeatherDataForCurrentSelectedLocation().forecastWeatherData
+            var locationWeatherData : LocationWeatherData = self.getLocationWeatherDataForCurrentSelectedLocation()
+            self.forecastWeatherData = locationWeatherData.forecastWeatherData
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.forecastTableView)
-                self.forecastTableView.reloadData()
+                
+                if(self.forecastWeatherData.count > 0)
+                {
+                    self.forecastTableView.reloadData()
+                }
+                else
+                {
+                    self.retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentLocationCoordinates)
+                }
             })
         })
-        
-        //Make a request to get forecast weather data if the count of forecastWeatherData == 0
-        if(forecastWeatherData.count == 0)
-        {
-            retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentLocationCoordinates)
-        }
     }
     
     func getLocationWeatherDataForCurrentSelectedLocation() -> LocationWeatherData {
         var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentSelectedLocationID
         var currentSelectedLocationWeatherData : LocationWeatherData = LocationWeatherData()
-        for locationWeatherData in AppSharedData.sharedInstance.savedLocations {
+        for locationWeatherData : LocationWeatherData in AppSharedData.sharedInstance.savedLocations {
             if(locationWeatherData.locationID == currentSelectedLocationID)
             {
                 currentSelectedLocationWeatherData = locationWeatherData

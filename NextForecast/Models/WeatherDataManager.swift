@@ -56,16 +56,23 @@ class WeatherDataManager: NSObject {
                                                                 if(error == nil)
                                                                 {
                                                                     self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
+                                                                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                                                                    {
+                                                                        DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
+                                                                        AppSharedData.sharedInstance.currentSelectedLocationID = self.locationWeatherData.locationID
+                                                                        weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
+                                                                    {
+                                                                        weatherDataManagerDelegate.propagateParsedWeatherData(nil, error: error!)
+                                                                    }
                                                                 }
                                                             }
                                                         }
                                                         
-                                                        if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
-                                                        {
-                                                            DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
-                                                            AppSharedData.sharedInstance.currentSelectedLocationID = self.locationWeatherData.locationID
-                                                            weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
-                                                        }
                                                     }
                                                     else
                                                     {

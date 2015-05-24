@@ -81,9 +81,8 @@ class DatabaseManager: NSObject {
         //Check if the location already exists in Locations table
         openDatabase()
         
-        let fetchQuery = NSString(format: "SELECT locationID FROM Locations WHERE locationID='%@'", locationID)
-        let queryResults: FMResultSet? = db.executeQuery(fetchQuery, withArgumentsInArray: [])
-        if((queryResults!.next()) == false)
+        let fetchCountQuery = db.intForQuery("SELECT COUNT(*) FROM Locations WHERE locationID='%@'", locationID)
+        if(fetchCountQuery == 0)
         {
             db.beginTransaction()
             let addSuccessful = db.executeUpdate("INSERT INTO Locations (locationID, locationData) VALUES (?,?)", locationID, locationData)
@@ -96,7 +95,7 @@ class DatabaseManager: NSObject {
         }
         else
         {
-            //Update the location data only
+            //Update the location data only if location exists in database
             let updateSuccessful = db.executeUpdate("UPDATE Locations SET locationData=? WHERE locationID=?", locationData, locationID)
             if(updateSuccessful)
             {
