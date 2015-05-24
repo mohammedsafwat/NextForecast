@@ -80,7 +80,7 @@ class SideMenuViewController: UITableViewController {
             sideMenuTableViewCell = SideMenuTableViewCell()
         }
         var locationWeatherData : LocationWeatherData = savedLocations[indexPath.row]
-        sideMenuTableViewCell?.locationNameLabel.text = locationWeatherData.name
+        sideMenuTableViewCell?.locationNameLabel.text = locationWeatherData.name.componentsSeparatedByString(",")[0]
         if(!locationWeatherData.isCurrentLocation)
         {
             sideMenuTableViewCell?.currentLocationIndicatorImageView.hidden = true

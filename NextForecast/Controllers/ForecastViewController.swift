@@ -45,7 +45,15 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(animated: Bool) {
         //Update the current saved locations array in AppSharedData
         updateCurrentSavedLocations()
-        self.title = getLocationWeatherDataForCurrentSelectedLocation().name
+        var currentSelectedLocation : LocationWeatherData = getLocationWeatherDataForCurrentSelectedLocation()
+        if(currentSelectedLocation.name != "")
+        {
+            self.title = currentSelectedLocation.name.componentsSeparatedByString(",")[0]
+        }
+        else
+        {
+            self.title = "Forecast"
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
