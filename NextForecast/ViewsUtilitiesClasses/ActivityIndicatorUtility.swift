@@ -17,11 +17,13 @@ class ActivityIndicatorUtility: NSObject {
     func startActivityIndicatorInViewWithStatusText(view : UIView, statusText : String) {
         var activityIndicator : MBProgressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
         activityIndicator.labelText = statusText;
+        activityIndicator.userInteractionEnabled = false
     }
     
     //Hide HUD View
     func stopActivityIndicatorInView(view : UIView) {
         MBProgressHUD.hideHUDForView(view, animated: true)
+        activityIndicator.userInteractionEnabled = true
     }
     
     class var sharedInstance : ActivityIndicatorUtility {

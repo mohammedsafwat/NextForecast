@@ -58,6 +58,10 @@ class SideMenuViewController: UITableViewController {
         return 15
     }
     
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 65
+    }
+    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionHeaderTitle : String! = ""
         if(section == 0)
@@ -71,6 +75,16 @@ class SideMenuViewController: UITableViewController {
         var headerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
         headerView.textLabel.textAlignment = .Center
         headerView.textLabel.font = UIFont(name: "ProximaNova-Light", size: 15)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        var footerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        
+        var addIconImage : UIImage! = UIImage(named: "AddIcon")
+        var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 65))
+        addLocationButton.setBackgroundImage(addIconImage, forState: .Normal)
+        addLocationButton.center.x = footerView.center.x
+        footerView.addSubview(addLocationButton)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
