@@ -81,14 +81,12 @@ class DatabaseManager: NSObject {
         //Check if the location already exists in Locations table
         openDatabase()
         
-        let fetchCountQuery = db.intForQuery("SELECT COUNT(*) FROM Locations WHERE locationID='%@'", locationID)
+        let fetchCountQuery = db.intForQuery("SELECT COUNT(*) FROM Locations WHERE locationID=?", locationID)
         if(fetchCountQuery == 0)
         {
-            db.beginTransaction()
-            let addSuccessful = db.executeUpdate("INSERT INTO Locations (locationID, locationData) VALUES (?,?)", locationID, locationData)
+            let addSuccessful = db.executeUpdate("INSERT INTO Locations(locationID,locationData) VALUES (?,?)", locationID, locationData)
             if(addSuccessful)
             {
-                db.commit()
                 closeDatabase()
                 return true
             }

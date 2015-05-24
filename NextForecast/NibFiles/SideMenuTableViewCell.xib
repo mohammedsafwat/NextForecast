@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="ProximaNova-Regular.otf">
+            <string>ProximaNova-Regular</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SideMenuTableViewCell" id="vDO-cm-gPq" customClass="SideMenuTableViewCell" customModule="NextForecast" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vDO-cm-gPq" id="eUM-B4-uHr">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CurrentLocationIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="85L-tc-9JE">
+                        <rect key="frame" x="7" y="17" width="11" height="11"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prague, Czech Republic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-hc-mK9">
+                        <rect key="frame" x="26" y="14" width="188" height="18"/>
+                        <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="18"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Jwi-hc-mK9" firstAttribute="leading" secondItem="85L-tc-9JE" secondAttribute="trailing" constant="8" id="Ta3-2y-WZG"/>
+                    <constraint firstAttribute="centerY" secondItem="85L-tc-9JE" secondAttribute="centerY" constant="-0.5" id="Y6c-G3-Tuv"/>
+                    <constraint firstAttribute="centerY" secondItem="Jwi-hc-mK9" secondAttribute="centerY" constant="-1" id="qGD-fO-9OA"/>
+                    <constraint firstItem="Jwi-hc-mK9" firstAttribute="leading" secondItem="eUM-B4-uHr" secondAttribute="leadingMargin" constant="18" id="zdR-s0-7kW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="currentLocationIndicatorImageView" destination="85L-tc-9JE" id="nmt-mX-Pfo"/>
+                <outlet property="locationNameLabel" destination="Jwi-hc-mK9" id="q3a-9G-XEs"/>
+            </connections>
+            <point key="canvasLocation" x="71" y="300"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="CurrentLocationIndicator" width="11" height="11"/>
+    </resources>
+</document>

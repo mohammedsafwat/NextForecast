@@ -9,11 +9,14 @@
 import UIKit
 import CoreLocation
 
-class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate {
+class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate, ENSideMenuDelegate {
 
     var weatherDataManager : WeatherDataManager!
     var locationUpdated : Bool!
     var errorMessageDidAppear : Bool!
+    var sideMenuContainer :ENSideMenu!
+    var sideMenuViewController : SideMenuViewController!
+    var sideMenuOpened : Bool!
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var locationNameLabel: UILabel!
@@ -37,6 +40,8 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         LocationDataManager.sharedInstance.locationManager.delegate = self
         locationUpdated = false
         errorMessageDidAppear = false
+        sideMenuOpened = false
+        createSideMenu()
         DatabaseManager.sharedInstance.initializeDB()
         //DatabaseManager.sharedInstance.clearDatabase()
         updateCurrentSavedLocations()
@@ -46,6 +51,46 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
 
     override func viewDidAppear(animated: Bool) {
         updateCurrentSavedLocations()
+    }
+    
+    func createSideMenu() {
+        var rightNavigationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 14))
+        rightNavigationButton.addTarget(self, action: "sideMenuButtonPressed:", forControlEvents: .TouchUpInside)
+        rightNavigationButton.setBackgroundImage(UIImage(named: "SideMenuIcon"), forState: .Normal)
+        var rightNavigationBarButton : UIBarButtonItem = UIBarButtonItem(customView: rightNavigationButton)
+        self.navigationItem.rightBarButtonItem = rightNavigationBarButton
+        
+        var storyboard = UIStoryboard(name: "Main", bundle: nil)
+        sideMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SideMenuViewController") as SideMenuViewController
+        sideMenuContainer = ENSideMenu(sourceView: self.view, menuViewController: sideMenuViewController, menuPosition: .Right)
+        sideMenuContainer.delegate = self
+        sideMenuContainer.menuWidth = 180
+        let navigationBarHeight = self.navigationController?.navigationBar.frame.height
+        let tabBarHeight = self.tabBarController?.tabBar.frame.height
+        sideMenuViewController.tableView.frame = CGRect(x: 0, y: navigationBarHeight! + 22, width: 180, height: sideMenuViewController.tableView.frame.height - (navigationBarHeight! + tabBarHeight!))
+    }
+    
+    func sideMenuButtonPressed(sender : UIButton!) {
+        if(!sideMenuOpened)
+        {
+            sideMenuContainer.showSideMenu()
+            sideMenuOpened = true
+        }
+        else
+        {
+            sideMenuContainer.hideSideMenu()
+            sideMenuOpened = false
+        }
+        sideMenuViewController.reloadSavedLocations()
+    }
+    
+    // MARK: - ENSideMenu Delegate
+    func sideMenuWillClose() {
+        sideMenuOpened = false
+    }
+    
+    func sideMenuWillOpen() {
+        sideMenuOpened = true
     }
     
     func updateCurrentSavedLocations() {
