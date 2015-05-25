@@ -10,12 +10,12 @@ import UIKit
 import GooglePlacesAutocomplete
 import CoreLocation
 
-class LocationsTableViewController: UITableViewController, WeatherDataManagerDelegate {
+class LocationsTableViewController: UITableViewController, WeatherDataManagerDelegate, UIAlertViewDelegate {
     
     var savedLocations : [LocationWeatherData]! = []
     let gpaViewController = GooglePlacesAutocomplete(
         apiKey: AppSharedData.sharedInstance.googlePlacesAPIKey,
-        placeType: .All
+        placeType: .Cities
     )
     var weatherDataManger : WeatherDataManager! = WeatherDataManager()
     var addingLocationInProgress : Bool!
@@ -30,6 +30,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.tableFooterView?.hidden = true
         gpaViewController.placeDelegate = self
         weatherDataManger.weatherDataManagerDelegate = self
         addingLocationInProgress = false
@@ -58,6 +59,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.tableView.reloadData()
                 ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.tableView)
+                self.tableView.tableFooterView?.hidden = false
             })
         })
     }
@@ -152,7 +154,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         {
             if(!errorMessageDidAppear)
             {
-                displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: nil)
+                displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: "")
                 errorMessageDidAppear = true
             }
         }
@@ -162,18 +164,32 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
 
 extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
     func placeSelected(place: Place) {
-        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(gpaViewController.view, statusText: "Adding new location..")
         place.getDetails { details in
-            var placeDetails : PlaceDetails = details
-            var location : LocationWeatherData = LocationWeatherData()
-            location.name = placeDetails.name
-            location.longitude = Float(placeDetails.longitude)
-            location.latitude = Float(placeDetails.latitude)
-            var locationCoordinates : CLLocation = CLLocation(latitude: placeDetails.latitude, longitude: placeDetails.longitude)
-            self.errorMessageDidAppear = false
-            self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: location.name)
+            var placeDetails : PlaceDetails! = details
+            var location : LocationWeatherData! = LocationWeatherData()
+            var locationAlreadyExists : Bool!
+            for(savedLocation : LocationWeatherData) in self.savedLocations {
+                if(placeDetails.name == savedLocation.name)
+                {
+                    locationAlreadyExists = true
+                    break
+                }
+            }
+            if(!locationAlreadyExists)
+            {
+                ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.gpaViewController.view, statusText: "Adding new location..")
+                location.name = placeDetails.name
+                location.longitude = Float(placeDetails.longitude)
+                location.latitude = Float(placeDetails.latitude)
+                var locationCoordinates : CLLocation = CLLocation(latitude: placeDetails.latitude, longitude: placeDetails.longitude)
+                self.errorMessageDidAppear = false
+                self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: location.name, isCurrentLocation: false)
+            }
+            else
+            {
+                self.displayAlertViewWithMessage("You have already added this location!", otherButtonTitles: "")
+            }
         }
-        
     }
     
     func placeViewClosed() {
@@ -183,19 +199,15 @@ extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
         }
         else
         {
-            displayAlertViewWithMessage("Please wait, adding new location is in progress..", otherButtonTitles: nil)
+            displayAlertViewWithMessage("Please wait, adding new location is in progress..", otherButtonTitles: "")
         }
     }
     
     //Alert Views and HUD Views methods
     //Create and Alert View with a custom message
     func displayAlertViewWithMessage(alertViewMessage : String!, otherButtonTitles : String!) {
-        let alertController = UIAlertController(title: "Error!", message: alertViewMessage, preferredStyle: .Alert)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        self.presentViewController(alertController, animated: true, completion: nil)
+        var alertView : UIAlertView = UIAlertView(title: "Error", message: alertViewMessage, delegate: self, cancelButtonTitle: "OK")
+        alertView.show()
     }
 }
 

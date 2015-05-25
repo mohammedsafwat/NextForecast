@@ -27,7 +27,7 @@ class WeatherDataManager: NSObject {
     let metersPerSecondToKmPerHourConversionConstant : Float = 3.6
     var locationWeatherData : LocationWeatherData = LocationWeatherData()
 
-    func retrieveWeatherDataForLocation(location : CLLocation, customName : String)
+    func retrieveWeatherDataForLocation(location : CLLocation, customName : String, isCurrentLocation : Bool)
     {
         var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
         
@@ -61,12 +61,19 @@ class WeatherDataManager: NSObject {
                                                                 
                                                                 if(error == nil)
                                                                 {
-                                                                    self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
-
+                                                                    self.locationWeatherData.isCurrentLocation = isCurrentLocation
+                                                                    if(isCurrentLocation)
+                                                                    {
+                                                                        self.locationWeatherData.locationID = "currentLocation"
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
+                                                                    }
                                                                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                                     {
                                                                         DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
-                                                                        AppSharedData.sharedInstance.currentSelectedLocationID = self.locationWeatherData.locationID
+                                                                        AppSharedData.sharedInstance.currentDisplayingLocation = self.locationWeatherData
                                                                         weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
                                                                     }
                                                                 }
@@ -211,7 +218,6 @@ class WeatherDataManager: NSObject {
                 }
                 locationWeatherData.latitude = latitude!
                 locationWeatherData.longitude = longitude!
-                locationWeatherData.isCurrentLocation = true
                 locationWeatherData.todayWeatherData = todayWeatherData
             }
             else if(forecastType == .Forecast)

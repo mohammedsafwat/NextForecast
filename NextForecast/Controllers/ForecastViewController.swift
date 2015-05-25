@@ -78,14 +78,14 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
                 else
                 {
-                    self.retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentLocationCoordinates)
+                    self.retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentDisplayingLocation)
                 }
             })
         })
     }
     
     func getLocationWeatherDataForCurrentSelectedLocation() -> LocationWeatherData {
-        var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentSelectedLocationID
+        var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentDisplayingLocation.locationID
         var currentSelectedLocationWeatherData : LocationWeatherData = LocationWeatherData()
         for locationWeatherData : LocationWeatherData in AppSharedData.sharedInstance.savedLocations {
             if(locationWeatherData.locationID == currentSelectedLocationID)
@@ -127,9 +127,10 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Retrieving Weather Data Methods
-    func retrieveWeatherDataForLocation(location : CLLocation) {
+    func retrieveWeatherDataForLocation(location : LocationWeatherData) {
+        var locationCoordinates : CLLocation = CLLocation(latitude: Double(location.latitude), longitude: Double(location.longitude))
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Updating weather data..")
-        weatherDataManager.retrieveWeatherDataForLocation(location, customName: "")
+        weatherDataManager.retrieveWeatherDataForLocation(locationCoordinates, customName: "", isCurrentLocation: location.isCurrentLocation)
     }
     
     // MARK: - WeatherDataManager Delegates

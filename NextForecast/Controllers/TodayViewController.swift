@@ -51,6 +51,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
 
     override func viewDidAppear(animated: Bool) {
         updateCurrentSavedLocations()
+        sideMenuContainer.hideSideMenu()
     }
     
     func createSideMenu() {
@@ -142,7 +143,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     // MARK: - Retrieving Weather Data Methods
     func retrieveWeatherDataForLocation(location : CLLocation) {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Updating weather data..")
-        weatherDataManager.retrieveWeatherDataForLocation(location, customName: "")
+        weatherDataManager.retrieveWeatherDataForLocation(location, customName: "", isCurrentLocation :true)
     }
     
     // MARK: - WeatherDataManager Delegates
