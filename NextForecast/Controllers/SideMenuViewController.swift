@@ -14,14 +14,14 @@ class SideMenuViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.clearsSelectionOnViewWillAppear = false
         
         var sideMenuTableViewCellNib : UINib = UINib(nibName: "SideMenuTableViewCell", bundle: NSBundle.mainBundle())
         tableView.registerNib(sideMenuTableViewCellNib, forCellReuseIdentifier: "SideMenuTableViewCell")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.clearsSelectionOnViewWillAppear = false
+
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -105,6 +105,10 @@ class SideMenuViewController: UITableViewController {
             sideMenuTableViewCell?.currentLocationIndicatorImageView.hidden = false
         }
         return sideMenuTableViewCell!
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
     }
     
     func addLocationButtonPressed(sender : UIButton!) {

@@ -20,6 +20,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
     var weatherDataManger : WeatherDataManager! = WeatherDataManager()
     var addingLocationInProgress : Bool!
     var errorMessageDidAppear : Bool!
+    var reloadingSavedLocations : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,11 +31,11 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
-        tableView.tableFooterView?.hidden = true
         gpaViewController.placeDelegate = self
         weatherDataManger.weatherDataManagerDelegate = self
         addingLocationInProgress = false
         errorMessageDidAppear = false
+        reloadingSavedLocations = true
         createNavigationBarRightAndLeftbuttons()
     }
     
@@ -55,11 +56,12 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
     func reloadSavedLocations() {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(tableView, statusText: "Loading locations..")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            self.reloadingSavedLocations = true
             self.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.tableView.reloadData()
                 ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.tableView)
-                self.tableView.tableFooterView?.hidden = false
+                self.reloadingSavedLocations = false
             })
         })
     }
@@ -138,7 +140,11 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         addLocationButton.setBackgroundImage(addIconImage, forState: .Normal)
         addLocationButton.center.x = footerView.center.x
         addLocationButton.addTarget(self, action: "addLocationButtonPressed:", forControlEvents: .TouchUpInside)
-        footerView.addSubview(addLocationButton)
+        
+        if(!reloadingSavedLocations)
+        {
+            footerView.addSubview(addLocationButton)
+        }
     }
     
     func addLocationButtonPressed(sender : UIButton!) {
@@ -167,7 +173,7 @@ extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
         place.getDetails { details in
             var placeDetails : PlaceDetails! = details
             var location : LocationWeatherData! = LocationWeatherData()
-            var locationAlreadyExists : Bool!
+            var locationAlreadyExists : Bool! = false
             for(savedLocation : LocationWeatherData) in self.savedLocations {
                 if(placeDetails.name == savedLocation.name)
                 {
