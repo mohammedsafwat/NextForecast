@@ -125,7 +125,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 50
+        return 52
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -156,12 +156,13 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
                 errorMessageDidAppear = true
             }
         }
-        ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
+        ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(gpaViewController.view)
     }
 }
 
 extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
     func placeSelected(place: Place) {
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(gpaViewController.view, statusText: "Adding new location..")
         place.getDetails { details in
             var placeDetails : PlaceDetails = details
             var location : LocationWeatherData = LocationWeatherData()
@@ -169,7 +170,7 @@ extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
             location.longitude = Float(placeDetails.longitude)
             location.latitude = Float(placeDetails.latitude)
             var locationCoordinates : CLLocation = CLLocation(latitude: placeDetails.latitude, longitude: placeDetails.longitude)
-            ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Adding new location..")
+            self.errorMessageDidAppear = false
             self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: location.name)
         }
         

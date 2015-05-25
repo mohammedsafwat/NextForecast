@@ -67,7 +67,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         sideMenuContainer.menuWidth = 180
         let navigationBarHeight = self.navigationController?.navigationBar.frame.height
         let tabBarHeight = self.tabBarController?.tabBar.frame.height
-        sideMenuViewController.tableView.frame = CGRect(x: 0, y: navigationBarHeight! + 22, width: 180, height: sideMenuViewController.tableView.frame.height - (navigationBarHeight! + tabBarHeight!))
+        sideMenuViewController.tableView.frame = CGRect(x: 0, y: navigationBarHeight! + 22, width: 180, height: sideMenuViewController.tableView.frame.height - (navigationBarHeight! + tabBarHeight! + 25))
     }
     
     func sideMenuButtonPressed(sender : UIButton!) {
