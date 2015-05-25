@@ -19,7 +19,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CurrentLocationIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="85L-tc-9JE">
-                        <rect key="frame" x="7" y="17" width="11" height="11"/>
+                        <rect key="frame" x="8" y="17" width="10" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="10" id="Vg7-Dv-Wz8"/>
+                            <constraint firstAttribute="height" constant="10" id="bus-R9-Tuu"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prague, Czech Republic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-hc-mK9">
                         <rect key="frame" x="26" y="14" width="286" height="18"/>

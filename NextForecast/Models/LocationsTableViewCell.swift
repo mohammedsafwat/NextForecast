@@ -10,6 +10,13 @@ import UIKit
 
 class LocationsTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var locationTodayTemperatureLabel: UILabel!
+    @IBOutlet weak var locationTodayWeatherDescriptionLabel: UILabel!
+    @IBOutlet weak var locationNameLabel: UILabel!
+    @IBOutlet weak var locationTodayWeatherIconImageView: UIImageView!
+    @IBOutlet weak var currentLocationIndicatorImageView: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

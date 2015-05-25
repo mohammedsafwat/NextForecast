@@ -77,6 +77,7 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="vK1-O3-iGE"/>
                         <exclude reference="KPD-Pu-KRq"/>
                         <exclude reference="lls-Hw-A3o"/>
                     </mask>

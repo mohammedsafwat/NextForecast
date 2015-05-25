@@ -84,6 +84,7 @@ class SideMenuViewController: UITableViewController {
         var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         addLocationButton.setBackgroundImage(addIconImage, forState: .Normal)
         addLocationButton.center.x = footerView.center.x
+        addLocationButton.addTarget(self, action: "addLocationButtonPressed:", forControlEvents: .TouchUpInside)
         footerView.addSubview(addLocationButton)
     }
     
@@ -104,6 +105,17 @@ class SideMenuViewController: UITableViewController {
             sideMenuTableViewCell?.currentLocationIndicatorImageView.hidden = false
         }
         return sideMenuTableViewCell!
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func addLocationButtonPressed(sender : UIButton!) {
+        var storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        var locationsTableViewController : LocationsTableViewController = storyboard.instantiateViewControllerWithIdentifier("LocationsTableViewController") as LocationsTableViewController
+        var navigationController : UINavigationController = UINavigationController(rootViewController: locationsTableViewController)
+        self.view.window?.rootViewController?.presentViewController(navigationController, animated: true, completion: nil)
     }
 
 }

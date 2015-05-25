@@ -153,6 +153,15 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             var weatherIconImage : UIImage! = UIImage(named: weatherData.todayWeatherData.weatherIconName)
             weatherIconImageView.image = weatherIconImage
             locationNameLabel.text = weatherData.name
+            let locationNameWidth = locationNameLabel.intrinsicContentSize().width
+            if(locationNameWidth > self.view.frame.size.width * 0.85)
+            {
+                let locationName = NSString(format: weatherData.name)
+                let numberOfCharactersInLocationName : Int = locationName.length
+                let toIndex : Int = numberOfCharactersInLocationName / 2
+                var truncatedLocationName = locationName.substringToIndex(toIndex - 3)
+                locationNameLabel.text = truncatedLocationName + "..."
+            }
             //Check if we are getting weather data for the current location
             //Then display the GPS indicator besides the location title
             if(!weatherData.isCurrentLocation) {
