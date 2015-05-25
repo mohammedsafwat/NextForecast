@@ -27,7 +27,7 @@ class WeatherDataManager: NSObject {
     let metersPerSecondToKmPerHourConversionConstant : Float = 3.6
     var locationWeatherData : LocationWeatherData = LocationWeatherData()
 
-    func retrieveWeatherDataForLocation(location : CLLocation)
+    func retrieveWeatherDataForLocation(location : CLLocation, customName : String)
     {
         var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
         
@@ -46,16 +46,23 @@ class WeatherDataManager: NSObject {
                                                     {
                                                         //Parse forecast weather data and save insice the locationWeatherData object
                                                         self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .Forecast)
-                                                        
-                                                        //Get locationID from Google Places API
-                                                        let googlePlacesWebserivceFormattedUrlString : String? = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
-                                                        if(googlePlacesWebserivceFormattedUrlString != nil)
+                                                        if(customName != "")
                                                         {
-                                                            Alamofire.request(.GET, "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Central,%20HK&key=AIzaSyAJonxZ7ZiOy4Eh_cAMBwjaCLXQvbRFu4o").responseJSON { (request, response, JSON, error) in
+                                                            self.locationWeatherData.name = customName
+                                                        }
+                                                        //Get locationID from Google Places API
+                                                        var googlePlacesWebserivceFormattedUrlString : NSString = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
+                                                        googlePlacesWebserivceFormattedUrlString = googlePlacesWebserivceFormattedUrlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                                                        var googlePlacesWebserviceFormattedUrl : NSURL! = NSURL(string: googlePlacesWebserivceFormattedUrlString)
+                                                        
+                                                        if(googlePlacesWebserviceFormattedUrl != nil)
+                                                        {
+                                                            Alamofire.request(.GET, googlePlacesWebserviceFormattedUrl.absoluteString!).responseJSON { (request, response, JSON, error) in
                                                                 
                                                                 if(error == nil)
                                                                 {
                                                                     self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
+
                                                                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                                     {
                                                                         DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())

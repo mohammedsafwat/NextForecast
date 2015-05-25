@@ -70,7 +70,7 @@
 		3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleDayWeatherData.swift; sourceTree = "<group>"; };
 		3A3FCEA11B072245007A037B /* WeatherDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherDataManager.swift; sourceTree = "<group>"; };
 		3A3FCEA41B0726A6007A037B /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
-		3A3FCEA51B073051007A037B /* AppSharedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSharedData.swift; sourceTree = "<group>"; };
+		3A3FCEA51B073051007A037B /* AppSharedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppSharedData.swift; path = ../Models/AppSharedData.swift; sourceTree = "<group>"; };
 		3A6947DB1B061BAB006EF6BD /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		3A6947DD1B061BB4006EF6BD /* ForecastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
 		3A6947DF1B061BBE006EF6BD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -151,7 +151,6 @@
 				3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */,
 				3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */,
 				3A3FCEA11B072245007A037B /* WeatherDataManager.swift */,
-				3A3FCEA51B073051007A037B /* AppSharedData.swift */,
 				3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */,
 				3A9EF6D31B1120C200F0703F /* ForecastTableViewCell.swift */,
 				3A9EF6E01B11EA2500F0703F /* LocationManager.swift */,
@@ -206,10 +205,11 @@
 		3A9329511B04E17B0021B1F0 /* NextForecast */ = {
 			isa = PBXGroup;
 			children = (
+				3AFDBD001B135FDE00B26AF1 /* AppSharedData */,
 				3A1ED6241B1278CF00A4BC15 /* SideMenu */,
 				3A9EF6E21B11F8C700F0703F /* ViewsUtilitiesClasses */,
 				3A9EF6D51B11CD3F00F0703F /* Resources */,
-				3A9EF6D01B111C4500F0703F /* NibFiles */,
+				3A9EF6D01B111C4500F0703F /* XIBFiles */,
 				3A9EF6B41B0F93A500F0703F /* SQLiteDatabase */,
 				3A3FCEA31B072693007A037B /* BridgingHeader */,
 				3A3FCE9C1B07191F007A037B /* ModelClasses */,
@@ -275,7 +275,7 @@
 			path = fmdb;
 			sourceTree = "<group>";
 		};
-		3A9EF6D01B111C4500F0703F /* NibFiles */ = {
+		3A9EF6D01B111C4500F0703F /* XIBFiles */ = {
 			isa = PBXGroup;
 			children = (
 				3A93295A1B04E17B0021B1F0 /* Main.storyboard */,
@@ -284,6 +284,7 @@
 				3A9EF6E71B124B0F00F0703F /* SideMenuTableViewCell.xib */,
 				3A1ED62B1B1307A500A4BC15 /* LocationsTableViewCell.xib */,
 			);
+			name = XIBFiles;
 			path = NibFiles;
 			sourceTree = "<group>";
 		};
@@ -320,6 +321,14 @@
 				3A9EF6E31B11FC1200F0703F /* ActivityIndicatorUtility.swift */,
 			);
 			path = ViewsUtilitiesClasses;
+			sourceTree = "<group>";
+		};
+		3AFDBD001B135FDE00B26AF1 /* AppSharedData */ = {
+			isa = PBXGroup;
+			children = (
+				3A3FCEA51B073051007A037B /* AppSharedData.swift */,
+			);
+			path = AppSharedData;
 			sourceTree = "<group>";
 		};
 		4824645254AB4B01403830ED /* Frameworks */ = {

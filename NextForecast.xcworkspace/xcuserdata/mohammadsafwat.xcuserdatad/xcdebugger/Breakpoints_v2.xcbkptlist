@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NextForecast/Models/WeatherDataManager.swift"
-            timestampString = "454173709.962065"
+            timestampString = "454258284.448307"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
             landmarkName = "getLocationIDFromGooglePlacesLocationData(_:)"
             landmarkType = "5">
          </BreakpointContent>

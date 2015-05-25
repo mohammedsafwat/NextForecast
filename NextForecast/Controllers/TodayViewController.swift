@@ -142,7 +142,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     // MARK: - Retrieving Weather Data Methods
     func retrieveWeatherDataForLocation(location : CLLocation) {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Updating weather data..")
-        weatherDataManager.retrieveWeatherDataForLocation(location)
+        weatherDataManager.retrieveWeatherDataForLocation(location, customName: "")
     }
     
     // MARK: - WeatherDataManager Delegates

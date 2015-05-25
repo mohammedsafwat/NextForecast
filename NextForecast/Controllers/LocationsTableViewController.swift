@@ -7,11 +7,20 @@
 //
 
 import UIKit
+import GooglePlacesAutocomplete
+import CoreLocation
 
-class LocationsTableViewController: UITableViewController {
+class LocationsTableViewController: UITableViewController, WeatherDataManagerDelegate {
     
     var savedLocations : [LocationWeatherData]! = []
-
+    let gpaViewController = GooglePlacesAutocomplete(
+        apiKey: AppSharedData.sharedInstance.googlePlacesAPIKey,
+        placeType: .All
+    )
+    var weatherDataManger : WeatherDataManager! = WeatherDataManager()
+    var addingLocationInProgress : Bool!
+    var errorMessageDidAppear : Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Locations"
@@ -21,7 +30,14 @@ class LocationsTableViewController: UITableViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        gpaViewController.placeDelegate = self
+        weatherDataManger.weatherDataManagerDelegate = self
+        addingLocationInProgress = false
+        errorMessageDidAppear = false
         createNavigationBarRightAndLeftbuttons()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         reloadSavedLocations()
     }
     
@@ -36,8 +52,14 @@ class LocationsTableViewController: UITableViewController {
     }
     
     func reloadSavedLocations() {
-        savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
-        tableView.reloadData()
+        ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(tableView, statusText: "Loading locations..")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            self.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+                ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.tableView)
+            })
+        })
     }
     
     func closeIconButtonPressed(sender : UIButton!) {
@@ -65,7 +87,7 @@ class LocationsTableViewController: UITableViewController {
         return 77
     }
 
-      override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var locationsTableViewCell : LocationsTableViewCell? = tableView.dequeueReusableCellWithIdentifier("LocationsTableViewCell") as? LocationsTableViewCell
         if(locationsTableViewCell == nil)
         {
@@ -87,4 +109,92 @@ class LocationsTableViewController: UITableViewController {
         return locationsTableViewCell!
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if(editingStyle == .Delete)
+        {
+            
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        var footerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        footerView.contentView.backgroundColor = UIColor.whiteColor()
+        var addIconImage : UIImage! = UIImage(named: "AddIcon")
+        var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        addLocationButton.setBackgroundImage(addIconImage, forState: .Normal)
+        addLocationButton.center.x = footerView.center.x
+        addLocationButton.addTarget(self, action: "addLocationButtonPressed:", forControlEvents: .TouchUpInside)
+        footerView.addSubview(addLocationButton)
+    }
+    
+    func addLocationButtonPressed(sender : UIButton!) {
+        presentViewController(gpaViewController, animated: true, completion: nil)
+    }
+    
+    func propagateParsedWeatherData(weatherData: LocationWeatherData!, error: NSError!) {
+        if(error == nil)
+        {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        else
+        {
+            if(!errorMessageDidAppear)
+            {
+                displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: nil)
+                errorMessageDidAppear = true
+            }
+        }
+        ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
+    }
 }
+
+extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
+    func placeSelected(place: Place) {
+        place.getDetails { details in
+            var placeDetails : PlaceDetails = details
+            var location : LocationWeatherData = LocationWeatherData()
+            location.name = placeDetails.name
+            location.longitude = Float(placeDetails.longitude)
+            location.latitude = Float(placeDetails.latitude)
+            var locationCoordinates : CLLocation = CLLocation(latitude: placeDetails.latitude, longitude: placeDetails.longitude)
+            ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.view, statusText: "Adding new location..")
+            self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: location.name)
+        }
+        
+    }
+    
+    func placeViewClosed() {
+        if(!addingLocationInProgress)
+        {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        else
+        {
+            displayAlertViewWithMessage("Please wait, adding new location is in progress..", otherButtonTitles: nil)
+        }
+    }
+    
+    //Alert Views and HUD Views methods
+    //Create and Alert View with a custom message
+    func displayAlertViewWithMessage(alertViewMessage : String!, otherButtonTitles : String!) {
+        let alertController = UIAlertController(title: "Error!", message: alertViewMessage, preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+}
+

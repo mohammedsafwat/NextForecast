@@ -25,7 +25,7 @@ class SideMenuViewController: UITableViewController {
     }
 
     override func viewDidAppear(animated: Bool) {
-
+        reloadSavedLocations()
     }
     
     func reloadSavedLocations() {
@@ -59,7 +59,7 @@ class SideMenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 65
+        return 25
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -105,10 +105,6 @@ class SideMenuViewController: UITableViewController {
             sideMenuTableViewCell?.currentLocationIndicatorImageView.hidden = false
         }
         return sideMenuTableViewCell!
-    }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func addLocationButtonPressed(sender : UIButton!) {
