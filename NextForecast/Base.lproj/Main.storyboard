@@ -901,7 +901,24 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dr-ki-jp9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="2185"/>
+            <point key="canvasLocation" x="465" y="2214.75"/>
+        </scene>
+        <!--Locations Table View Controller-->
+        <scene sceneID="8YG-dW-udN">
+            <objects>
+                <tableViewController id="2eg-b6-OJi" customClass="LocationsTableViewController" customModule="NextForecast" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aCp-fu-NIK">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="2eg-b6-OJi" id="l9O-oZ-tgK"/>
+                            <outlet property="delegate" destination="2eg-b6-OJi" id="PAH-MY-EPB"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RWZ-Rh-mdC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1128" y="2212.5"/>
         </scene>
     </scenes>
     <resources>

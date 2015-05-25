@@ -1,5 +1,5 @@
 //
-//  LocationDataManager.swift
+//  LocationManager.swift
 //  NextForecast
 //
 //  Created by Mohammad Safwat on 5/24/15.
@@ -9,9 +9,9 @@
 import UIKit
 import CoreLocation
 
-private let _singletonInstance = LocationDataManager()
+private let _singletonInstance = LocationManager()
 
-class LocationDataManager: NSObject {
+class LocationManager: NSObject {
     var locationManager : CLLocationManager!
     var authorizationStatus : CLAuthorizationStatus!
     
@@ -51,7 +51,7 @@ class LocationDataManager: NSObject {
         return true
     }
     
-    class var sharedInstance : LocationDataManager {
+    class var sharedInstance : LocationManager {
         return _singletonInstance
     }
 }

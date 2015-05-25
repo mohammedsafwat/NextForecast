@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3A1ED6271B1278DD00A4BC15 /* ENSideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1ED6251B1278DD00A4BC15 /* ENSideMenu.swift */; };
 		3A1ED6281B1278DD00A4BC15 /* ENSideMenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1ED6261B1278DD00A4BC15 /* ENSideMenuNavigationController.swift */; };
+		3A1ED62A1B12F98700A4BC15 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1ED6291B12F98700A4BC15 /* LocationsTableViewController.swift */; };
+		3A1ED62C1B1307A500A4BC15 /* LocationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1ED62B1B1307A500A4BC15 /* LocationsTableViewCell.xib */; };
+		3A1ED62E1B13083B00A4BC15 /* LocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1ED62D1B13083B00A4BC15 /* LocationsTableViewCell.swift */; };
 		3A3FCE9B1B070C21007A037B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3FCE9A1B070C21007A037B /* CoreLocation.framework */; };
 		3A3FCE9E1B071944007A037B /* LocationWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */; };
 		3A3FCEA01B071E32007A037B /* SingleDayWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */; };
@@ -38,7 +41,7 @@
 		3A9EF6DD1B11CD6100F0703F /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6D91B11CD6100F0703F /* ProximaNova-Light.otf */; };
 		3A9EF6DE1B11CD6100F0703F /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6DA1B11CD6100F0703F /* ProximaNova-Regular.otf */; };
 		3A9EF6DF1B11CD6100F0703F /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6DB1B11CD6100F0703F /* ProximaNova-Semibold.otf */; };
-		3A9EF6E11B11EA2500F0703F /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6E01B11EA2500F0703F /* LocationDataManager.swift */; };
+		3A9EF6E11B11EA2500F0703F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6E01B11EA2500F0703F /* LocationManager.swift */; };
 		3A9EF6E41B11FC1200F0703F /* ActivityIndicatorUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6E31B11FC1200F0703F /* ActivityIndicatorUtility.swift */; };
 		3A9EF6E61B124A0900F0703F /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9EF6E51B124A0900F0703F /* SideMenuViewController.swift */; };
 		3A9EF6E81B124B0F00F0703F /* SideMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A9EF6E71B124B0F00F0703F /* SideMenuTableViewCell.xib */; };
@@ -59,6 +62,9 @@
 /* Begin PBXFileReference section */
 		3A1ED6251B1278DD00A4BC15 /* ENSideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ENSideMenu.swift; sourceTree = "<group>"; };
 		3A1ED6261B1278DD00A4BC15 /* ENSideMenuNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ENSideMenuNavigationController.swift; sourceTree = "<group>"; };
+		3A1ED6291B12F98700A4BC15 /* LocationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsTableViewController.swift; sourceTree = "<group>"; };
+		3A1ED62B1B1307A500A4BC15 /* LocationsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationsTableViewCell.xib; sourceTree = "<group>"; };
+		3A1ED62D1B13083B00A4BC15 /* LocationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsTableViewCell.swift; sourceTree = "<group>"; };
 		3A3FCE9A1B070C21007A037B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationWeatherData.swift; sourceTree = "<group>"; };
 		3A3FCE9F1B071E32007A037B /* SingleDayWeatherData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleDayWeatherData.swift; sourceTree = "<group>"; };
@@ -99,7 +105,7 @@
 		3A9EF6D91B11CD6100F0703F /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
 		3A9EF6DA1B11CD6100F0703F /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
 		3A9EF6DB1B11CD6100F0703F /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
-		3A9EF6E01B11EA2500F0703F /* LocationDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
+		3A9EF6E01B11EA2500F0703F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3A9EF6E31B11FC1200F0703F /* ActivityIndicatorUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorUtility.swift; sourceTree = "<group>"; };
 		3A9EF6E51B124A0900F0703F /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		3A9EF6E71B124B0F00F0703F /* SideMenuTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuTableViewCell.xib; sourceTree = "<group>"; };
@@ -139,7 +145,7 @@
 			path = SideMenu;
 			sourceTree = "<group>";
 		};
-		3A3FCE9C1B07191F007A037B /* Models */ = {
+		3A3FCE9C1B07191F007A037B /* ModelClasses */ = {
 			isa = PBXGroup;
 			children = (
 				3A3FCE9D1B071944007A037B /* LocationWeatherData.swift */,
@@ -148,9 +154,11 @@
 				3A3FCEA51B073051007A037B /* AppSharedData.swift */,
 				3A9EF6B21B0F273300F0703F /* DatabaseManager.swift */,
 				3A9EF6D31B1120C200F0703F /* ForecastTableViewCell.swift */,
-				3A9EF6E01B11EA2500F0703F /* LocationDataManager.swift */,
+				3A9EF6E01B11EA2500F0703F /* LocationManager.swift */,
 				3A9EF6E91B124C9D00F0703F /* SideMenuTableViewCell.swift */,
+				3A1ED62D1B13083B00A4BC15 /* LocationsTableViewCell.swift */,
 			);
+			name = ModelClasses;
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -162,14 +170,16 @@
 			path = BridgingHeader;
 			sourceTree = "<group>";
 		};
-		3A6947DA1B061B95006EF6BD /* Controllers */ = {
+		3A6947DA1B061B95006EF6BD /* ControllerClasses */ = {
 			isa = PBXGroup;
 			children = (
 				3A6947DF1B061BBE006EF6BD /* SettingsViewController.swift */,
 				3A6947DD1B061BB4006EF6BD /* ForecastViewController.swift */,
 				3A6947DB1B061BAB006EF6BD /* TodayViewController.swift */,
 				3A9EF6E51B124A0900F0703F /* SideMenuViewController.swift */,
+				3A1ED6291B12F98700A4BC15 /* LocationsTableViewController.swift */,
 			);
+			name = ControllerClasses;
 			path = Controllers;
 			sourceTree = "<group>";
 		};
@@ -202,8 +212,8 @@
 				3A9EF6D01B111C4500F0703F /* NibFiles */,
 				3A9EF6B41B0F93A500F0703F /* SQLiteDatabase */,
 				3A3FCEA31B072693007A037B /* BridgingHeader */,
-				3A3FCE9C1B07191F007A037B /* Models */,
-				3A6947DA1B061B95006EF6BD /* Controllers */,
+				3A3FCE9C1B07191F007A037B /* ModelClasses */,
+				3A6947DA1B061B95006EF6BD /* ControllerClasses */,
 				3A9329541B04E17B0021B1F0 /* AppDelegate.swift */,
 				3A93295D1B04E17B0021B1F0 /* Images.xcassets */,
 				3A9329521B04E17B0021B1F0 /* Supporting Files */,
@@ -272,6 +282,7 @@
 				3A93295F1B04E17B0021B1F0 /* LaunchScreen.xib */,
 				3A9EF6D11B111C7800F0703F /* ForecastTableViewCell.xib */,
 				3A9EF6E71B124B0F00F0703F /* SideMenuTableViewCell.xib */,
+				3A1ED62B1B1307A500A4BC15 /* LocationsTableViewCell.xib */,
 			);
 			path = NibFiles;
 			sourceTree = "<group>";
@@ -417,6 +428,7 @@
 				3A9EF6E81B124B0F00F0703F /* SideMenuTableViewCell.xib in Resources */,
 				3A9EF6DF1B11CD6100F0703F /* ProximaNova-Semibold.otf in Resources */,
 				3A9EF6DE1B11CD6100F0703F /* ProximaNova-Regular.otf in Resources */,
+				3A1ED62C1B1307A500A4BC15 /* LocationsTableViewCell.xib in Resources */,
 				3A9EF6CF1B10FA1800F0703F /* nextforecast.sql in Resources */,
 				3A93295C1B04E17B0021B1F0 /* Main.storyboard in Resources */,
 				3A9EF6DD1B11CD6100F0703F /* ProximaNova-Light.otf in Resources */,
@@ -496,6 +508,7 @@
 				3A1ED6281B1278DD00A4BC15 /* ENSideMenuNavigationController.swift in Sources */,
 				3A3FCEA01B071E32007A037B /* SingleDayWeatherData.swift in Sources */,
 				3A9EF6CA1B0FABDD00F0703F /* FMDatabaseQueue.m in Sources */,
+				3A1ED62A1B12F98700A4BC15 /* LocationsTableViewController.swift in Sources */,
 				3A9EF6CB1B0FABDD00F0703F /* FMResultSet.m in Sources */,
 				3A9329551B04E17B0021B1F0 /* AppDelegate.swift in Sources */,
 				3A9EF6E61B124A0900F0703F /* SideMenuViewController.swift in Sources */,
@@ -508,8 +521,9 @@
 				3A9EF6E41B11FC1200F0703F /* ActivityIndicatorUtility.swift in Sources */,
 				3A9EF6C91B0FABDD00F0703F /* FMDatabasePool.m in Sources */,
 				3A9EF6B91B0FA79C00F0703F /* FMDatabaseAdditionsVariadic.swift in Sources */,
+				3A1ED62E1B13083B00A4BC15 /* LocationsTableViewCell.swift in Sources */,
 				3A9EF6EA1B124C9D00F0703F /* SideMenuTableViewCell.swift in Sources */,
-				3A9EF6E11B11EA2500F0703F /* LocationDataManager.swift in Sources */,
+				3A9EF6E11B11EA2500F0703F /* LocationManager.swift in Sources */,
 				3A9EF6B31B0F273300F0703F /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

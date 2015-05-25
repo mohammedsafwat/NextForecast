@@ -12,11 +12,11 @@ import MBProgressHUD
 private let _singletonInstance = ActivityIndicatorUtility()
 
 class ActivityIndicatorUtility: NSObject {
-    
+    var activityIndicator : MBProgressHUD!
     //Create HUD View
     func startActivityIndicatorInViewWithStatusText(view : UIView, statusText : String) {
-        var activityIndicator : MBProgressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        activityIndicator.labelText = statusText;
+        activityIndicator = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        activityIndicator.labelText = statusText
         activityIndicator.userInteractionEnabled = false
     }
     

@@ -79,9 +79,9 @@ class SideMenuViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         var footerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
-        
+        footerView.contentView.backgroundColor = UIColor.whiteColor()
         var addIconImage : UIImage! = UIImage(named: "AddIcon")
-        var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 65))
+        var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         addLocationButton.setBackgroundImage(addIconImage, forState: .Normal)
         addLocationButton.center.x = footerView.center.x
         footerView.addSubview(addLocationButton)

@@ -37,7 +37,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         self.title = "Today"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
-        LocationDataManager.sharedInstance.locationManager.delegate = self
+        LocationManager.sharedInstance.locationManager.delegate = self
         locationUpdated = false
         errorMessageDidAppear = false
         sideMenuOpened = false
@@ -101,12 +101,12 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     func startLocationUpdates() {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(view, statusText: "Updating current location..")
         
-        let startLocationUpdatesSuccessful : Bool = LocationDataManager.sharedInstance.startLocationUpdates()
+        let startLocationUpdatesSuccessful : Bool = LocationManager.sharedInstance.startLocationUpdates()
         
         if(!startLocationUpdatesSuccessful)
         {
             var title : String!
-            title = LocationDataManager.sharedInstance.authorizationStatus == .Denied ? "Location services are off" : "Background location is not enabled"
+            title = LocationManager.sharedInstance.authorizationStatus == .Denied ? "Location services are off" : "Background location is not enabled"
             var message : String = "To use background location you must turn on 'Always' in the Location Services Settings"
             displayAlertViewWithMessage(message, otherButtonTitles: "Settings")
         }
@@ -120,7 +120,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             location = locations.last as CLLocation
             print("location.longitude = %f",location.coordinate.longitude)
             print("location.latitude = %f",location.coordinate.latitude)
-            LocationDataManager.sharedInstance.locationManager.stopUpdatingLocation()
+            LocationManager.sharedInstance.locationManager.stopUpdatingLocation()
             ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
             locationUpdated = true
             AppSharedData.sharedInstance.currentLocationCoordinates = location
@@ -130,7 +130,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways {
-            LocationDataManager.sharedInstance.locationManager.startUpdatingLocation()
+            LocationManager.sharedInstance.locationManager.startUpdatingLocation()
         }
     }
     
