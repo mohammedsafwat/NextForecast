@@ -32,7 +32,7 @@ class LocationManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
-    func requestAlwaysAuthorization() -> Bool {
+    private func requestAlwaysAuthorization() -> Bool {
         var error : NSError! = NSError()
         
         authorizationStatus = CLLocationManager.authorizationStatus()

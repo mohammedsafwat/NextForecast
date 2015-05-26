@@ -36,23 +36,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         createSideMenu()
         DatabaseManager.sharedInstance.initializeDB()
         //DatabaseManager.sharedInstance.clearDatabase()
-        updateCurrentSavedLocations()
-        
-        
-        //Get last selected location from database, if there is no
-        //last selected location saved, load the current location's weather data
-        var lastSelectedLocation : LocationWeatherData = DatabaseManager.sharedInstance.getLastSelectedLocation()
-        if(lastSelectedLocation.name == "")
-        {
-            canUpdateCurrentLocation = true
-            startLocationUpdates()
-        }
-        else
-        {
-            canUpdateCurrentLocation = false
-            updateUIWithLocationWeatherData(lastSelectedLocation)
-            AppSharedData.sharedInstance.currentDisplayingLocation = lastSelectedLocation
-        }
+        //updateCurrentSavedLocations()
     }
     
     func initValues() {
@@ -63,11 +47,37 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         locationUpdated = false
         errorMessageDidAppear = false
         sideMenuOpened = false
+        canUpdateCurrentLocation = false
     }
 
     override func viewDidAppear(animated: Bool) {
         updateCurrentSavedLocations()
+        displayLastSelectedLocation()
         sideMenuContainer.hideSideMenu()
+    }
+    
+    func displayLastSelectedLocation() {
+        //Get last selected location from database, if there is no
+        //last selected location saved, load the current location's weather data
+        var lastSelectedLocation : LocationWeatherData = DatabaseManager.sharedInstance.getLastSelectedLocation()
+        //Last selected location from DB should have a name. Last selected location with
+        //no name means that the returned is an empty LocationWeatherData object.
+        //So we reload the data using the current location.
+        
+        //If the last selected location is the current location, we update its data
+        //because the user may change his location.
+        if(lastSelectedLocation.name == "" || (lastSelectedLocation.isCurrentLocation == true))
+        {
+            canUpdateCurrentLocation = true
+            locationUpdated = false
+            startLocationUpdates()
+        }
+        else
+        {
+            canUpdateCurrentLocation = false
+            updateUIWithLocationWeatherData(lastSelectedLocation)
+            AppSharedData.sharedInstance.currentDisplayingLocation = lastSelectedLocation
+        }
     }
     
     func createSideMenu() {
@@ -89,17 +99,18 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     func sideMenuButtonPressed(sender : UIButton!) {
+        sideMenuViewController.reloadSavedLocations()
         if(!sideMenuOpened)
         {
             sideMenuContainer.showSideMenu()
             sideMenuOpened = true
+            sideMenuViewController.selectCurrentDisplayedLocationRow(AppSharedData.sharedInstance.currentDisplayingLocation)
         }
         else
         {
             sideMenuContainer.hideSideMenu()
             sideMenuOpened = false
         }
-        sideMenuViewController.reloadSavedLocations()
     }
     
     // MARK: - ENSideMenu Delegate
@@ -136,8 +147,8 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         {
             var location : CLLocation!
             location = locations.last as CLLocation
-            print("location.longitude = %f",location.coordinate.longitude)
-            print("location.latitude = %f",location.coordinate.latitude)
+            //print("location.longitude = %f",location.coordinate.longitude)
+            //print("location.latitude = %f",location.coordinate.latitude)
             LocationManager.sharedInstance.locationManager.stopUpdatingLocation()
             ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
             locationUpdated = true
@@ -249,11 +260,11 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     //MARK : - SideMenuDelegate
-    func didSelectLocation(selectedLocationWeatherData: LocationWeatherData) {
-        DatabaseManager.sharedInstance.saveLastSelectedLocation(selectedLocationWeatherData.data())
-        updateUIWithLocationWeatherData(selectedLocationWeatherData)
-        AppSharedData.sharedInstance.currentDisplayingLocation = selectedLocationWeatherData
+    func didSelectLocationFromSideMenu(selectedLocationWeatherData: LocationWeatherData) {
         sideMenuContainer.hideSideMenu()
+        DatabaseManager.sharedInstance.saveLastSelectedLocation(selectedLocationWeatherData.data())
+        AppSharedData.sharedInstance.currentDisplayingLocation = selectedLocationWeatherData
+        displayLastSelectedLocation()
     }
     
     //Alert Views and HUD Views methods

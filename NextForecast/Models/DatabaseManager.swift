@@ -47,7 +47,7 @@ class DatabaseManager: NSObject {
         return true
     }
     
-    func openDatabase() -> Bool {
+    private func openDatabase() -> Bool {
         db = FMDatabase(path:dbFilePath)
         
         if(db.open())
@@ -57,7 +57,7 @@ class DatabaseManager: NSObject {
         return false
     }
     
-    func closeDatabase() {
+    private func closeDatabase() {
         db.close()
     }
     

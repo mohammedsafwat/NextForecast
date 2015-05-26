@@ -73,7 +73,10 @@ class WeatherDataManager: NSObject {
                                                                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                                     {
                                                                         DatabaseManager.sharedInstance.saveLocation(self.locationWeatherData.locationID, locationData:self.locationWeatherData.data())
+                                                                                                                                                DatabaseManager.sharedInstance.saveLastSelectedLocation(self.locationWeatherData.data())
+                                                                        
                                                                         AppSharedData.sharedInstance.currentDisplayingLocation = self.locationWeatherData
+
                                                                         weatherDataManagerDelegate.propagateParsedWeatherData(self.locationWeatherData, error: nil)
                                                                     }
                                                                 }
@@ -107,7 +110,7 @@ class WeatherDataManager: NSObject {
                         }
     }
     
-    func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  LocationWeatherData{
+    private func parseWeatherData(JSON : AnyObject?, forecastType : ForecastType) ->  LocationWeatherData{
         
         if(JSON != nil)
         {
@@ -280,7 +283,7 @@ class WeatherDataManager: NSObject {
         return locationWeatherData
     }
     
-    func getLocationIDFromGooglePlacesLocationData(JSON : AnyObject?) -> String! {
+    private func getLocationIDFromGooglePlacesLocationData(JSON : AnyObject?) -> String! {
         var locationID : String! = ""
         
         var JSONData : NSDictionary! = JSON as NSDictionary
@@ -292,7 +295,7 @@ class WeatherDataManager: NSObject {
         return locationID
     }
     
-    func getDayNameFromTimeStamp(var timeStamp : NSTimeInterval!) -> String {
+    private func getDayNameFromTimeStamp(var timeStamp : NSTimeInterval!) -> String {
         let timeStampAsDate = NSDate(timeIntervalSince1970: timeStamp)
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -302,7 +305,7 @@ class WeatherDataManager: NSObject {
         return dayNameFromTimeStamp
     }
     
-    func getWeatherIconName(var weatherConditionId : Int!) -> String {
+    private func getWeatherIconName(var weatherConditionId : Int!) -> String {
         var weatherIconName : String!
         if(weatherConditionId >= 200 && weatherConditionId <= 232) {
             weatherIconName = "Thunder"
@@ -325,7 +328,7 @@ class WeatherDataManager: NSObject {
         return "WeatherIcon_" + weatherIconName
     }
     
-    func getWindDirection(var windDegree : Float!) -> WindDirection {
+    private func getWindDirection(var windDegree : Float!) -> WindDirection {
         var windDirection : WindDirection!
         if(windDegree < 0)
         {

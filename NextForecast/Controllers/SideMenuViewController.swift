@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SideMenuDelegate {
-    func didSelectLocation(locationWeatherData : LocationWeatherData)
+    func didSelectLocationFromSideMenu(locationWeatherData : LocationWeatherData)
 }
 
 class SideMenuViewController: UITableViewController {
@@ -26,7 +26,7 @@ class SideMenuViewController: UITableViewController {
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         self.clearsSelectionOnViewWillAppear = false
-
+        //reloadSavedLocations()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -36,6 +36,19 @@ class SideMenuViewController: UITableViewController {
     func reloadSavedLocations() {
         savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
         tableView.reloadData()
+    }
+    
+    func selectCurrentDisplayedLocationRow(currentDisplayedLocation : LocationWeatherData) {
+        var rowIndex : Int = 0
+        for(var i : Int = 0; i < self.savedLocations.count; i++) {
+            if(AppSharedData.sharedInstance.currentDisplayingLocation.name == self.savedLocations[i].name)
+            {
+                rowIndex = i;
+            }
+        }
+        tableView.beginUpdates()
+        tableView.selectRowAtIndexPath(NSIndexPath(forRow: rowIndex, inSection: 0), animated: true, scrollPosition: .Top)
+        tableView.endUpdates()
     }
     
     override func didReceiveMemoryWarning() {
@@ -114,9 +127,12 @@ class SideMenuViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var selectedLocation : LocationWeatherData = savedLocations[indexPath.row]
-        if(self.sideMenuDelegate != nil)
+        if(!(selectedLocation.name == AppSharedData.sharedInstance.currentDisplayingLocation.name))
         {
-            sideMenuDelegate?.didSelectLocation(selectedLocation)
+            if(self.sideMenuDelegate != nil)
+            {
+                sideMenuDelegate?.didSelectLocationFromSideMenu(selectedLocation)
+            }
         }
     }
     

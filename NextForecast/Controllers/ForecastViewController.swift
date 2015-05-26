@@ -20,9 +20,6 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         initValues()
-        
-        updateCurrentSavedLocations()
-        updateForecastWeatherData()
     }
     
     func initValues() {
@@ -45,15 +42,8 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(animated: Bool) {
         //Update the current saved locations array in AppSharedData
         updateCurrentSavedLocations()
-        var currentSelectedLocation : LocationWeatherData = getLocationWeatherDataForCurrentSelectedLocation()
-        if(currentSelectedLocation.name != "")
-        {
-            self.title = currentSelectedLocation.name.componentsSeparatedByString(",")[0]
-        }
-        else
-        {
-            self.title = "Forecast"
-        }
+        updateViewTitleWithCurrentDisplayingLocationName()
+        updateForecastWeatherData()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -64,14 +54,25 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
     }
     
+    func updateViewTitleWithCurrentDisplayingLocationName() {
+        var currentDisplayingLocation : LocationWeatherData = AppSharedData.sharedInstance.currentDisplayingLocation
+        if(currentDisplayingLocation.name != "")
+        {
+            self.title = currentDisplayingLocation.name.componentsSeparatedByString(",")[0]
+        }
+        else
+        {
+            self.title = "Forecast"
+        }
+    }
+    
     func updateForecastWeatherData() {
         ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.forecastTableView, statusText: "Updating forecast data..")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-            var locationWeatherData : LocationWeatherData = self.getLocationWeatherDataForCurrentSelectedLocation()
+            var locationWeatherData : LocationWeatherData = AppSharedData.sharedInstance.currentDisplayingLocation
             self.forecastWeatherData = locationWeatherData.forecastWeatherData
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.forecastTableView)
-                
                 if(self.forecastWeatherData.count > 0)
                 {
                     self.forecastTableView.reloadData()
@@ -82,18 +83,6 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             })
         })
-    }
-    
-    func getLocationWeatherDataForCurrentSelectedLocation() -> LocationWeatherData {
-        var currentSelectedLocationID : String! = AppSharedData.sharedInstance.currentDisplayingLocation.locationID
-        var currentSelectedLocationWeatherData : LocationWeatherData = LocationWeatherData()
-        for locationWeatherData : LocationWeatherData in AppSharedData.sharedInstance.savedLocations {
-            if(locationWeatherData.locationID == currentSelectedLocationID)
-            {
-                currentSelectedLocationWeatherData = locationWeatherData
-            }
-        }
-        return currentSelectedLocationWeatherData
     }
     
     // MARK: - TableViewDelegates
