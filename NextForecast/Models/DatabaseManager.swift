@@ -85,36 +85,48 @@ class DatabaseManager: NSObject {
         if(fetchCountQuery == 0)
         {
             let addSuccessful = db.executeUpdate("INSERT INTO Locations(locationID,locationData) VALUES (?,?)", locationID, locationData)
-            if(addSuccessful)
+            closeDatabase()
+            if(!addSuccessful)
             {
-                closeDatabase()
-                return true
+                return false
             }
         }
         else
         {
             //Update the location data only if location exists in database
             let updateSuccessful = db.executeUpdate("UPDATE Locations SET locationData=? WHERE locationID=?", locationData, locationID)
-            if(updateSuccessful)
+            closeDatabase()
+            if(!updateSuccessful)
             {
-                closeDatabase()
-                return true
+                return false
             }
         }
-        return false
+        return true
     }
     
-    func clearDatabase() -> Bool {
+    func deleteLocation(locationID : String) -> Bool {
+        openDatabase()
+        
+        let deleteQuery = db.executeUpdate("DELETE FROM Locations WHERE locationID=?", locationID)
+        closeDatabase()
+        if(!deleteQuery)
+        {
+            return false
+        }
+        return true
+    }
+    
+    func deleteAllLocations() -> Bool {
         openDatabase()
         let deleteQuery = "DELETE FROM Locations"
         
         let deleteSuccessful = db.executeUpdate(deleteQuery, withArgumentsInArray: [])
-        if(deleteSuccessful)
+        closeDatabase()
+        if(!deleteSuccessful)
         {
-            closeDatabase()
-            return true
+            return false
         }
-        return false
+        return true
     }
     
     func getLastSelectedLocation() -> LocationWeatherData {
@@ -137,22 +149,22 @@ class DatabaseManager: NSObject {
         if(fetchCountQuery == 0)
         {
             let addSuccessful = db.executeUpdate("INSERT INTO LastSelectedLocation(locationData) VALUES (?)", locationData)
-            if(addSuccessful)
+            closeDatabase()
+            if(!addSuccessful)
             {
-                closeDatabase()
-                return true
+                return false
             }
         }
         else
         {
             let updateSuccessful = db.executeUpdate("UPDATE LastSelectedLocation SET locationData=?", locationData)
-            if(updateSuccessful)
+            closeDatabase()
+            if(!updateSuccessful)
             {
-                closeDatabase()
-                return true
+                return false
             }
         }
-        return false
+        return true
     }
     
     class var sharedInstance : DatabaseManager {

@@ -124,7 +124,37 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if(editingStyle == .Delete)
         {
-            
+            var locationToBeDeleted : LocationWeatherData = savedLocations[indexPath.row]
+            DatabaseManager.sharedInstance.deleteLocation(locationToBeDeleted.locationID)
+            //If it's the same location that we are currently displaying
+            if(locationToBeDeleted.locationID == AppSharedData.sharedInstance.currentDisplayingLocation.locationID)
+            {
+                if(savedLocations.count > 1) {
+                    var alternativeLocation : LocationWeatherData!
+                    if(indexPath.row == 0)
+                    {
+                        alternativeLocation = savedLocations[indexPath.row + 1]
+                    }
+                    else
+                    {
+                        alternativeLocation = savedLocations[indexPath.row - 1]
+                    }
+                    DatabaseManager.sharedInstance.saveLastSelectedLocation(alternativeLocation.data())
+                    AppSharedData.sharedInstance.currentDisplayingLocation = alternativeLocation
+                }
+                else if(savedLocations.count == 1) {
+                    var emptyLocation : LocationWeatherData = LocationWeatherData()
+                    DatabaseManager.sharedInstance.saveLastSelectedLocation(emptyLocation.data())
+                    AppSharedData.sharedInstance.currentDisplayingLocation = emptyLocation
+                }
+            }
+            savedLocations.removeAtIndex(indexPath.row)
+            //Delete table row
+            tableView.beginUpdates()
+            let indexPathsToDelete : NSMutableArray = NSMutableArray()
+            indexPathsToDelete.addObject(indexPath)
+            tableView.deleteRowsAtIndexPaths(indexPathsToDelete, withRowAnimation: UITableViewRowAnimation.Fade)
+            tableView.endUpdates()
         }
     }
     

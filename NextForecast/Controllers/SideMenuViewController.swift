@@ -39,16 +39,19 @@ class SideMenuViewController: UITableViewController {
     }
     
     func selectCurrentDisplayedLocationRow(currentDisplayedLocation : LocationWeatherData) {
-        var rowIndex : Int = 0
-        for(var i : Int = 0; i < self.savedLocations.count; i++) {
-            if(AppSharedData.sharedInstance.currentDisplayingLocation.name == self.savedLocations[i].name)
-            {
-                rowIndex = i;
+        if(self.savedLocations.count > 0)
+        {
+            var rowIndex : Int = 0
+            for(var i : Int = 0; i < self.savedLocations.count; i++) {
+                if(AppSharedData.sharedInstance.currentDisplayingLocation.name == self.savedLocations[i].name)
+                {
+                    rowIndex = i;
+                }
             }
+            tableView.beginUpdates()
+            tableView.selectRowAtIndexPath(NSIndexPath(forRow: rowIndex, inSection: 0), animated: true, scrollPosition: .Top)
+            tableView.endUpdates()
         }
-        tableView.beginUpdates()
-        tableView.selectRowAtIndexPath(NSIndexPath(forRow: rowIndex, inSection: 0), animated: true, scrollPosition: .Top)
-        tableView.endUpdates()
     }
     
     override func didReceiveMemoryWarning() {

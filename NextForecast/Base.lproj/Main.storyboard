@@ -5,6 +5,11 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="ProximaNova-Semibold.otf">
+            <string>ProximaNova-Semibold</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Today-->
         <scene sceneID="hNz-n2-bh7">
@@ -813,7 +818,71 @@
                     <view key="view" contentMode="scaleToFill" id="28j-sz-oWz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NavigationBarColoredLine" translatesAutoresizingMaskIntoConstraints="NO" id="kxx-CE-D86">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="Zmd-4d-iZV"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Zmd-4d-iZV"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Zmd-4d-iZV"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GENERAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vzO-Cc-Ykd">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                                <color key="textColor" red="0.1843137255" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="kxx-CE-D86" secondAttribute="centerX" id="Hus-Qj-cmB"/>
+                            <constraint firstItem="kxx-CE-D86" firstAttribute="top" secondItem="WkX-VZ-Ccd" secondAttribute="bottom" id="Olw-gc-9sT"/>
+                            <constraint firstItem="vzO-Cc-Ykd" firstAttribute="top" secondItem="WkX-VZ-Ccd" secondAttribute="bottom" constant="8" id="WhF-gI-2kn">
+                                <variation key="heightClass=regular-widthClass=compact" constant="24"/>
+                            </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="kxx-CE-D86" secondAttribute="trailing" constant="-16" id="qna-Ic-E2C"/>
+                            <constraint firstItem="kxx-CE-D86" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="-16" id="sZX-FR-B2j"/>
+                            <constraint firstItem="vzO-Cc-Ykd" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" id="uIR-J8-Vfy">
+                                <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                            </constraint>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="kxx-CE-D86"/>
+                                <exclude reference="vzO-Cc-Ykd"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="Hus-Qj-cmB"/>
+                                <exclude reference="Olw-gc-9sT"/>
+                                <exclude reference="qna-Ic-E2C"/>
+                                <exclude reference="sZX-FR-B2j"/>
+                                <exclude reference="WhF-gI-2kn"/>
+                                <exclude reference="uIR-J8-Vfy"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="kxx-CE-D86"/>
+                                <include reference="vzO-Cc-Ykd"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="Hus-Qj-cmB"/>
+                                <include reference="Olw-gc-9sT"/>
+                                <include reference="qna-Ic-E2C"/>
+                                <include reference="sZX-FR-B2j"/>
+                                <include reference="WhF-gI-2kn"/>
+                                <include reference="uIR-J8-Vfy"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="fVj-8o-dve"/>
                 </viewController>
