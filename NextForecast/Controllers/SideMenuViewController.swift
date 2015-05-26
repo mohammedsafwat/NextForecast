@@ -8,9 +8,14 @@
 
 import UIKit
 
-class SideMenuViewController: UITableViewController {
+protocol SideMenuDelegate {
+    func didSelectLocation(locationWeatherData : LocationWeatherData)
+}
 
+class SideMenuViewController: UITableViewController {
+    
     var savedLocations : [LocationWeatherData]! = []
+    var sideMenuDelegate : SideMenuDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,7 +113,11 @@ class SideMenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        var selectedLocation : LocationWeatherData = savedLocations[indexPath.row]
+        if(self.sideMenuDelegate != nil)
+        {
+            sideMenuDelegate?.didSelectLocation(selectedLocation)
+        }
     }
     
     func addLocationButtonPressed(sender : UIButton!) {

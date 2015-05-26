@@ -117,6 +117,44 @@ class DatabaseManager: NSObject {
         return false
     }
     
+    func getLastSelectedLocation() -> LocationWeatherData {
+        var lastSelectedLocation : LocationWeatherData! = LocationWeatherData()
+        openDatabase()
+        let mainQuery = "SELECT locationData FROM LastSelectedLocation"
+        let rsMain: FMResultSet? = db.executeQuery(mainQuery, withArgumentsInArray: [])
+        
+        while (rsMain!.next() == true) {
+            var locationData : NSData! = rsMain?.dataForColumn("locationData")
+            lastSelectedLocation = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as LocationWeatherData
+        }
+        closeDatabase()
+        return lastSelectedLocation
+    }
+    
+    func saveLastSelectedLocation(locationData : NSData) -> Bool {
+        openDatabase()
+        let fetchCountQuery = db.intForQuery("SELECT COUNT(*) FROM LastSelectedLocation", locationData)
+        if(fetchCountQuery == 0)
+        {
+            let addSuccessful = db.executeUpdate("INSERT INTO LastSelectedLocation(locationData) VALUES (?)", locationData)
+            if(addSuccessful)
+            {
+                closeDatabase()
+                return true
+            }
+        }
+        else
+        {
+            let updateSuccessful = db.executeUpdate("UPDATE LastSelectedLocation SET locationData=?", locationData)
+            if(updateSuccessful)
+            {
+                closeDatabase()
+                return true
+            }
+        }
+        return false
+    }
+    
     class var sharedInstance : DatabaseManager {
         return _singletonInstance
     }

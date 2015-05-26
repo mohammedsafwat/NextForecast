@@ -9,10 +9,11 @@
 import UIKit
 import CoreLocation
 
-class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate, ENSideMenuDelegate {
+class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherDataManagerDelegate, ENSideMenuDelegate, SideMenuDelegate {
 
     var weatherDataManager : WeatherDataManager!
     var locationUpdated : Bool!
+    var canUpdateCurrentLocation : Bool!
     var errorMessageDidAppear : Bool!
     var sideMenuContainer :ENSideMenu!
     var sideMenuViewController : SideMenuViewController!
@@ -38,8 +39,20 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         updateCurrentSavedLocations()
         
         
-        //Get saved last selected location from db, if not, load the current location
-        startLocationUpdates()
+        //Get last selected location from database, if there is no
+        //last selected location saved, load the current location's weather data
+        var lastSelectedLocation : LocationWeatherData = DatabaseManager.sharedInstance.getLastSelectedLocation()
+        if(lastSelectedLocation.name == "")
+        {
+            canUpdateCurrentLocation = true
+            startLocationUpdates()
+        }
+        else
+        {
+            canUpdateCurrentLocation = false
+            updateUIWithLocationWeatherData(lastSelectedLocation)
+            AppSharedData.sharedInstance.currentDisplayingLocation = lastSelectedLocation
+        }
     }
     
     func initValues() {
@@ -66,6 +79,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         
         var storyboard = UIStoryboard(name: "Main", bundle: nil)
         sideMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SideMenuViewController") as SideMenuViewController
+        sideMenuViewController.sideMenuDelegate = self
         sideMenuContainer = ENSideMenu(sourceView: self.view, menuViewController: sideMenuViewController, menuPosition: .Right)
         sideMenuContainer.delegate = self
         sideMenuContainer.menuWidth = 180
@@ -133,8 +147,11 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedAlways {
-            LocationManager.sharedInstance.locationManager.startUpdatingLocation()
+        if (status == .AuthorizedAlways){
+            if(canUpdateCurrentLocation == true)
+            {
+                LocationManager.sharedInstance.locationManager.startUpdatingLocation()
+            }
         }
     }
     
@@ -154,6 +171,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         if(error == nil)
         {
             updateUIWithLocationWeatherData(weatherData)
+            DatabaseManager.sharedInstance.saveLastSelectedLocation(weatherData.data())
         }
         else
         {
@@ -228,6 +246,14 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             windDirectionString = "SW"
         }
         todayWindDirectionValueLabel.text = windDirectionString
+    }
+    
+    //MARK : - SideMenuDelegate
+    func didSelectLocation(selectedLocationWeatherData: LocationWeatherData) {
+        DatabaseManager.sharedInstance.saveLastSelectedLocation(selectedLocationWeatherData.data())
+        updateUIWithLocationWeatherData(selectedLocationWeatherData)
+        AppSharedData.sharedInstance.currentDisplayingLocation = selectedLocationWeatherData
+        sideMenuContainer.hideSideMenu()
     }
     
     //Alert Views and HUD Views methods
