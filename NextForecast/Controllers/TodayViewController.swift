@@ -32,11 +32,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     override func viewDidLoad() {
         super.viewDidLoad()
         initValues()
-        
         createSideMenu()
-        DatabaseManager.sharedInstance.initializeDB()
-        //DatabaseManager.sharedInstance.clearDatabase()
-        //updateCurrentSavedLocations()
     }
     
     func initValues() {
@@ -44,6 +40,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
         LocationManager.sharedInstance.locationManager.delegate = self
+        DatabaseManager.sharedInstance.initializeDB()
         locationUpdated = false
         errorMessageDidAppear = false
         sideMenuOpened = false
@@ -51,7 +48,9 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
 
     override func viewDidAppear(animated: Bool) {
+        //Get the already saved locations from DB
         updateCurrentSavedLocations()
+        //Display the last selected location
         displayLastSelectedLocation()
         sideMenuContainer.hideSideMenu()
     }
@@ -66,7 +65,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         
         //If the last selected location is the current location, we update its data
         //because the user may change his location.
-        if(lastSelectedLocation.name == "" || (lastSelectedLocation.isCurrentLocation == true))
+        if((lastSelectedLocation.name == "") || (lastSelectedLocation.isCurrentLocation == true))
         {
             canUpdateCurrentLocation = true
             locationUpdated = false

@@ -24,11 +24,13 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func initValues() {
         self.title = "Forecast"
-        
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
+        setUpForecastTableView()
         errorMessageDidAppear = false
-        
+    }
+    
+    func setUpForecastTableView() {
         //Load ForecastTableViewCell file
         var forecastTableViewCellNib : UINib = UINib(nibName: "ForecastTableViewCell", bundle: NSBundle.mainBundle())
         forecastTableView.registerNib(forecastTableViewCellNib, forCellReuseIdentifier: "ForecastTableViewCell")
@@ -40,18 +42,12 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func viewDidAppear(animated: Bool) {
-        //Update the current saved locations array in AppSharedData
-        updateCurrentSavedLocations()
         updateViewTitleWithCurrentDisplayingLocationName()
         updateForecastWeatherData()
     }
     
     override func viewDidDisappear(animated: Bool) {
         self.title = "Forecast"
-    }
-    
-    func updateCurrentSavedLocations() {
-        AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
     }
     
     func updateViewTitleWithCurrentDisplayingLocationName() {
@@ -79,7 +75,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
                 else
                 {
-                    self.retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentDisplayingLocation)
+                    self.retrieveWeatherDataForLocation(locationWeatherData)
                 }
             })
         })
