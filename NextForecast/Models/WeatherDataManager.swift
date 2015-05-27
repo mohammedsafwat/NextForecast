@@ -160,11 +160,11 @@ class WeatherDataManager: NSObject {
                 {
                     //Convert from meters per second to kilometers per hour
                     let windSpeedInKmph = windSpeed! * metersPerSecondToKmPerHourConversionConstant
-                    todayWeatherData.wind = roundf(windSpeedInKmph)
+                    todayWeatherData.windSpeed = roundf(windSpeedInKmph)
                 }
                 else
                 {
-                    todayWeatherData.wind = 0.0
+                    todayWeatherData.windSpeed = 0.0
                 }
                 todayWeatherData.speedUnit = .kmPerHour
                 

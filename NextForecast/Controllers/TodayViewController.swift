@@ -255,7 +255,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         //Wind Speed
         let speedUnit : SpeedUnit = weatherData.todayWeatherData.speedUnit
         let settingsSpeedUnit : SpeedUnit = AppSharedData.sharedInstance.settingsSpeedUnit
-        var wind = weatherData.todayWeatherData.wind
+        var wind = weatherData.todayWeatherData.windSpeed
         if(!(speedUnit == settingsSpeedUnit))
         {
             wind = UnitsConverter.sharedInstance.getCurrentUnitConvertedSpeed(wind, speedUnit: speedUnit)

@@ -17,7 +17,7 @@ class SingleDayWeatherData: NSObject, NSCoding{
     var pressure : Float! = 0.0
     var humidity : Float! = 0.0
     var rain : Float! = 0.0
-    var wind : Float! = 0.0
+    var windSpeed : Float! = 0.0
     var windDirection : WindDirection! = .NE
     var speedUnit : SpeedUnit! = .kmPerHour
     
@@ -32,7 +32,7 @@ class SingleDayWeatherData: NSObject, NSCoding{
         pressure = aDecoder.decodeObjectForKey("pressure") as Float
         humidity = aDecoder.decodeObjectForKey("humidity") as Float
         rain = aDecoder.decodeObjectForKey("rain") as Float
-        wind = aDecoder.decodeObjectForKey("wind") as Float
+        windSpeed = aDecoder.decodeObjectForKey("wind") as Float
         windDirection = WindDirection(rawValue: aDecoder.decodeIntegerForKey("windDirection"))
         speedUnit = SpeedUnit(rawValue: aDecoder.decodeIntegerForKey("speedUnit"))
     }
@@ -46,7 +46,7 @@ class SingleDayWeatherData: NSObject, NSCoding{
         aCoder.encodeObject(pressure, forKey: "pressure")
         aCoder.encodeObject(humidity, forKey: "humidity")
         aCoder.encodeObject(rain, forKey: "rain")
-        aCoder.encodeObject(wind, forKey: "wind")
+        aCoder.encodeObject(windSpeed, forKey: "wind")
         aCoder.encodeInteger(windDirection.rawValue, forKey: "windDirection")
         aCoder.encodeInteger(speedUnit.rawValue, forKey: "speedUnit")
     }
