@@ -80,7 +80,7 @@ class SideMenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 25
+        return 27
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

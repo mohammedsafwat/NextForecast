@@ -16,17 +16,18 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     var forecastWeatherData : [SingleDayWeatherData]! = []
     var weatherDataManager : WeatherDataManager!
     var errorMessageDidAppear : Bool!
-
+    var noInformationLabel : UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         initValues()
+        setUpForecastTableView()
+        setUpNoInformationLabel()
     }
     
     func initValues() {
         self.title = "Forecast"
         weatherDataManager = WeatherDataManager()
         weatherDataManager.weatherDataManagerDelegate = self
-        setUpForecastTableView()
         errorMessageDidAppear = false
     }
     
@@ -39,6 +40,21 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         forecastTableView.frame = CGRect(x: forecastTableView.frame.origin.x, y: forecastTableView.frame.origin.y, width: forecastTableView.frame.size.width, height: forecastTableView.frame.size.height)
         forecastTableView.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         forecastTableView.tableFooterView = UIView(frame: CGRectZero)
+    }
+    
+    func setUpNoInformationLabel() {
+        noInformationLabel = UILabel(frame: CGRectZero)
+        noInformationLabel.textColor = UIColor.lightGrayColor()
+        noInformationLabel.textAlignment = .Center
+        noInformationLabel.text = "Sorry, weather information is not available."
+        noInformationLabel.sizeToFit()
+        let navigationBarHeight = self.navigationController?.navigationBar.frame.height
+        let tabBarHeight = self.tabBarController?.tabBar.frame.height
+        noInformationLabel.center.x = self.forecastTableView.center.x
+        noInformationLabel.center.y = self.forecastTableView.center.y - tabBarHeight! - navigationBarHeight!
+        noInformationLabel.font = UIFont(name: "ProximaNova-Light", size: 15)
+        noInformationLabel.hidden = true
+        self.forecastTableView.addSubview(noInformationLabel)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -75,6 +91,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
                 else
                 {
+                    self.errorMessageDidAppear = false
                     self.retrieveWeatherDataForLocation(locationWeatherData)
                 }
             })
@@ -138,6 +155,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         if(error == nil)
         {
             forecastWeatherData = locationWeatherData.forecastWeatherData
+            noInformationLabel.hidden = true
             forecastTableView.reloadData()
         }
         else
@@ -147,7 +165,10 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 displayAlertViewWithMessage(error.localizedDescription, otherButtonTitles: "Try Again")
                 errorMessageDidAppear = true
             }
-            //TODO: Set default data values here if an error happened
+            if(forecastWeatherData.count == 0)
+            {
+                noInformationLabel.hidden = false
+            }
         }
         ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
     }
@@ -170,7 +191,14 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             alertController.addAction(openSettingsAction)
         }
-        
+        else if(otherButtonTitles == "Try Again")
+        {
+            let tryAgainAction = UIAlertAction(title: otherButtonTitles, style: .Default) {
+                (action) in
+                self.retrieveWeatherDataForLocation(AppSharedData.sharedInstance.currentDisplayingLocation)
+            }
+            alertController.addAction(tryAgainAction)
+        }
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     

@@ -38,7 +38,7 @@ class AppSharedData: NSObject {
     let DATABASE_FILE_NAME = "nextforecast.sql"
     
     var savedLocations : [LocationWeatherData]! = []
-    var currentDisplayingLocation : LocationWeatherData!
+    var currentDisplayingLocation : LocationWeatherData = LocationWeatherData()
     var currentLocationCoordinates : CLLocation! = CLLocation()
     var settingsSpeedUnit : SpeedUnit! = .kmPerHour
     var settingsTemperatureUnit : TemperatureUnit! = .C

@@ -158,6 +158,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
             LocationManager.sharedInstance.locationManager.stopUpdatingLocation()
             ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)
             locationUpdated = true
+            errorMessageDidAppear = false
             AppSharedData.sharedInstance.currentLocationCoordinates = location
             retrieveWeatherDataForLocation(location)
         }
@@ -316,6 +317,12 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    @IBAction func onShareButtonClicked(sender: AnyObject) {
+        var weatherStateToShare : String! = NSString(format: "It's %@ today in %@", self.todayTemperatureAndDescriptionLabel.text!, self.locationNameLabel.text!)
+        var website : NSURL! = NSURL(string: "http://www.strv.com")
+        let activityViewController = UIActivityViewController(activityItems: [weatherStateToShare, website], applicationActivities: [])
+        self .presentViewController(activityViewController, animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
