@@ -12,8 +12,8 @@ private let _singletonInstance = DatabaseManager()
 
 class DatabaseManager: NSObject {
     
-    var dbFilePath : String! = ""
-    var db : FMDatabase!
+    private var dbFilePath : String! = ""
+    private var db : FMDatabase!
     
     override init() {}
     

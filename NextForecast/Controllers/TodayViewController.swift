@@ -48,6 +48,8 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
 
     override func viewDidAppear(animated: Bool) {
+        //Update current data units for temperature and speed
+        updateCurrentDataUnits()
         //Get the already saved locations from DB
         updateCurrentSavedLocations()
         //Display the last selected location
@@ -124,6 +126,11 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     func updateCurrentSavedLocations() {
         //Update the current saved locations array in AppSharedData
         AppSharedData.sharedInstance.savedLocations = DatabaseManager.sharedInstance.getSavedLocations()
+    }
+    
+    func updateCurrentDataUnits() {
+        AppSharedData.sharedInstance.settingsTemperatureUnit = UserDefaultsManager.sharedInstance.getTemperatureUnitFromUserDefaults()
+        AppSharedData.sharedInstance.settingsSpeedUnit = UserDefaultsManager.sharedInstance.getSpeedUnitFromUserDefaults()
     }
     
     func startLocationUpdates() {
@@ -221,7 +228,13 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         
         //Set current temperature value and label
         let temperatureUnit : TemperatureUnit = weatherData.todayWeatherData.temperatureUnit
-        let temperatureFormattedString = NSString(format: "%.0f°%@", weatherData.todayWeatherData.temperature, temperatureUnit == .C ? "C" : "F")
+        let settingsTemperatureUnit : TemperatureUnit = AppSharedData.sharedInstance.settingsTemperatureUnit
+        var temperature = weatherData.todayWeatherData.temperature
+        if(!(temperatureUnit == settingsTemperatureUnit))
+        {
+            temperature = UnitsConverter.sharedInstance.getCurrentUnitConvertedTemperature(temperature, temperatureUnit: temperatureUnit)
+        }
+        let temperatureFormattedString = NSString(format: "%.0f°%@", temperature, settingsTemperatureUnit == .C ? "C" : "F")
         
         //Set current weather description
         let weatherDescriptionString = weatherData.todayWeatherData.weatherDescription
@@ -239,7 +252,14 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         todayPressureValueLabel.text = NSString(format: "%0.0f hPa", weatherData.todayWeatherData.pressure)
         
         //Wind Speed
-        todayWindSpeedValueLabel.text = NSString(format: "%0.0f km/h", weatherData.todayWeatherData.wind)
+        let speedUnit : SpeedUnit = weatherData.todayWeatherData.speedUnit
+        let settingsSpeedUnit : SpeedUnit = AppSharedData.sharedInstance.settingsSpeedUnit
+        var wind = weatherData.todayWeatherData.wind
+        if(!(speedUnit == settingsSpeedUnit))
+        {
+            wind = UnitsConverter.sharedInstance.getCurrentUnitConvertedSpeed(wind, speedUnit: speedUnit)
+        }
+        todayWindSpeedValueLabel.text = NSString(format: "%0.0f %@", wind, settingsSpeedUnit == .milesPerHour ? "mph" : "km/h")
         
         //Wind Direction
         var windDirectionString : String!

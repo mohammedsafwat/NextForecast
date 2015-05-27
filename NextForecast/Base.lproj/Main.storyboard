@@ -6,6 +6,12 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="ProximaNova-Regular.otf">
+            <string>ProximaNova-Regular</string>
+            <string>ProximaNova-Regular</string>
+            <string>ProximaNova-Regular</string>
+            <string>ProximaNova-Regular</string>
+        </mutableArray>
         <mutableArray key="ProximaNova-Semibold.otf">
             <string>ProximaNova-Semibold</string>
         </mutableArray>
@@ -841,50 +847,153 @@
                                 <color key="textColor" red="0.1843137255" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SettingsDividerTop" translatesAutoresizingMaskIntoConstraints="NO" id="5S2-Ns-Lky">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Bce-Ky-WwW"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Bce-Ky-WwW"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Bce-Ky-WwW"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unit of length" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7x-P2-Nnv">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unit of temperature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZ2-aI-eqw">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SettingsDividerMiddle" translatesAutoresizingMaskIntoConstraints="NO" id="JrH-FL-qM4">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDx-eB-KFJ" userLabel="unitOfLengthSettingsButton">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="20"/>
+                                <state key="normal" title="Meters">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOp-kB-uje" userLabel="unitOfTemperatureSettingsButton">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="20"/>
+                                <state key="normal" title="C">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="JOp-kB-uje" firstAttribute="top" secondItem="JrH-FL-qM4" secondAttribute="bottom" constant="4" id="002-xT-DSe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5S2-Ns-Lky" secondAttribute="trailing" constant="-16" id="0gu-SI-8AB"/>
+                            <constraint firstItem="e7x-P2-Nnv" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="8" id="2Jq-xb-Wnn"/>
+                            <constraint firstItem="UZ2-aI-eqw" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="8" id="2eO-IN-Kpc"/>
+                            <constraint firstItem="5S2-Ns-Lky" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="-16" id="32Y-3b-mCV"/>
+                            <constraint firstItem="e7x-P2-Nnv" firstAttribute="top" secondItem="5S2-Ns-Lky" secondAttribute="bottom" constant="8" id="AuD-wd-yns"/>
+                            <constraint firstItem="JrH-FL-qM4" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="9" id="Euc-Aj-ivV"/>
                             <constraint firstAttribute="centerX" secondItem="kxx-CE-D86" secondAttribute="centerX" id="Hus-Qj-cmB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JrH-FL-qM4" secondAttribute="trailing" constant="-16" id="KRG-IJ-lIb"/>
                             <constraint firstItem="kxx-CE-D86" firstAttribute="top" secondItem="WkX-VZ-Ccd" secondAttribute="bottom" id="Olw-gc-9sT"/>
+                            <constraint firstItem="nDx-eB-KFJ" firstAttribute="trailing" secondItem="28j-sz-oWz" secondAttribute="trailingMargin" id="Uoh-0Q-hUb"/>
                             <constraint firstItem="vzO-Cc-Ykd" firstAttribute="top" secondItem="WkX-VZ-Ccd" secondAttribute="bottom" constant="8" id="WhF-gI-2kn">
                                 <variation key="heightClass=regular-widthClass=compact" constant="24"/>
                             </constraint>
+                            <constraint firstItem="UZ2-aI-eqw" firstAttribute="top" secondItem="JrH-FL-qM4" secondAttribute="bottom" constant="8" id="Ypp-bA-DHD"/>
+                            <constraint firstItem="nDx-eB-KFJ" firstAttribute="top" secondItem="5S2-Ns-Lky" secondAttribute="bottom" constant="4" id="cDK-95-uVA"/>
+                            <constraint firstItem="5S2-Ns-Lky" firstAttribute="top" secondItem="vzO-Cc-Ykd" secondAttribute="bottom" constant="8" id="cUy-09-dSs"/>
+                            <constraint firstItem="JrH-FL-qM4" firstAttribute="top" secondItem="e7x-P2-Nnv" secondAttribute="bottom" constant="8" id="dT6-vH-Ecq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="kxx-CE-D86" secondAttribute="trailing" constant="-16" id="qna-Ic-E2C"/>
                             <constraint firstItem="kxx-CE-D86" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" constant="-16" id="sZX-FR-B2j"/>
                             <constraint firstItem="vzO-Cc-Ykd" firstAttribute="leading" secondItem="28j-sz-oWz" secondAttribute="leadingMargin" id="uIR-J8-Vfy">
                                 <variation key="heightClass=regular-widthClass=compact" constant="8"/>
                             </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="JOp-kB-uje" secondAttribute="trailing" constant="15" id="ued-5H-snS"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="kxx-CE-D86"/>
                                 <exclude reference="vzO-Cc-Ykd"/>
+                                <exclude reference="5S2-Ns-Lky"/>
+                                <exclude reference="e7x-P2-Nnv"/>
+                                <exclude reference="UZ2-aI-eqw"/>
+                                <exclude reference="JrH-FL-qM4"/>
+                                <exclude reference="nDx-eB-KFJ"/>
+                                <exclude reference="JOp-kB-uje"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="2eO-IN-Kpc"/>
+                                <exclude reference="Ypp-bA-DHD"/>
+                                <exclude reference="2Jq-xb-Wnn"/>
+                                <exclude reference="AuD-wd-yns"/>
+                                <exclude reference="WhF-gI-2kn"/>
+                                <exclude reference="uIR-J8-Vfy"/>
+                                <exclude reference="002-xT-DSe"/>
+                                <exclude reference="ued-5H-snS"/>
+                                <exclude reference="Uoh-0Q-hUb"/>
+                                <exclude reference="cDK-95-uVA"/>
+                                <exclude reference="0gu-SI-8AB"/>
+                                <exclude reference="32Y-3b-mCV"/>
+                                <exclude reference="cUy-09-dSs"/>
+                                <exclude reference="Euc-Aj-ivV"/>
+                                <exclude reference="KRG-IJ-lIb"/>
+                                <exclude reference="dT6-vH-Ecq"/>
                                 <exclude reference="Hus-Qj-cmB"/>
                                 <exclude reference="Olw-gc-9sT"/>
                                 <exclude reference="qna-Ic-E2C"/>
                                 <exclude reference="sZX-FR-B2j"/>
-                                <exclude reference="WhF-gI-2kn"/>
-                                <exclude reference="uIR-J8-Vfy"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="kxx-CE-D86"/>
                                 <include reference="vzO-Cc-Ykd"/>
+                                <include reference="5S2-Ns-Lky"/>
+                                <include reference="e7x-P2-Nnv"/>
+                                <include reference="UZ2-aI-eqw"/>
+                                <include reference="JrH-FL-qM4"/>
+                                <include reference="nDx-eB-KFJ"/>
+                                <include reference="JOp-kB-uje"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="2eO-IN-Kpc"/>
+                                <include reference="Ypp-bA-DHD"/>
+                                <include reference="2Jq-xb-Wnn"/>
+                                <include reference="AuD-wd-yns"/>
+                                <include reference="WhF-gI-2kn"/>
+                                <include reference="uIR-J8-Vfy"/>
+                                <include reference="002-xT-DSe"/>
+                                <include reference="ued-5H-snS"/>
+                                <include reference="Uoh-0Q-hUb"/>
+                                <include reference="cDK-95-uVA"/>
+                                <include reference="0gu-SI-8AB"/>
+                                <include reference="32Y-3b-mCV"/>
+                                <include reference="cUy-09-dSs"/>
+                                <include reference="Euc-Aj-ivV"/>
+                                <include reference="KRG-IJ-lIb"/>
+                                <include reference="dT6-vH-Ecq"/>
                                 <include reference="Hus-Qj-cmB"/>
                                 <include reference="Olw-gc-9sT"/>
                                 <include reference="qna-Ic-E2C"/>
                                 <include reference="sZX-FR-B2j"/>
-                                <include reference="WhF-gI-2kn"/>
-                                <include reference="uIR-J8-Vfy"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="fVj-8o-dve"/>
+                    <connections>
+                        <outlet property="unitOfLengthSettingsButton" destination="nDx-eB-KFJ" id="59r-5P-64Q"/>
+                        <outlet property="unitOfTemperatureSettingsButton" destination="JOp-kB-uje" id="p68-F6-oth"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O3B-J5-dSN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1010,6 +1119,8 @@
         <image name="HorizontalDivider" width="127" height="1"/>
         <image name="NavigationBarColoredLine" width="1242" height="6"/>
         <image name="PressureIcon" width="42" height="30"/>
+        <image name="SettingsDividerMiddle" width="305" height="1"/>
+        <image name="SettingsDividerTop" width="320" height="1"/>
         <image name="SettingsIconDimmed" width="23" height="23"/>
         <image name="TodayIconDimmed" width="24" height="24"/>
         <image name="WeatherIcon_Clear" width="87" height="87"/>

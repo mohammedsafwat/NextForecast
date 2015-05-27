@@ -11,6 +11,23 @@ import CoreLocation
 
 private let _singletonInstance = AppSharedData()
 
+enum TemperatureUnit : Int{
+    case C
+    case F
+}
+enum SpeedUnit : Int{
+    case kmPerHour
+    case milesPerHour
+    case milesPerSecond
+}
+
+enum WindDirection : Int{
+    case NE
+    case NW
+    case SE
+    case SW
+}
+
 class AppSharedData: NSObject {
     let todayWeatherDataURL = "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&mode=json"
     let forecastWeatherDataURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%f&lon=%f&cnt=7&mode=json"
@@ -23,7 +40,8 @@ class AppSharedData: NSObject {
     var savedLocations : [LocationWeatherData]! = []
     var currentDisplayingLocation : LocationWeatherData!
     var currentLocationCoordinates : CLLocation! = CLLocation()
-    
+    var settingsSpeedUnit : SpeedUnit! = .kmPerHour
+    var settingsTemperatureUnit : TemperatureUnit! = .C
     class var sharedInstance : AppSharedData {
         return _singletonInstance
     }

@@ -8,23 +8,6 @@
 
 import UIKit
 
-enum TemperatureUnit : Int{
-    case C
-    case F
-}
-enum SpeedUnit : Int{
-    case milesPerSecond
-    case milesPerHour
-    case kmPerHour
-}
-
-enum WindDirection : Int{
-    case NE
-    case NW
-    case SE
-    case SW
-}
-
 class SingleDayWeatherData: NSObject, NSCoding{
     var dayName : String! = ""
     var temperature : Float! = 0.0

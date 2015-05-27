@@ -21,11 +21,11 @@ protocol WeatherDataManagerDelegate {
 
 class WeatherDataManager: NSObject {
     var weatherDataManagerDelegate : WeatherDataManagerDelegate?
-    let kelvinConstant : Float = 273.15
-    let mpsToMphConversionConstant : Float = 3600
-    let mphToKmphConversionConstant : Float = 1.60934
-    let metersPerSecondToKmPerHourConversionConstant : Float = 3.6
-    var locationWeatherData : LocationWeatherData = LocationWeatherData()
+    private let kelvinConstant : Float = 273.15
+    private let mpsToMphConversionConstant : Float = 3600
+    private let mphToKmphConversionConstant : Float = 1.60934
+    private let metersPerSecondToKmPerHourConversionConstant : Float = 3.6
+    private var locationWeatherData : LocationWeatherData = LocationWeatherData()
 
     func retrieveWeatherDataForLocation(location : CLLocation, customName : String, isCurrentLocation : Bool)
     {

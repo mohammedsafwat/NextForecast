@@ -99,9 +99,24 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         var forecastDayWeatherData : SingleDayWeatherData = forecastWeatherData[indexPath.row]
+        
+        //Day Name
         forecastTableViewCell?.forecastDayNameLabel.text = forecastDayWeatherData.dayName
-        forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°",forecastDayWeatherData.temperature)
+        
+        //Temperature
+        let temperatureUnit : TemperatureUnit = forecastDayWeatherData.temperatureUnit
+        let settingsTemperatureUnit : TemperatureUnit = AppSharedData.sharedInstance.settingsTemperatureUnit
+        var temperature = forecastDayWeatherData.temperature
+        if(!(temperatureUnit == settingsTemperatureUnit))
+        {
+            temperature = UnitsConverter.sharedInstance.getCurrentUnitConvertedTemperature(temperature, temperatureUnit: temperatureUnit)
+        }
+        forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°", temperature)
+        
+        //Weather Description
         forecastTableViewCell?.forecastDayWeatherDescriptionLabel.text = forecastDayWeatherData.weatherDescription
+        
+        //Weather Icon
         var weatherIconImage : UIImage! = UIImage(named: forecastDayWeatherData.weatherIconName)
         forecastTableViewCell?.forecastDayWeatherIconImageView.image = weatherIconImage
         return forecastTableViewCell!

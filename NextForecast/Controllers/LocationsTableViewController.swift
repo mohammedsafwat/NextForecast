@@ -107,7 +107,15 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         {
             locationsTableViewCell?.currentLocationIndicatorImageView.hidden = false
         }
-        locationsTableViewCell?.locationTodayTemperatureLabel.text = NSString(format:"%0.0f°", locationWeatherData.todayWeatherData.temperature)
+        //Temperature
+        let temperatureUnit : TemperatureUnit = locationWeatherData.todayWeatherData.temperatureUnit
+        let settingsTemperatureUnit : TemperatureUnit = AppSharedData.sharedInstance.settingsTemperatureUnit
+        var temperature = locationWeatherData.todayWeatherData.temperature
+        if(!(temperatureUnit == settingsTemperatureUnit))
+        {
+            temperature = UnitsConverter.sharedInstance.getCurrentUnitConvertedTemperature(temperature, temperatureUnit: temperatureUnit)
+        }
+        locationsTableViewCell?.locationTodayTemperatureLabel.text = NSString(format:"%0.0f°", temperature)
         locationsTableViewCell?.locationTodayWeatherDescriptionLabel.text = locationWeatherData.todayWeatherData.weatherDescription
         locationsTableViewCell?.locationTodayWeatherIconImageView.image = UIImage(named: locationWeatherData.todayWeatherData.weatherIconName)
         return locationsTableViewCell!
