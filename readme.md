@@ -14,6 +14,11 @@ its corresponding controller class.
 - ViewClasses : Includes all classes related to handling the views of TableViews Cells, Side Menu, Activity Indicators, etc.
 
 ##Screenshots##
-![alt tag] (http://i.imgur.com/N2r5fcX.png)
-![alt tag] (http://i.imgur.com/zsNIELn.png)
-![alt tag] (http://i.imgur.com/kWk5AuN.png)
+![alt tag] (http://i.imgur.com/7nxsqAp.png)
+![alt tag] (http://i.imgur.com/QNz64J4.png)
+![alt tag] (http://i.imgur.com/XUcTavB.png)
+![alt tag] (http://i.imgur.com/iBNRIcf.png)
+![alt tag] (http://i.imgur.com/4pYeBJ7.png)
+![alt tag] (http://i.imgur.com/tDOfNl2.png)
+![alt tag] (http://i.imgur.com/RJYFW8v.png)
+![alt tag] (http://i.imgur.com/D77G9CU.png)
