@@ -739,6 +739,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ramez  Mohamed (5M8KATGLDP)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NextForecast/Frameworks",
@@ -746,6 +747,7 @@
 				INFOPLIST_FILE = NextForecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ee277166-bbd2-468f-bddc-9fc3e5aae3da";
 				SWIFT_OBJC_BRIDGING_HEADER = NextForecast/BridgingHeader/BridgingHeader.h;
 			};
 			name = Release;

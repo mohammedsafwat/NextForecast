@@ -44,13 +44,13 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func setUpNoInformationLabel() {
         noInformationLabel = UILabel(frame: CGRectZero)
-        noInformationLabel.textColor = UIColor.lightGrayColor()
+        noInformationLabel.textColor = UIColor.grayColor()
         noInformationLabel.textAlignment = .Center
         noInformationLabel.text = "Sorry, weather information is not available."
         noInformationLabel.sizeToFit()
         let navigationBarHeight = self.navigationController?.navigationBar.frame.height
         let tabBarHeight = self.tabBarController?.tabBar.frame.height
-        noInformationLabel.center.x = self.forecastTableView.center.x
+        noInformationLabel.center.x = self.view.center.x
         noInformationLabel.center.y = self.forecastTableView.center.y - tabBarHeight! - navigationBarHeight!
         noInformationLabel.font = UIFont(name: "ProximaNova-Light", size: 15)
         noInformationLabel.hidden = true
@@ -128,7 +128,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
         {
             temperature = UnitsConverter.sharedInstance.getCurrentUnitConvertedTemperature(temperature, temperatureUnit: temperatureUnit)
         }
-        forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°", temperature)
+        forecastTableViewCell?.forecastDayTemperatureLabel.text = NSString(format: "%0.0f°", temperature) as String
         
         //Weather Description
         forecastTableViewCell?.forecastDayWeatherDescriptionLabel.text = forecastDayWeatherData.weatherDescription
@@ -176,7 +176,7 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
     //Alert Views and HUD Views methods
     //Create and Alert View with a custom message
     func displayAlertViewWithMessage(alertViewMessage : String!, otherButtonTitles : String!) {
-        let alertController = UIAlertController(title: "Background Location Access Disabled", message: alertViewMessage, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Error", message: alertViewMessage, preferredStyle: .Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)

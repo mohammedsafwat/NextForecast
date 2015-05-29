@@ -115,7 +115,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
         {
             temperature = UnitsConverter.sharedInstance.getCurrentUnitConvertedTemperature(temperature, temperatureUnit: temperatureUnit)
         }
-        locationsTableViewCell?.locationTodayTemperatureLabel.text = NSString(format:"%0.0f°", temperature)
+        locationsTableViewCell?.locationTodayTemperatureLabel.text = NSString(format:"%0.0f°", temperature) as String
         locationsTableViewCell?.locationTodayWeatherDescriptionLabel.text = locationWeatherData.todayWeatherData.weatherDescription
         locationsTableViewCell?.locationTodayWeatherIconImageView.image = UIImage(named: locationWeatherData.todayWeatherData.weatherIconName)
         return locationsTableViewCell!
@@ -159,8 +159,8 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
             savedLocations.removeAtIndex(indexPath.row)
             //Delete table row
             tableView.beginUpdates()
-            let indexPathsToDelete : NSMutableArray = NSMutableArray()
-            indexPathsToDelete.addObject(indexPath)
+            var indexPathsToDelete : [AnyObject] = [AnyObject]()
+            indexPathsToDelete.append(indexPath)
             tableView.deleteRowsAtIndexPaths(indexPathsToDelete, withRowAnimation: UITableViewRowAnimation.Fade)
             tableView.endUpdates()
         }
@@ -171,7 +171,7 @@ class LocationsTableViewController: UITableViewController, WeatherDataManagerDel
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        var footerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        var footerView : UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         footerView.contentView.backgroundColor = UIColor.whiteColor()
         var addIconImage : UIImage! = UIImage(named: "AddIcon")
         var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -213,7 +213,7 @@ extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
             var location : LocationWeatherData! = LocationWeatherData()
             var locationAlreadyExists : Bool! = false
             for(savedLocation : LocationWeatherData) in self.savedLocations {
-                if(placeDetails.name == savedLocation.name)
+                if(round(placeDetails.longitude) == round(Double(savedLocation.longitude)) && round(placeDetails.latitude) == round(Double(savedLocation.latitude)))
                 {
                     locationAlreadyExists = true
                     break
@@ -222,12 +222,13 @@ extension LocationsTableViewController: GooglePlacesAutocompleteDelegate {
             if(!locationAlreadyExists)
             {
                 ActivityIndicatorUtility.sharedInstance.startActivityIndicatorInViewWithStatusText(self.gpaViewController.view, statusText: "Adding new location..")
-                location.name = placeDetails.name
+                location.name = place.description
+                println(placeDetails.description)
                 location.longitude = Float(placeDetails.longitude)
                 location.latitude = Float(placeDetails.latitude)
                 var locationCoordinates : CLLocation = CLLocation(latitude: placeDetails.latitude, longitude: placeDetails.longitude)
                 self.errorMessageDidAppear = false
-                self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: location.name, isCurrentLocation: false)
+                self.weatherDataManger.retrieveWeatherDataForLocation(locationCoordinates, customName: placeDetails.name, isCurrentLocation: false)
             }
             else
             {

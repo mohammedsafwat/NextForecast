@@ -24,15 +24,15 @@ class SingleDayWeatherData: NSObject, NSCoding{
     override init() {}
     
     required init(coder aDecoder: NSCoder) {
-        dayName = aDecoder.decodeObjectForKey("dayName") as String
-        temperature = aDecoder.decodeObjectForKey("temperature") as Float
+        dayName = aDecoder.decodeObjectForKey("dayName") as! String
+        temperature = aDecoder.decodeObjectForKey("temperature") as! Float
         temperatureUnit = TemperatureUnit(rawValue: aDecoder.decodeIntegerForKey("temperatureUnit"))
-        weatherDescription = aDecoder.decodeObjectForKey("weatherDescription") as String
-        weatherIconName = aDecoder.decodeObjectForKey("weatherIconName") as String
-        pressure = aDecoder.decodeObjectForKey("pressure") as Float
-        humidity = aDecoder.decodeObjectForKey("humidity") as Float
-        rain = aDecoder.decodeObjectForKey("rain") as Float
-        windSpeed = aDecoder.decodeObjectForKey("wind") as Float
+        weatherDescription = aDecoder.decodeObjectForKey("weatherDescription") as! String
+        weatherIconName = aDecoder.decodeObjectForKey("weatherIconName") as! String
+        pressure = aDecoder.decodeObjectForKey("pressure") as! Float
+        humidity = aDecoder.decodeObjectForKey("humidity") as! Float
+        rain = aDecoder.decodeObjectForKey("rain") as! Float
+        windSpeed = aDecoder.decodeObjectForKey("wind") as! Float
         windDirection = WindDirection(rawValue: aDecoder.decodeIntegerForKey("windDirection"))
         speedUnit = SpeedUnit(rawValue: aDecoder.decodeIntegerForKey("speedUnit"))
     }

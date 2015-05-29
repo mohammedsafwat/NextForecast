@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "WeatherIcon_Snow-1.png"
+      "filename" : "WeatherIcon_Snow@1x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "WeatherIcon_Snow.png"
+      "filename" : "WeatherIcon_Snow@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "WeatherIcon_Snow-2.png"
+      "filename" : "WeatherIcon_Snow@3x.png"
     }
   ],
   "info" : {

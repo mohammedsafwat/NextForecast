@@ -93,13 +93,13 @@ class SideMenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        var headerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        var headerView : UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         headerView.textLabel.textAlignment = .Center
         headerView.textLabel.font = UIFont(name: "ProximaNova-Light", size: 15)
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        var footerView : UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        var footerView : UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         footerView.contentView.backgroundColor = UIColor.whiteColor()
         var addIconImage : UIImage! = UIImage(named: "AddIcon")
         var addLocationButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
@@ -141,8 +141,8 @@ class SideMenuViewController: UITableViewController {
     
     func addLocationButtonPressed(sender : UIButton!) {
         var storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        var locationsTableViewController : LocationsTableViewController = storyboard.instantiateViewControllerWithIdentifier("LocationsTableViewController") as LocationsTableViewController
-        var navigationController : UINavigationController = UINavigationController(rootViewController: locationsTableViewController)
+        var locationsTableViewController : LocationsTableViewController = storyboard.instantiateViewControllerWithIdentifier("LocationsTableViewController") as! LocationsTableViewController
+        var navigationController : UINavigationController! = UINavigationController(rootViewController: locationsTableViewController)
         self.view.window?.rootViewController?.presentViewController(navigationController, animated: true, completion: nil)
     }
 

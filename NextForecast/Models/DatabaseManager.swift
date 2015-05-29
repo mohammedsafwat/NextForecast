@@ -22,7 +22,7 @@ class DatabaseManager: NSObject {
         let databaseFileUrl : NSURL! = NSBundle.mainBundle().URLForResource(AppSharedData.sharedInstance.DATABASE_RESOURCE_NAME, withExtension: AppSharedData.sharedInstance.DATABASE_RESOURCE_TYPE)
         let dbfile = "/" + AppSharedData.sharedInstance.DATABASE_FILE_NAME;
         
-        let documentFolderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let documentFolderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
         dbFilePath = documentFolderPath.stringByAppendingString(dbfile)
         let dbFileURL : NSURL! = NSURL(fileURLWithPath: dbFilePath)
         
@@ -70,7 +70,7 @@ class DatabaseManager: NSObject {
         while (rsMain!.next() == true) {
             var locationData : NSData! = rsMain?.dataForColumn("locationData")
             var locationWeatherData : LocationWeatherData = LocationWeatherData()
-            locationWeatherData = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as LocationWeatherData
+            locationWeatherData = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as! LocationWeatherData
             savedLocations.append(locationWeatherData)
         }
         closeDatabase()
@@ -137,7 +137,7 @@ class DatabaseManager: NSObject {
         
         while (rsMain!.next() == true) {
             var locationData : NSData! = rsMain?.dataForColumn("locationData")
-            lastSelectedLocation = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as LocationWeatherData
+            lastSelectedLocation = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as! LocationWeatherData
         }
         closeDatabase()
         return lastSelectedLocation

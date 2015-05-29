@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "CR@2x-1.png"
+      "filename" : "WeatherIcon_Rain@1x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "CR@2x.png"
+      "filename" : "WeatherIcon_Rain@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "CR@3x.png"
+      "filename" : "WeatherIcon_Rain@3x.png"
     }
   ],
   "info" : {

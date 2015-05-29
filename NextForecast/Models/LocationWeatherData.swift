@@ -20,13 +20,13 @@ class LocationWeatherData: NSObject, NSCoding {
     override init() {}
     
     required init(coder aDecoder: NSCoder) {
-        name = aDecoder.decodeObjectForKey("name") as String
-        locationID = aDecoder.decodeObjectForKey("locationID") as String
-        latitude = aDecoder.decodeObjectForKey("latitude") as Float
-        longitude = aDecoder.decodeObjectForKey("longitude") as Float
-        isCurrentLocation = aDecoder.decodeObjectForKey("isCurrentLocation") as Bool
-        todayWeatherData = aDecoder.decodeObjectForKey("todayWeatherData") as SingleDayWeatherData
-        forecastWeatherData = aDecoder.decodeObjectForKey("forecastWeatherData") as [SingleDayWeatherData]
+        name = aDecoder.decodeObjectForKey("name") as! String
+        locationID = aDecoder.decodeObjectForKey("locationID") as! String
+        latitude = aDecoder.decodeObjectForKey("latitude") as! Float
+        longitude = aDecoder.decodeObjectForKey("longitude") as! Float
+        isCurrentLocation = aDecoder.decodeObjectForKey("isCurrentLocation") as! Bool
+        todayWeatherData = aDecoder.decodeObjectForKey("todayWeatherData") as! SingleDayWeatherData
+        forecastWeatherData = aDecoder.decodeObjectForKey("forecastWeatherData") as! [SingleDayWeatherData]
     }
     
     func encodeWithCoder(aCoder: NSCoder) {

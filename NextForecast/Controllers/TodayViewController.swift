@@ -89,7 +89,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         self.navigationItem.rightBarButtonItem = rightNavigationBarButton
         
         var storyboard = UIStoryboard(name: "Main", bundle: nil)
-        sideMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SideMenuViewController") as SideMenuViewController
+        sideMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SideMenuViewController") as! SideMenuViewController
         sideMenuViewController.sideMenuDelegate = self
         sideMenuContainer = ENSideMenu(sourceView: self.view, menuViewController: sideMenuViewController, menuPosition: .Right)
         sideMenuContainer.delegate = self
@@ -152,7 +152,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         if(!locationUpdated)
         {
             var location : CLLocation!
-            location = locations.last as CLLocation
+            location = locations.last as! CLLocation
             //print("location.longitude = %f",location.coordinate.longitude)
             //print("location.latitude = %f",location.coordinate.latitude)
             LocationManager.sharedInstance.locationManager.stopUpdatingLocation()
@@ -206,6 +206,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     func updateUIWithLocationWeatherData(weatherData : LocationWeatherData) {
         //Set weather icon according to current weather data
         var weatherIconImage : UIImage! = UIImage(named: weatherData.todayWeatherData.weatherIconName)
+        //var weatherIconImage : UIImage! = UIImage(named: "WeatherIcon_Snow")
         weatherIconImageView.image = weatherIconImage
         locationNameLabel.text = weatherData.name
         let locationNameWidth = locationNameLabel.intrinsicContentSize().width
@@ -240,17 +241,17 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         //Set current weather description
         let weatherDescriptionString = weatherData.todayWeatherData.weatherDescription
         
-        todayTemperatureAndDescriptionLabel.text = NSString(format: "%@ | %@", temperatureFormattedString, weatherDescriptionString)
+        todayTemperatureAndDescriptionLabel.text = NSString(format: "%@ | %@", temperatureFormattedString, weatherDescriptionString) as String
         
         //Set other weather data values
         //Rain
-        todayRainValueLabel.text = NSString(format: "%0.1f mm", weatherData.todayWeatherData.rain)
+        todayRainValueLabel.text = NSString(format: "%0.1f mm", weatherData.todayWeatherData.rain) as String
         
         //Humidity
-        todayHumidityValueLabel.text = NSString(format: "%0.0f%@", weatherData.todayWeatherData.humidity, "%")
+        todayHumidityValueLabel.text = NSString(format: "%0.0f%@", weatherData.todayWeatherData.humidity, "%") as String
         
         //Pressure
-        todayPressureValueLabel.text = NSString(format: "%0.0f hPa", weatherData.todayWeatherData.pressure)
+        todayPressureValueLabel.text = NSString(format: "%0.0f hPa", weatherData.todayWeatherData.pressure) as String
         
         //Wind Speed
         let speedUnit : SpeedUnit = weatherData.todayWeatherData.speedUnit
@@ -260,7 +261,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
         {
             wind = UnitsConverter.sharedInstance.getCurrentUnitConvertedSpeed(wind, speedUnit: speedUnit)
         }
-        todayWindSpeedValueLabel.text = NSString(format: "%0.0f %@", wind, settingsSpeedUnit == .milesPerHour ? "mph" : "km/h")
+        todayWindSpeedValueLabel.text = NSString(format: "%0.0f %@", wind, settingsSpeedUnit == .milesPerHour ? "mph" : "km/h") as String
         
         //Wind Direction
         var windDirectionString : String!
@@ -290,7 +291,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     //Alert Views and HUD Views methods
     //Create and Alert View with a custom message
     func displayAlertViewWithMessage(alertViewMessage : String!, otherButtonTitles : String!) {
-        let alertController = UIAlertController(title: "Background Location Access Disabled", message: alertViewMessage, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Error", message: alertViewMessage, preferredStyle: .Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
@@ -318,7 +319,7 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     }
     
     @IBAction func onShareButtonClicked(sender: AnyObject) {
-        var weatherStateToShare : String! = NSString(format: "It's %@ today in %@", self.todayTemperatureAndDescriptionLabel.text!, self.locationNameLabel.text!)
+        var weatherStateToShare : String! = NSString(format: "It's %@ today in %@", self.todayTemperatureAndDescriptionLabel.text!, self.locationNameLabel.text!) as String
         var website : NSURL! = NSURL(string: "http://www.strv.com")
         let activityViewController = UIActivityViewController(activityItems: [weatherStateToShare, website], applicationActivities: [])
         self .presentViewController(activityViewController, animated: true, completion: nil)

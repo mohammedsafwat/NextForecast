@@ -29,9 +29,9 @@ class WeatherDataManager: NSObject {
 
     func retrieveWeatherDataForLocation(location : CLLocation, customName : String, isCurrentLocation : Bool)
     {
-        var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
+        var todayWeatherDataUrlString : String! = NSString(format: AppSharedData.sharedInstance.todayWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude) as String
         
-        let forecastWeatherDataUrlString :String! = NSString(format: AppSharedData.sharedInstance.forecastWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude)
+        let forecastWeatherDataUrlString :String! = NSString(format: AppSharedData.sharedInstance.forecastWeatherDataURL, location.coordinate.latitude, location.coordinate.longitude) as String
         
         Alamofire.request(.GET, todayWeatherDataUrlString)
             .responseJSON{ (request, response, JSON, error) in
@@ -46,14 +46,10 @@ class WeatherDataManager: NSObject {
                                                     {
                                                         //Parse forecast weather data and save insice the locationWeatherData object
                                                         self.locationWeatherData = self.parseWeatherData(JSON, forecastType: .Forecast)
-                                                        if(customName != "")
-                                                        {
-                                                            self.locationWeatherData.name = customName
-                                                        }
                                                         //Get locationID from Google Places API
-                                                        var googlePlacesWebserivceFormattedUrlString : NSString = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
-                                                        googlePlacesWebserivceFormattedUrlString = googlePlacesWebserivceFormattedUrlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                                                        var googlePlacesWebserviceFormattedUrl : NSURL! = NSURL(string: googlePlacesWebserivceFormattedUrlString)
+                                                        var googlePlacesWebserivceFormattedUrlString : NSString! = NSString(format: AppSharedData.sharedInstance.googlePlacesWebserviceURL, self.locationWeatherData.name)
+                                                        googlePlacesWebserivceFormattedUrlString = googlePlacesWebserivceFormattedUrlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+                                                        var googlePlacesWebserviceFormattedUrl : NSURL! = NSURL(string: googlePlacesWebserivceFormattedUrlString as String)
                                                         
                                                         if(googlePlacesWebserviceFormattedUrl != nil)
                                                         {
@@ -69,6 +65,10 @@ class WeatherDataManager: NSObject {
                                                                     else
                                                                     {
                                                                         self.locationWeatherData.locationID = self.getLocationIDFromGooglePlacesLocationData(JSON)
+                                                                    }
+                                                                    if(customName != "")
+                                                                    {
+                                                                        self.locationWeatherData.name = customName
                                                                     }
                                                                     if let weatherDataManagerDelegate = self.weatherDataManagerDelegate
                                                                     {
@@ -113,7 +113,7 @@ class WeatherDataManager: NSObject {
         
         if(JSON != nil)
         {
-            var JSONData : NSDictionary! = JSON as NSDictionary
+            var JSONData : NSDictionary! = JSON as! NSDictionary
             
             if(forecastType == .Today)
             {
@@ -189,7 +189,7 @@ class WeatherDataManager: NSObject {
                 }
                 
                 //Current Weather Data
-                var weatherDataArray : NSArray? = JSONData.valueForKey("weather") as NSArray?
+                var weatherDataArray : NSArray? = JSONData.valueForKey("weather") as! NSArray?
                 var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
                 
                 var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
@@ -216,7 +216,7 @@ class WeatherDataManager: NSObject {
                 }
                 else
                 {
-                    locationWeatherData.name = NSString(format: "%f, %f", longitude!, latitude!)
+                    locationWeatherData.name = NSString(format: "%f, %f", longitude!, latitude!) as String
                 }
                 locationWeatherData.latitude = latitude!
                 locationWeatherData.longitude = longitude!
@@ -224,7 +224,7 @@ class WeatherDataManager: NSObject {
             }
             else if(forecastType == .Forecast)
             {
-                var JSONforecastWeatherData : NSArray? = JSONData.valueForKey("list") as NSArray?
+                var JSONforecastWeatherData : NSArray? = JSONData.valueForKey("list") as! NSArray?
                 var forecastWeatehrData : [SingleDayWeatherData] = []
                 
                 if(JSONforecastWeatherData != nil)
@@ -232,7 +232,7 @@ class WeatherDataManager: NSObject {
                     for(var i : Int = 0; i < JSONforecastWeatherData?.count; i++)
                     {
                         var singleDayWeatherData : SingleDayWeatherData = SingleDayWeatherData()
-                        var JSONSingleDayData : NSDictionary = JSONforecastWeatherData![i] as NSDictionary
+                        var JSONSingleDayData : NSDictionary = JSONforecastWeatherData![i] as! NSDictionary
                         
                         //TimeStamp
                         var timeStamp : Double? = JSONSingleDayData.valueForKey("dt") as? Double
@@ -250,7 +250,7 @@ class WeatherDataManager: NSObject {
                         }
                         
                         //Weather Description
-                        var weatherDataArray : NSArray? = JSONSingleDayData.valueForKey("weather") as NSArray?
+                        var weatherDataArray : NSArray? = JSONSingleDayData.valueForKey("weather") as! NSArray?
                         var weatherDataDictionary : NSDictionary? = weatherDataArray?.objectAtIndex(0) as? NSDictionary
                         
                         var weatherDescription : String? = weatherDataDictionary!.valueForKey("main") as? String
@@ -285,8 +285,8 @@ class WeatherDataManager: NSObject {
     private func getLocationIDFromGooglePlacesLocationData(JSON : AnyObject?) -> String! {
         var locationID : String! = ""
         
-        var JSONData : NSDictionary! = JSON as NSDictionary
-        var locationPredictionsArray : NSArray? = JSONData.valueForKey("predictions") as NSArray?
+        var JSONData : NSDictionary! = JSON as! NSDictionary
+        var locationPredictionsArray : NSArray? = JSONData.valueForKey("predictions") as! NSArray?
         if(locationPredictionsArray != nil) {
             var locationPredictionDataDictionary : NSDictionary? = locationPredictionsArray?.objectAtIndex(0) as? NSDictionary
             locationID = locationPredictionDataDictionary?.valueForKey("place_id") as? String
@@ -300,7 +300,7 @@ class WeatherDataManager: NSObject {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dayDateComponent = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitWeekday, fromDate: timeStampAsDate)
         let dayIndex = dayDateComponent.weekday
-        let dayNameFromTimeStamp = dateFormatter.weekdaySymbols[dayIndex - 1] as String
+        let dayNameFromTimeStamp = dateFormatter.weekdaySymbols[dayIndex - 1] as! String
         return dayNameFromTimeStamp
     }
     

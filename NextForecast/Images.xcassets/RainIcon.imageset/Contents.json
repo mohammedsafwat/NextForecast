@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "Cloudy_Big.png"
+      "filename" : "CR@3x-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Cloudy_Big@2x.png"
+      "filename" : "CR@3x-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "Cloudy_Big@3x.png"
+      "filename" : "CR@3x.png"
     }
   ],
   "info" : {
