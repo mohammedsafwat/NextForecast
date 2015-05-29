@@ -91,8 +91,16 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
                 else
                 {
-                    self.errorMessageDidAppear = false
-                    self.retrieveWeatherDataForLocation(locationWeatherData)
+                    if(locationWeatherData.longitude != 0.0 && locationWeatherData.latitude != 0.0)
+                    {
+                        self.errorMessageDidAppear = false
+                        self.noInformationLabel.hidden = true
+                        self.retrieveWeatherDataForLocation(locationWeatherData)
+                    }
+                    else
+                    {
+                        self.noInformationLabel.hidden = false
+                    }
                 }
             })
         })
@@ -168,6 +176,10 @@ class ForecastViewController: UIViewController, UITableViewDataSource, UITableVi
             if(forecastWeatherData.count == 0)
             {
                 noInformationLabel.hidden = false
+            }
+            else
+            {
+                noInformationLabel.hidden = true
             }
         }
         ActivityIndicatorUtility.sharedInstance.stopActivityIndicatorInView(self.view)

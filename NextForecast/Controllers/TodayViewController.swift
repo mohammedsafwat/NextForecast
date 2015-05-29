@@ -206,7 +206,6 @@ class TodayViewController: UIViewController, CLLocationManagerDelegate, WeatherD
     func updateUIWithLocationWeatherData(weatherData : LocationWeatherData) {
         //Set weather icon according to current weather data
         var weatherIconImage : UIImage! = UIImage(named: weatherData.todayWeatherData.weatherIconName)
-        //var weatherIconImage : UIImage! = UIImage(named: "WeatherIcon_Snow")
         weatherIconImageView.image = weatherIconImage
         locationNameLabel.text = weatherData.name
         let locationNameWidth = locationNameLabel.intrinsicContentSize().width
