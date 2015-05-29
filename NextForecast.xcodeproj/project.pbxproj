@@ -747,7 +747,7 @@
 				INFOPLIST_FILE = NextForecast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ee277166-bbd2-468f-bddc-9fc3e5aae3da";
+				PROVISIONING_PROFILE = "cd982ba7-ee91-4174-a856-cdb1c9703352";
 				SWIFT_OBJC_BRIDGING_HEADER = NextForecast/BridgingHeader/BridgingHeader.h;
 			};
 			name = Release;
